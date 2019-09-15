@@ -1,3 +1,2 @@
 # List of Open Points
-* purpose of gmoccapy_change.ngc and gmoccapy_on_abort.ngc unclear
-* use of glade files?
+* are there HAL pins in probe_screen to abuse for measuring tool or probe workpiece height?
