@@ -1,6 +1,4 @@
 # Include your custom HAL commands here
-#DONT RUN PNCCONF
-
 
 #VFD Connection via Modbus 
 
@@ -55,8 +53,7 @@ net estop-signal lut5.0.out => iocontrol.0.emc-enable-in
 #Alternative without watchog
 #net estop-ext => iocontrol.0.emc-enable-in
 
-
-
+# Auto Commands 
 
 #Automatically start waterpump when spindle is running
 net spindle-enable =>  hm2_7i76e.0.7i76.0.0.output-00

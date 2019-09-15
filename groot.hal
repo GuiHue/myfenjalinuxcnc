@@ -29,10 +29,10 @@ net estop-ext     <=  hm2_7i76e.0.7i76.0.0.input-07
 # --- COOLANT-MIST --- Switchable Relais AC Socket 1
 net coolant-mist hm2_7i76e.0.7i76.0.0.output-01
 
-# --- DOUT-00 ---  Switchable Relais AC Socket 2 - default: waterpump for spindle
+# --- DOUT-00 ---  Switchable Relais AC Socket 2
 #net waterpumpdout00 => hm2_7i76e.0.7i76.0.0.output-00
 
-# --- DOUT-01 --- Switchable Relais AC Socket 3 - can be used for vacuum through abuse of cooland-flood
+# --- DOUT-01 --- Switchable Relais AC Socket 3 - Currently used to control another socket used to for dust extraction
 net coolant-flood hm2_7i76e.0.7i76.0.0.output-02
 
 # external input signals

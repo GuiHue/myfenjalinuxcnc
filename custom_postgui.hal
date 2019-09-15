@@ -1,47 +1,19 @@
 # Include your custom_postgui HAL commands here
-# This file will not be overwritten when you run PNCconf again
 
-
+# Connect spindle information to gmoccapy
 net spindle-at-speed => gmoccapy.spindle_at_speed_led 
 net spindle-cmd-rps-abs => gmoccapy.spindle_feedback_bar
 
-
-
-
-
-
-
-
-
-
-## VERS.BY
+## PROBE_SCREEN_V2
 
 # The next two lines are only needed if the pins had been connected before
 unlinkp iocontrol.0.tool-change
 unlinkp iocontrol.0.tool-changed
 
 # link to auto tool measurement toolchange, so you get the advantage of tool description on change dialog
-
-# this settings were moved to probe_screen.hal:
+# these settings were moved to probe_screen.hal:
 #net tool-change            probe.toolchange-change    <=   iocontrol.0.tool-change 
 #net tool-changed           probe.toolchange-changed   <=   iocontrol.0.tool-changed
 #net tool-prep-number       probe.toolchange-number    <=   iocontrol.0.tool-prep-number
 
-net tool-prep-loop         iocontrol.0.tool-prepare      <=   iocontrol.0.tool-prepared
-
-
-################# GMOCCAPY
-# The next lines are only needed if the pins had been connected before
-#unlinkp iocontrol.0.tool-change
-#unlinkp iocontrol.0.tool-changed
-#unlinkp iocontrol.0.tool-prep-number
-#unlinkp iocontrol.0.tool-prepared
-
-# link to gmoccapy toolchange, so you get the advantage of tool description on change dialog
-#net tool-change gmoccapy.toolchange-change <= iocontrol.0.tool-change
-#net tool-changed gmoccapy.toolchange-changed <= iocontrol.0.tool-changed
-#net tool-prep-number gmoccapy.toolchange-number <= iocontrol.0.tool-prep-number
-#net tool-prep-loop iocontrol.0.tool-prepare <= iocontrol.0.tool-prepared
-
-
-
+net tool-prep-loop         iocontrol.0.tool-prepare      <=   iocontrol.0.tool-prepare

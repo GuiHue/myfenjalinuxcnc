@@ -38,7 +38,6 @@ home        = halui.home-all
 macro-1     = halui.mdi-command-01
 macro-2     = halui.mdi-command-02
 
-
 #spindle     = halui.mdi-command-17
 spindle     = halui.spindle.0.forward
 
