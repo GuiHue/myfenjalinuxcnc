@@ -1,4 +1,4 @@
-# LINUXCNC Master 2.8 COnfig for CNC Router "Groot"
+# LINUXCNC Master 2.8 Config for GROOT
 # Based on initial pncconf configuration, continuously edited and streamlined 
 
 loadrt [KINS]KINEMATICS
