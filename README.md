@@ -45,10 +45,8 @@ The purpose of this GIT is to have a repo for my own changes to the config. Howe
 * https://github.com/LinuxCNC/linuxcnc/tree/master/configs/sim/axis/xhc-hb04
 
 
-### Python Interface
+### Python / GUI / QTpyVCP / GALDE
 * http://linuxcnc.org/docs/2.6/html/common/python-interface.html
-
-
-### Dev Notes  QTpyVCP
 * https://qtpyvcp.kcjengr.com/
 * http://gnipsel.com/linuxcnc/uspace/index.html
+* http://linuxcnc.org/docs/html/gui/gladevcp.html
