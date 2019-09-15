@@ -10,13 +10,15 @@ The purpose of this GIT is to have a repo for my own changes to the config. Howe
 ## Features
 * Based on MESA 7i76E
 * Runs on LinuxCNC Master 2.8 with Debian
+* Uses GMOCCAPY GUI in version 2.x with a touch screen
 * Connects to an Hitachi WJ-200 VFD to control a typical "China Spindle" with 2.2 kW as it's readily available by various suppliers 
-* Uses inductive limit switches on each axis and furthermore uses these for homing
-* Connects LinuxCNC to 
+* Uses NC inductive limit switches on each axis and furthermore uses these for homing
+* Connects LinuxCNC to als PILZ safety relais using the relais' semi conductor (Y32) output. THis triggers estop in linuxcnc when a hardware based button is pushed and cuts power to various drives.  
 * Uses an XHC-HB04 wireless pendant
-* Uses probe_screen_v2 (see [probe_screen_v2](https://github.com/verser-git/probe_screen_v2) together with a wireless touch probe (by [vers.by](https://vers.by/en) and a wirebased tool length sensor
+* Uses probe_screen_v2 (see [probe_screen_v2](https://github.com/verser-git/probe_screen_v2)) together with a wireless touch probe by [vers.by](https://vers.by/en) and a wirebased tool length sensor
 * Uses JMC iHSV57... servos on all axis, run as stepper drives with STP/DIR signals
-* Controls various relais depending on the present 
+* Controls various relais depending on the present machine condition
 
 ## Hardware
-(to follow)
+* The machine consists of an aluminum extrusion design with some milled components made from plate material.
+* Working envelope roughly X/Y/Z 635/1240/165 mm
