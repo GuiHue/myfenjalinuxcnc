@@ -1,0 +1,6 @@
+linuxcnc.var
+linuxcnc.var.bak
+groot.ini.expanded
+python/probe_screen.pyc
+python/remap.pyc
+python/stdglue.pyc
