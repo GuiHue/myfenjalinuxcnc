@@ -1,0 +1,62 @@
+# Include your custom HAL commands here
+#DONT RUN PNCCONF
+
+
+#VFD Connection via Modbus 
+
+#Load from different Device (i.e. USB when not using onboard components; Baudrate needs to be set in VFD using Hitachi ProDrive)
+loadusr -W wj200_vfd --device /dev/ttyUSB0 --baud 9600 --parity N --data 8 --stop 1
+#loadusr -W wj200_vfd --device /dev/ttyUSB0 --baud 9600 --parity N --stop 1
+setp wj200-vfd.0.mbslaveaddr 1
+setp wj200-vfd.0.enable 1
+
+#Connect relevant commands
+net spindle-vel-cmd-rps-abs => wj200-vfd.0.commanded-frequency
+net spindle-enable spindle.0.on => wj200-vfd.0.run
+net spindle-ccw spindle.0.reverse => wj200-vfd.0.reverse
+net spindle-at-speed <= wj200-vfd.0.is-at-speed
+
+#Establish Watchdog functions within LinuxCNC - Watch is-alarm and Heartbeat
+#Load watchdog component 
+loadrt watchdog num_inputs=1
+addf watchdog.process servo-thread
+addf watchdog.set-timeouts servo-thread
+setp watchdog.timeout-0 2.0
+
+loadrt not count=1
+addf not.0 servo-thread
+
+loadrt lut5 count=1
+addf lut5.0 servo-thread
+# LUT5 uses a look-up table for logic fucntions; in this case LUT5 to be HIGH (=enable ok) when
+# in0 (watchdog) high 1
+# in1 (is-alarm) low 0
+# in2 estop-ext high 1
+# following manual this corresponds t 001 = true  --> 101 to hex = 0x20 
+setp lut5.0.function 0x20
+
+net vfd-watchdog wj200-vfd.0.watchdog-out => watchdog.input-0
+net enable-invers not.0.in <= iocontrol.0.user-request-enable
+net watchdog-on watchdog.enable-in <= not.0.out
+net estop-0 watchdog.ok-out => lut5.0.in-0
+net estop-1 wj200-vfd.0.is-alarm => lut5.0.in-1
+net estop-ext => lut5.0.in-2
+
+loadrt message names=m_vfdcom,m_vfderror,m_estopext messages="Vfd-Communication lost, VfD-Error (check vfd-display), External E-Stop triggered" 
+addf m_vfdcom servo-thread
+addf m_vfderror servo-thread
+addf m_estopext servo-thread
+net estop-0 => m_vfdcom.trigger
+net estop-1 => m_vfderror.trigger
+net estop-ext => m_estopext.trigger
+
+#Output to systemwide ESTOP via emc-enable-in in iocontrol 
+net estop-signal lut5.0.out => iocontrol.0.emc-enable-in
+#Alternative without watchog
+#net estop-ext => iocontrol.0.emc-enable-in
+
+
+
+
+#Automatically start waterpump when spindle is running
+net spindle-enable =>  hm2_7i76e.0.7i76.0.0.output-00
