@@ -22,3 +22,33 @@ The purpose of this GIT is to have a repo for my own changes to the config. Howe
 ## Hardware
 * The machine consists of an aluminum extrusion design with some milled components made from plate material.
 * Working envelope roughly X/Y/Z 635/1240/165 mm
+
+
+## Useful links
+
+### LinuxCNC General
+* http://linuxcnc.org/docs/html/gcode/m-code.html
+* http://linuxcnc.org/docs/html/gcode/g-code.html
+* http://linuxcnc.org/docs/html/gcode/o-code.html
+* http://linuxcnc.org/docs/2.5/html/hal/basic_hal.html
+* http://linuxcnc.org/docs/html/man/man1/halui.1.html
+* http://linuxcnc.org/docs/2.6/html/config/ini_config.html
+* http://linuxcnc.org/docs/html/config/core-components.html#_iocontrol
+
+### Remapping & Tool change 
+* http://linuxcnc.org/docs/devel/html/remap/remap.html#remap:interpreter-action-on-m6
+* https://forum.linuxcnc.org/10-advanced-configuration/36810-implementing-a-tool-changer-is-classicladder-the-way-to-go?start=10
+* https://forum.linuxcnc.org/10-advanced-configuration/4733-rack-tool-changer
+
+### XHC-HB04
+* http://linuxcnc.org/docs/html/man/man1/xhc-hb04.1.html
+* https://github.com/LinuxCNC/linuxcnc/tree/master/configs/sim/axis/xhc-hb04
+
+
+### Python Interface
+* http://linuxcnc.org/docs/2.6/html/common/python-interface.html
+
+
+### Dev Notes  QTpyVCP
+* https://qtpyvcp.kcjengr.com/
+* http://gnipsel.com/linuxcnc/uspace/index.html
