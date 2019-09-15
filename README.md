@@ -14,8 +14,9 @@ The purpose of this GIT is to have a repo for my own changes to the config. Howe
 * Connects to an Hitachi WJ-200 VFD to control a typical "China Spindle" with 2.2 kW as it's readily available by various suppliers 
 * Uses NC inductive limit switches on each axis and furthermore uses these for homing
 * Connects LinuxCNC to als PILZ safety relais using the relais' semi conductor (Y32) output. THis triggers estop in linuxcnc when a hardware based button is pushed and cuts power to various drives.  
-* Uses an XHC-HB04 wireless pendant
+* Uses an XHC-HB04 wireless pendant with slightly modified key mapping
 * Uses probe_screen_v2 (see [probe_screen_v2](https://github.com/verser-git/probe_screen_v2)) together with a wireless touch probe by [vers.by](https://vers.by/en) and a wirebased tool length sensor
+** Includes fixed macros for use with LinuxCNC 2.8 (dealing with joint/axis changes)
 * Uses JMC iHSV57... servos on all axis, run as stepper drives with STP/DIR signals
 * Controls various relais depending on the present machine condition
 
