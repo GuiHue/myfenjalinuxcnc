@@ -7,6 +7,8 @@ All of the config option presented here are applicable to any CNC router design.
 
 The purpose of this GIT is to have a repo for my own changes to the config. However, as the same questions pop up time and again in various communities, I have chosen to make this public. Note, that LinuxCNC HAL and INI files are very specific to each machines. While the deplyoed concepts can be trrasnfered easily, specific values and hardware pins are to be analyzed carefully. Do not ever run a foreign config on your machine without checking every detail before hand. I strongly recommend taking ideas from other configs and integrating those into to your own. If you need a minimum working example to start with, I recommend trying the [PNCConf Wizard](http://linuxcnc.org/docs/html/config/pncconf.html) when running MESA cards. I will take responsibility for any damages to your hardware or person.
 
+A word on licensing: I habe chosen GPL3.0 as the license, hoping it does not interfer with any other licenses the used components are subject to. Please contact me asap if this is the case so that this can be resolved.
+
 ## Features
 * Based on MESA 7i76E
 * Runs on LinuxCNC Master 2.8 with Debian
