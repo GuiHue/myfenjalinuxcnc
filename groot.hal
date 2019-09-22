@@ -32,7 +32,8 @@ net probe-input motion.probe-input <=     <=  hm2_7i76e.0.7i76.0.0.input-12
 # Mapping PILZ PNOZ Y32 semiconductor output to i07 (high when ok)
 net estop-ext     <=  hm2_7i76e.0.7i76.0.0.input-07
 # --- PRESSURE SENSOR ---
-net pressure-6bar     <=  hm2_7i76e.0.7i76.0.0.input-16
+# Mapping Festo 527467 sensor in 6bar airline to input 16 (high when ok; invert to deal with message)
+net airpressure     <=  hm2_7i76e.0.7i76.0.0.input-16-not
 
 
 #*******************

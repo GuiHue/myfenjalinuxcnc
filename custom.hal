@@ -42,33 +42,22 @@ net estop-0 watchdog.ok-out => lut5.0.in-0
 net estop-1 wj200-vfd.0.is-alarm => lut5.0.in-1
 net estop-ext => lut5.0.in-2
 
-loadrt message names=m_vfdcom,m_vfderror,m_estopext messages="Vfd-Communication lost, VfD-Error (check vfd-display), External E-Stop triggered" 
+loadrt message names=m_vfdcom,m_vfderror,m_estopext,m_lowpressure messages="Vfd-Communication lost, VfD-Error (check vfd-display), External E-Stop triggered, Air pressure low" 
 addf m_vfdcom servo-thread
 addf m_vfderror servo-thread
 addf m_estopext servo-thread
+addf m_lowpressure servo-thread 
 net estop-0 => m_vfdcom.trigger
 net estop-1 => m_vfderror.trigger
 net estop-ext => m_estopext.trigger
+# Send a message when air pressure alarm triggers (singal is inverted; high = ok)
+net airpressure => m-m_lowpressure.trigger
+
 
 #Output to systemwide ESTOP via emc-enable-in in iocontrol 
 net estop-signal lut5.0.out => iocontrol.0.emc-enable-in
 #Alternative without watchog
 #net estop-ext => iocontrol.0.emc-enable-in
-
-
-
-#OLD
-
-#net vfd-watchdog wj200-vfd.0.watchdog-out => watchdog.input-0
-#net estop-watchdog-timeout watchdog.ok-out => lut5.0.in-0
-#net estop-vfd-error wj200-vfd.0.is-alarm => lut5.0.in-1
-#net estop-ext => lut5.0.in-2
-
-#net estop-signal lut5.0.out => iocontrol.0.emc-enable-in
-
-
-
-
 
 
 

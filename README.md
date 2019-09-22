@@ -21,6 +21,8 @@ A word on licensing: I habe chosen GPL3.0 as the license, hoping it does not int
 ** Includes fixed macros for use with LinuxCNC 2.8 (dealing with joint/axis changes)
 * Uses JMC iHSV57... servos on all axis, run as stepper drives with STP/DIR signals
 * Controls various relais depending on the present machine condition
+* Controls various 3/2 valves from mesa DO within pneumatic setup
+* Checks a Festo 527467 pressure sensor (NC) and triggers a warning message when pressure drop is registered
 
 ## Hardware
 * The machine consists of an aluminum extrusion design with some milled components made from plate material.
