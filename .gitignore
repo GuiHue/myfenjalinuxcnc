@@ -4,3 +4,5 @@ groot.ini.expanded
 python/probe_screen.pyc
 python/remap.pyc
 python/stdglue.pyc
+.vscode
+.vscode/settings.json
