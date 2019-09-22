@@ -31,6 +31,9 @@ net probe-input motion.probe-input <=     <=  hm2_7i76e.0.7i76.0.0.input-12
 # --- ESTOP-EXT ---
 # Mapping PILZ PNOZ Y32 semiconductor output to i07 (high when ok)
 net estop-ext     <=  hm2_7i76e.0.7i76.0.0.input-07
+# --- PRESSURE SENSOR ---
+net pressure-6bar     <=  hm2_7i76e.0.7i76.0.0.input-16
+
 
 #*******************
 #  IO - OUTPUTS 
@@ -39,11 +42,24 @@ net estop-ext     <=  hm2_7i76e.0.7i76.0.0.input-07
 # Map E-stop to an external output to hand over to other devices within cabinet
 net estop-out hm2_7i76e.0.7i76.0.0.output-07
 # ---DOUT-01 --- 
-# MQL/MMS (mist coolant) mapped onto Switchable Relais AC Socket 1
-net coolant-mist hm2_7i76e.0.7i76.0.0.output-01
+# Maps xxx to switchable Relais AC Socket 1 - currently not used
+net dout-01 hm2_7i76e.0.7i76.0.0.output-01
 # --- DOUT-02 --- 
-# Maps coolant-flood to switchable Relais AC Socket 3 - curently used to turn on socket for vacuum/ dust extraction
-net coolant-flood hm2_7i76e.0.7i76.0.0.output-02
+# Maps coolant-flood to switchable Relais AC Socket 3 - currently used to turn on socket for vacuum/ dust extraction
+# net coolant-flood hm2_7i76e.0.7i76.0.0.output-02
+# --- DOUT-08 --- 
+# Maps 3/2 way valve 3/2-1 - used for sealair at spindle
+#net spindle_sealair hm2_7i76e.0.7i76.0.0.output-08
+net coolant-flood hm2_7i76e.0.7i76.0.0.output-08
+
+# --- DOUT-09 --- 
+# Maps 3/2 way valve 3/2-2 - used for mist cooler
+net coolant-mist hm2_7i76e.0.7i76.0.0.output-09
+# --- DOUT-10 --- 
+# Maps 3/2 way valve 3/2-3 - not used
+net dout-10 hm2_7i76e.0.7i76.0.0.output-10
+
+
 
 #*******************
 #  AXIS X JOINT 0
