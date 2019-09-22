@@ -82,4 +82,6 @@ net estop-signal lut5.0.out => iocontrol.0.emc-enable-in
 #Automatically start waterpump when spindle is running
 net spindle-enable =>  hm2_7i76e.0.7i76.0.0.output-00
 
+#to be changed
 #net spindle_sealair hm2_7i76e.0.7i76.0.0.output-08
+
