@@ -49,13 +49,13 @@ net dout-01 hm2_7i76e.0.7i76.0.0.output-01
 net coolant-flood hm2_7i76e.0.7i76.0.0.output-02
 # --- DOUT-08 --- 
 # Maps 3/2 way valve 3/2-1 - used for sealair at spindle
-net spindle_sealair hm2_7i76e.0.7i76.0.0.output-08
+# mapped in custom.hal directly to spindle-enable
 # --- DOUT-09 --- 
 # Maps 3/2 way valve 3/2-2 - used for mist cooler
 net coolant-mist hm2_7i76e.0.7i76.0.0.output-09
 # --- DOUT-10 --- 
 # Maps 3/2 way valve 3/2-3 - not used
-net dout-10 hm2_7i76e.0.7i76.0.0.output-10
+# net dout-10 hm2_7i76e.0.7i76.0.0.output-10
 
 
 
