@@ -371,8 +371,7 @@ class ProbeScreenClass:
             return
 
         # get the axisnumber
-        # 2.8 uses different Numbering; axisletter does suffice, axisnumber thus not needed
-         axisnumber = "xyzabcuvws".index( axisletter.lower() )
+        axisnumber = "xyzabcuvws".index( axisletter.lower() )
 
         # if data = True, then the user pressed SHIFT for Jogging and
         # want's to jog at 0.2 speed
@@ -380,32 +379,30 @@ class ProbeScreenClass:
             value = 0.2
         else:
             value = 1
-
-        velocity = float(self.inifile.find("TRAJ", "DEFAULT_VELOCITY"))
-
+        velocity = int(self.inifile.find("TRAJ", "DEFAULT_LINEAR_VELOCITY"))
         dir = widget.get_label()[1]
         if dir == "+":
             direction = 1
         else:
             direction = -1
-
+        jjogmode=True 
         if self.distance <> 0:  # incremental jogging
-            self.command.jog( linuxcnc.JOG_INCREMENT, axisletter, direction * velocity, self.distance )
+            self.command.jog( linuxcnc.JOG_INCREMENT , jjogmode , axisnumber , direction * velocity , self.distance )
         else:  # continuous jogging
-            self.command.jog( linuxcnc.JOG_CONTINUOUS, axisletter, direction * velocity )
+            self.command.jog( linuxcnc.JOG_CONTINUOUS , jjogmode, axisnumber , direction * velocity )
 
     def on_btn_jog_released( self, widget, data = None ):
         axisletter = widget.get_label()[0]
         if not axisletter.lower() in "xyzabcuvw":
             print ( "unknown axis %s" % axisletter )
             return
-
-        axis = "xyzabcuvw".index( axisletter.lower() )
+        jjogmode=True
+        axisnumber = "xyzabcuvw".index( axisletter.lower() )
 
         if self.distance <> 0:
             pass
         else:
-            self.command.jog( linuxcnc.JOG_STOP, axisletter )
+            self.command.jog( linuxcnc.JOG_STOP, jjogmode, axisnumber )
 
 
     # Spin  buttons

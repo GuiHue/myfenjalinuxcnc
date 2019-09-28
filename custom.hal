@@ -51,7 +51,7 @@ net estop-0 => m_vfdcom.trigger
 net estop-1 => m_vfderror.trigger
 net estop-ext => m_estopext.trigger
 # Send a message when air pressure alarm triggers (singal is inverted; high = ok)
-net airpressure => m-m_lowpressure.trigger
+net airpressure => m_lowpressure.trigger
 
 
 #Output to systemwide ESTOP via emc-enable-in in iocontrol 
