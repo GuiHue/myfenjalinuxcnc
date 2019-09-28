@@ -39,7 +39,7 @@ A word on licensing: I habe chosen GPL3.0 as the license, hoping it does not int
 * http://linuxcnc.org/docs/html/man/man1/halui.1.html
 * http://linuxcnc.org/docs/html/config/ini_config.html
 * http://linuxcnc.org/docs/html/config/core-components.html#_iocontrol
-+ http://linuxcnc.org/docs/devel/html/config/python-interface.html
+* http://linuxcnc.org/docs/devel/html/config/python-interface.html
 
 ### Remapping & Tool change 
 * http://linuxcnc.org/docs/devel/html/remap/remap.html#remap:interpreter-action-on-m6
