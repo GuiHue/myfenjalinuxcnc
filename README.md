@@ -18,7 +18,7 @@ A word on licensing: I habe chosen GPL3.0 as the license, hoping it does not int
 * Connects LinuxCNC to als PILZ safety relais using the relais' semi conductor (Y32) output. THis triggers estop in linuxcnc when a hardware based button is pushed and cuts power to various drives.  
 * Uses an XHC-HB04 wireless pendant with slightly modified key mapping
 * Uses probe_screen_v2 (see [probe_screen_v2](https://github.com/verser-git/probe_screen_v2)) together with a wireless touch probe by [vers.by](https://vers.by/en) and a wirebased tool length sensor
-..** Includes fixed macros and probe_screen.px for use with LinuxCNC 2.8 (dealing with joint/axis changes and changes to command.jog in LinuxCNC Python interface; seperate fork can be found on [github](https://github.com/GuiHue/probe_screen_v2))
+* Includes fixed macros and probe_screen.py for use with LinuxCNC 2.8 (dealing with joint/axis changes and changes to command.jog in LinuxCNC Python interface; seperate fork can be found on [github](https://github.com/GuiHue/probe_screen_v2))
 * Uses JMC iHSV57xxx servos on X and Y axis; JMC Closed Loop Stepper on Z, run as stepper drives with STP/DIR signals
 * Controls various relais depending on the present machine condition
 * Controls various 3/2 valves from MESA DO within pneumatic setup
