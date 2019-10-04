@@ -3,9 +3,15 @@
 
 
 #Set exit states for various valves (i.e. shut them up)
-sets spindle_atc_release false
-sets spindle_atc_clamp true
-sets spindle_cone_clean_off true
-sets spindle_cone_clean_on false
+#sets spindle_atc_release false
+#sets spindle_atc_clamp true
+#sets spindle_cone_clean_off true
+#sets spindle_cone_clean_on false
 #Seal air off
 setp hm2_7i76e.0.7i76.0.0.output-08 false
+
+
+setp hm2_7i76e.0.7i76.0.0.output-03 false
+setp hm2_7i76e.0.7i76.0.0.output-04 false
+setp hm2_7i76e.0.7i76.0.0.output-05 false
+setp hm2_7i76e.0.7i76.0.0.output-06 false
