@@ -21,7 +21,7 @@ SUBROUTINE_PATH = nc_files/subroutines
 
 or you place your macros in the nc_files folder.
 
-Each macro must have it's own file in one of the mentioned folders and they are normal subroutines, so the must begin with:
+Each macro must have it's own file in one of the mentioned folders and they are normal subroutines, so they must begin with:
 
 O<jog_around> sub
 
