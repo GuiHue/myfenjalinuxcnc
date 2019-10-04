@@ -385,7 +385,8 @@ class ProbeScreenClass:
             direction = 1
         else:
             direction = -1
-        jjogmode=True 
+        jjogmode=True
+        self.command.teleop_enable(0) 
         if self.distance <> 0:  # incremental jogging
             self.command.jog( linuxcnc.JOG_INCREMENT , jjogmode , axisnumber , direction * velocity , self.distance )
         else:  # continuous jogging
@@ -398,7 +399,7 @@ class ProbeScreenClass:
             return
         jjogmode=True
         axisnumber = "xyzabcuvw".index( axisletter.lower() )
-
+        self.command.teleop_enable(0)
         if self.distance <> 0:
             pass
         else:

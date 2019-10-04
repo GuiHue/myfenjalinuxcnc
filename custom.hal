@@ -73,3 +73,8 @@ net spindle-enable =>  hm2_7i76e.0.7i76.0.0.output-00
 # Automatically start sealair when spindle is running
 #net spindle-enable hm2_7i76e.0.7i76.0.0.output-08
 
+#Set initial states for various valves (i.e. shut them up)
+sets spindle_atc_release false
+sets spindle_atc_clamp true
+sets spindle_cone_clean_off true
+sets spindle_cone_clean_on false

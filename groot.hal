@@ -15,7 +15,7 @@ setp hm2_7i76e.0.dpll.01.timer-us -50
 setp hm2_7i76e.0.stepgen.timer-number 1
 
 #*******************
-#  IO - NPUTS 
+#  IO - INPUTS 
 #*******************
 # --- HOME-X ---
 net min-home-x     <=  hm2_7i76e.0.7i76.0.0.input-13
@@ -31,9 +31,16 @@ net probe-input motion.probe-input <=     <=  hm2_7i76e.0.7i76.0.0.input-12
 # --- ESTOP-EXT ---
 # Mapping PILZ PNOZ Y32 semiconductor output to i07 (high when ok)
 net estop-ext     <=  hm2_7i76e.0.7i76.0.0.input-07
+# --- Jianken Spindle Sensor 11 ---
+# Mapping sensor 11 in ATC spindle: signal high = 
+net spindle_11     <=  hm2_7i76e.0.7i76.0.0.input-11
+# --- Jianken Spindle Sensor 22 ---
+# Mapping sensor 22 in ATC spindle: signal high =
+net spindle_22     <=  hm2_7i76e.0.7i76.0.0.input-10
 # --- PRESSURE SENSOR ---
 # Mapping Festo 527467 sensor in 6bar airline to input 16 (high when ok; invert to deal with message)
-net airpressure     <=  hm2_7i76e.0.7i76.0.0.input-16-not
+net airpressure     <=  hm2_7i76e.0.7i76.0.0.input-24-not
+
 
 
 #*******************
@@ -47,7 +54,7 @@ net estop-out hm2_7i76e.0.7i76.0.0.output-07
 net dout-01 hm2_7i76e.0.7i76.0.0.output-01
 # --- DOUT-02 --- 
 # Maps coolant-flood to switchable Relais AC Socket 3 - currently used to turn on socket for vacuum/ dust extraction
-net coolant-flood hm2_7i76e.0.7i76.0.0.output-02
+net coolant-flood hm2_7i76e.0.7i76.0.0.output-02   
 # --- DOUT-08 --- 
 # Maps 3/2 way valve 3/2-1 - used for sealair at spindle
 # mapped in custom.hal directly to spindle-enable
@@ -57,6 +64,19 @@ net coolant-mist hm2_7i76e.0.7i76.0.0.output-09
 # --- DOUT-10 --- 
 # Maps 3/2 way valve 3/2-3 - not used
 # net dout-10 hm2_7i76e.0.7i76.0.0.output-10
+
+# --- DOUT-03 --- 
+# Maps Valve for spindle ATC bar: depressurize = clamp
+net spindle_atc_clamp hm2_7i76e.0.7i76.0.0.output-03 
+# --- DOUT-04 --- 
+# Maps Valve for spindle ATC bar: pressurize = release
+net spindle_atc_release hm2_7i76e.0.7i76.0.0.output-04
+# --- DOUT-05 --- 
+# Maps Valve for ATC cone cleaning: off
+net spindle_cone_clean_off hm2_7i76e.0.7i76.0.0.output-05
+# --- DOUT- 06--- 
+# Maps Valve for ATC cone cleaning: on
+net spindle_cone_clean_on hm2_7i76e.0.7i76.0.0.output-06
 
 
 
