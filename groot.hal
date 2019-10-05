@@ -37,21 +37,17 @@ net spindle_11     <=  hm2_7i76e.0.7i76.0.0.input-11
 # --- Jianken Spindle Sensor 22 ---
 # Mapping sensor 22 in ATC spindle: signal high = tool clamped
 net spindle_22     <=  hm2_7i76e.0.7i76.0.0.input-10
-
+# SIGNAL TABLE
 # 11 low 22 low = drawbar closed, no tool
 # 11 low 22 high = drawbar closed, tool inserted
-#11 high, 22 low = drawbar open - tool status unknown
+# 11 high, 22 low = drawbar open - tool status unknown
 
 # --- Toogle Button Cabinet Front ---
 # Mapping input from a toggle button on the cabinet to DI 09
 net atc_toogle_button     <=  hm2_7i76e.0.7i76.0.0.input-09
-
-# --- PRESSURE SENSOR ---
+# --- AIR PRESSURE SENSOR 6 bar ---
 # Mapping Festo 527467 sensor in 6bar airline to input 16 (high when ok; invert to deal with message)
 net airpressure     <=  hm2_7i76e.0.7i76.0.0.input-24-not
-
-
-
 
 #*******************
 #  IO - OUTPUTS 
@@ -74,7 +70,6 @@ net coolant-mist hm2_7i76e.0.7i76.0.0.output-09
 # --- DOUT-10 --- 
 # Maps 3/2 way valve 3/2-3 - not used
 # net dout-10 hm2_7i76e.0.7i76.0.0.output-10
-
 # --- DOUT-03 --- 
 # Maps Valve for spindle ATC bar: depressurize = clamp
 #net spindle_atc_clamp hm2_7i76e.0.7i76.0.0.output-03 
@@ -87,8 +82,6 @@ net coolant-mist hm2_7i76e.0.7i76.0.0.output-09
 # --- DOUT- 06--- 
 # Maps Valve for ATC cone cleaning: on
 #net spindle_cone_clean_on hm2_7i76e.0.7i76.0.0.output-06
-
-
 
 #*******************
 #  AXIS X JOINT 0
@@ -212,31 +205,5 @@ net estop-out     <=  iocontrol.0.user-enable-out
 #net estop-ext     =>  iocontrol.0.emc-enable-in
 
 
-loadrt toggle 
-addf toggle.0 servo-thread
-net atc_toogle_button <= toggle.0.in
-net atc_toogleout toggle.0.out 
-#when atc_toogleout high ==> release a tool
-
-loadrt not count=2
-addf not.0 servo-thread
-net  atc_toogleout <= not.0.in
-net  atc_toogleout_inverted => not.0.out
-
-net atc_toogleout hm2_7i76e.0.7i76.0.0.output-04 hm2_7i76e.0.7i76.0.0.output-06
-net atc_toogleout_inverted hm2_7i76e.0.7i76.0.0.output-03 hm2_7i76e.0.7i76.0.0.output-05
-
-#set 1: release tool 
-#spindle_atc_clamp low          hm2_7i76e.0.7i76.0.0.output-03
-#spindle_atc_release high       hm2_7i76e.0.7i76.0.0.output-04
-#spindle_cone_clean_off low     hm2_7i76e.0.7i76.0.0.output-05
-#spindle_cone_clean_on high    hm2_7i76e.0.7i76.0.0.output-06
-
-
-#set 2: clamp tool
-#spindle_atc_clamp high
-#spindle_atc_release low
-#spindle_cone_clean_off high
-#spindle_cone_clean_on low
 
 

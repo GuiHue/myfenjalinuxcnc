@@ -2,16 +2,14 @@
 # This file will not be overwritten when you run PNCconf again
 
 
-#Set exit states for various valves (i.e. shut them up)
-#sets spindle_atc_release false
-#sets spindle_atc_clamp true
-#sets spindle_cone_clean_off true
-#sets spindle_cone_clean_on false
-#Seal air off
-setp hm2_7i76e.0.7i76.0.0.output-08 false
+#******************************
+# SET PINS ON SHUTDOWN
+#******************************
+# Set exit states for ATC valves (i.e. make sure a clamped tool remains clamped and that cone clean is off)
+setp hm2_7i76e.0.7i76.0.0.output-03 true    #spindle_atc_clamp
+setp hm2_7i76e.0.7i76.0.0.output-04 false   #spindle_atc_release
+setp hm2_7i76e.0.7i76.0.0.output-05 true    #spindle_cone_clean_off
+setp hm2_7i76e.0.7i76.0.0.output-06 false   #spindle_cone_clean_on
 
-
-setp hm2_7i76e.0.7i76.0.0.output-03 false
-setp hm2_7i76e.0.7i76.0.0.output-04 false
-setp hm2_7i76e.0.7i76.0.0.output-05 false
-setp hm2_7i76e.0.7i76.0.0.output-06 false
+# Seal air off
+setp hm2_7i76e.0.7i76.0.0.output-08 false # seal_air 3/2 valve

@@ -1,38 +1,45 @@
 # Include your custom HAL commands here
-#DONT RUN PNCCONF
+# DONT RUN PNCCONF
 
 
-#VFD Connection via Modbus 
-#Load from different Device (i.e. USB when not using onboard components; Baudrate needs to be set in VFD using Hitachi ProDrive)
+#******************************
+# SETUP SPINDLE CONTROL VIA MODBUS
+#******************************
+# VFD Connection via Modbus 
+# Load from different Device (i.e. USB when not using onboard components; Baudrate needs to be set in VFD using Hitachi ProDrive)
 loadusr -W wj200_vfd --device /dev/ttyUSB0 --baud 9600 --parity N --data 8 --stop 1
-#loadusr -W wj200_vfd --device /dev/ttyUSB0 --baud 9600 --parity N --stop 1
-
+# loadusr -W wj200_vfd --device /dev/ttyUSB0 --baud 9600 --parity N --stop 1
 setp wj200-vfd.0.mbslaveaddr 1
 setp wj200-vfd.0.enable 1
 
-#Connect relevant commands
-net spindle-vel-cmd-rps-abs => wj200-vfd.0.commanded-frequency
-net spindle-enable spindle.0.on => wj200-vfd.0.run
-net spindle-ccw spindle.0.reverse => wj200-vfd.0.reverse
-net spindle-at-speed <= wj200-vfd.0.is-at-speed
+# Connect relevant commands of spindle.0 to wj200-vfd
+#net spindle-vel-cmd-rps-abs => wj200-vfd.0.commanded-frequency
+#net spindle-enable spindle.0.on => wj200-vfd.0.run
+#net spindle-ccw spindle.0.reverse => wj200-vfd.0.reverse
+#net spindle-at-speed <= wj200-vfd.0.is-at-speed
 
-#Establish Watchdog functions within LinuxCNC - Watch is-alarm and Heartbeat
-#Load watchdog component 
+
+
+#******************************
+# SETUP WATCHDOG FOR CRITICAL EVENTS
+#******************************
+# Establish Watchdog functions within LinuxCNC - Watch is-alarm and Heartbeat
+# Load watchdog component 
 loadrt watchdog num_inputs=1
 addf watchdog.process servo-thread
 addf watchdog.set-timeouts servo-thread
 setp watchdog.timeout-0 2.0
 
-#loadrt not count=1
+# loadrt not count=1
 addf not.1 servo-thread
 
-loadrt lut5 count=1
-addf lut5.0 servo-thread
-# LUT5 uses a look-up table for logic fucntions; in this case LUT5 to be HIGH (=enable ok) when
+# Load LUT5 look-up table for logic fucntions; in this case LUT5 to be HIGH (=enable ok) when
 # in0 (watchdog) high 1
 # in1 (is-alarm) low 0
 # in2 estop-ext high 1
-# following manual this corresponds t 001 = true  --> 101 to hex = 0x20 
+# following manual this corresponds to 001 = true  --> 101 to hex = 0x20 
+loadrt lut5 count=1
+addf lut5.0 servo-thread
 setp lut5.0.function 0x20
 
 net vfd-watchdog wj200-vfd.0.watchdog-out => watchdog.input-0
@@ -42,11 +49,23 @@ net estop-0 watchdog.ok-out => lut5.0.in-0
 net estop-1 wj200-vfd.0.is-alarm => lut5.0.in-1
 net estop-ext => lut5.0.in-2
 
+#******************************
+# SETUP ESTOP SIGNAL
+#******************************
+#Output to systemwide ESTOP via emc-enable-in in iocontrol 
+net estop-signal lut5.0.out => iocontrol.0.emc-enable-in
+#Alternative without watchog
+#net estop-ext => iocontrol.0.emc-enable-in
+
+#******************************
+# SETUP VARIOUS MESSAGES
+#******************************
 loadrt message names=m_vfdcom,m_vfderror,m_estopext,m_lowpressure messages="Vfd-Communication lost, VfD-Error (check vfd-display), External E-Stop triggered, Air pressure low" 
 addf m_vfdcom servo-thread
 addf m_vfderror servo-thread
 addf m_estopext servo-thread
 addf m_lowpressure servo-thread 
+# Estop related messages
 net estop-0 => m_vfdcom.trigger
 net estop-1 => m_vfderror.trigger
 net estop-ext => m_estopext.trigger
@@ -55,27 +74,66 @@ net airpressure => m_lowpressure.trigger
 
 
 
-#Output to systemwide ESTOP via emc-enable-in in iocontrol 
-net estop-signal lut5.0.out => iocontrol.0.emc-enable-in
-#Alternative without watchog
-#net estop-ext => iocontrol.0.emc-enable-in
-
-
-
+#******************************
+# SETUP SERVO ENABLE        NOT USED AT THE MOMENT
+#******************************
 # Map Servo Enable to machine-is-enabled using output 08-10 and not.0 for inversion
 #loadrt not count=1
 #addf not.0 servo-thread
 #net machine-is-enabled <= not.0.in
 #net servosenabled not.0.out => hm2_7i76e.0.7i76.0.0.output-08 hm2_7i76e.0.7i76.0.0.output-09 hm2_7i76e.0.7i76.0.0.output-10
 
-
-#Automatically start waterpump when spindle is running
+#******************************
+# LINK SIGNALS TO SPINDLE-ENABLE
+#******************************
+# Automatically start waterpump when spindle is running
 net spindle-enable =>  hm2_7i76e.0.7i76.0.0.output-00
 # Automatically start sealair when spindle is running
 #net spindle-enable hm2_7i76e.0.7i76.0.0.output-08
 
-#Set initial states for various valves (i.e. shut them up)
-#sets spindle_atc_release false
-#sets spindle_atc_clamp false
-#sets spindle_cone_clean_off false
-#sets spindle_cone_clean_on false
+
+#******************************
+# ATC  SETUP
+#******************************
+# load lut5 table to ensure, that atc toogle will only be evalauted positive, when spindle-enable = 0
+# output of lut5.1 high, when
+# in0 (spindle-enable) low 0
+# in1 (atc_toogle_button) high 1
+# corresponds to 10 = 1 --> 0x4
+loadrt lut5 count=1
+addf lut5.1 servo-thread
+setp lut5.1.function 0x4
+net spindle-enable => lut5.1.in-0
+net atc_toogle_button => lut5.1.in-1
+
+# load a toggle component to allow triggering via pushbutton with constant states
+loadrt toggle 
+addf toggle.0 servo-thread
+net atc_lut5_toogle lut5.1.out <= toggle.0.in
+net atc_toogleout toggle.0.out 
+
+# when atc_toogleout = high ==> release a tool
+# We need an inverted toogle signal for some pins
+loadrt not count=2
+addf not.0 servo-thread
+net  atc_toogleout <= not.0.in
+net  atc_toogleout_inverted => not.0.out
+
+net atc_toogleout hm2_7i76e.0.7i76.0.0.output-04 hm2_7i76e.0.7i76.0.0.output-06
+net atc_toogleout_inverted hm2_7i76e.0.7i76.0.0.output-03 hm2_7i76e.0.7i76.0.0.output-05
+
+# PIN OUT for ATC Functions : release tool / Clamp tool 
+#spindle_atc_clamp      low     /   high    hm2_7i76e.0.7i76.0.0.output-03
+#spindle_atc_release    high    /   low     hm2_7i76e.0.7i76.0.0.output-04
+#spindle_cone_clean_off low     /   high    hm2_7i76e.0.7i76.0.0.output-05
+#spindle_cone_clean_on  high    /   low     hm2_7i76e.0.7i76.0.0.output-06
+
+
+#******************************
+# INITIAL VARIABLES
+#******************************
+# Set initial states for various valves (i.e. turn all of them off - NOTE: Uses BISTABLE Valves that do not changeover when coil is unpowered!)
+#setp hm2_7i76e.0.7i76.0.0.output-03 false #spindle_atc_clamp
+#setp hm2_7i76e.0.7i76.0.0.output-04 false #spindle_atc_release
+#setp hm2_7i76e.0.7i76.0.0.output-05 false #spindle_cone_clean_off
+#setp hm2_7i76e.0.7i76.0.0.output-06 false #spindle_cone_clean_on
