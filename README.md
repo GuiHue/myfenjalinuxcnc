@@ -13,7 +13,8 @@ A word on licensing: I habe chosen GPL3.0 as the license, hoping it does not int
 * Based on MESA 7i76E
 * Runs on LinuxCNC 2.8 with Debian 9 (actually operates on master branch)
 * Uses GMOCCAPY GUI in version 3.x with a touch screen
-* Connects to an Hitachi WJ-200 VFD to control a typical "China Spindle" with 2.2 kW as it's readily available by various suppliers 
+* Connects to an Hitachi WJ-200 VFD to control Jianken JGL80/2.2-R24-20 ATC spindle with ISO20 toolholders
+* Tool change is currently done via manual tool handling and using a push button to toggle between valve settings for release and clamp. LUT5 is used to check whether spindle is enabled (=turning) or not
 * Uses NC inductive limit switches on each axis and furthermore uses these for homing
 * Connects LinuxCNC to als PILZ safety relais using the relais' semi conductor (Y32) output. THis triggers estop in linuxcnc when a hardware based button is pushed and cuts power to various drives.  
 * Uses an XHC-HB04 wireless pendant with slightly modified key mapping
