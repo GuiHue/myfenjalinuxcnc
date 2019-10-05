@@ -1,0 +1,20 @@
+; Marco to send groot to rear parking position
+O<Parking> sub
+
+G17
+G21
+G54
+G61
+G40
+G49
+G80
+G90
+
+G0 X0y1100z0
+
+(MSG, Machine send to rear üarking position)
+
+O<Parking> endsub
+
+M2
+
