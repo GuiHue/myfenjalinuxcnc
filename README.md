@@ -25,6 +25,10 @@ A word on licensing: I habe chosen GPL3.0 as the license, hoping it does not int
 * Controls various 3/2 valves from MESA DO within pneumatic setup
 * Checks a Festo 527467 pressure sensor (NC) and triggers a warning message when pressure drop is registered
 
+## Notes
+* Common errors with probe_screen:
+  * Funny offset issues will arise, when gmoccapy tool change functions are still activated in gmoccapy settings while using probe_screen
+
 ## Hardware
 * The machine consists of an aluminum extrusion design with some milled components made from plate material.
 * Working envelope roughly X/Y/Z 635/1240/165 mm
