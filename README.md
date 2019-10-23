@@ -45,6 +45,8 @@ A word on licensing: I habe chosen GPL3.0 as the license, hoping it does not int
 * http://linuxcnc.org/docs/html/config/ini_config.html
 * http://linuxcnc.org/docs/html/config/core-components.html#_iocontrol
 * http://linuxcnc.org/docs/devel/html/config/python-interface.html
+* http://gnipsel.com/linuxcnc/uspace/index.html
+
 
 ### Remapping & Tool change 
 * http://linuxcnc.org/docs/devel/html/remap/remap.html#remap:interpreter-action-on-m6
@@ -56,8 +58,7 @@ A word on licensing: I habe chosen GPL3.0 as the license, hoping it does not int
 * https://github.com/LinuxCNC/linuxcnc/tree/master/configs/sim/axis/xhc-hb04
 
 
-### Python / GUI / QTpyVCP / GALDE
+### Python / GUI / QTpyVCP / GLADE
 * http://linuxcnc.org/docs/2.6/html/common/python-interface.html
 * https://qtpyvcp.kcjengr.com/
-* http://gnipsel.com/linuxcnc/uspace/index.html
 * http://linuxcnc.org/docs/html/gui/gladevcp.html
