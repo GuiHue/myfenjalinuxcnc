@@ -1,0 +1,42 @@
+[
+    {
+        "interp_mode": "Idle", 
+        "loaded_file": "No file loaded", 
+        "message_text": " Drive Alarm\n", 
+        "message_type": "error", 
+        "operator_id": "", 
+        "task_mode": "Manual", 
+        "task_state": "Reset", 
+        "timestamp": 1575225293.874352
+    }, 
+    {
+        "interp_mode": "Idle", 
+        "loaded_file": "/home/groot/qtpyvcp/sim/example_gcode/qtpyvcp.ngc", 
+        "message_text": " Air pressure low\n", 
+        "message_type": "error", 
+        "operator_id": "", 
+        "task_mode": "Auto", 
+        "task_state": "Reset", 
+        "timestamp": 1575225294.99818
+    }, 
+    {
+        "interp_mode": "Idle", 
+        "loaded_file": "/home/groot/qtpyvcp/sim/example_gcode/qtpyvcp.ngc", 
+        "message_text": " External E-Stop triggered\n", 
+        "message_type": "error", 
+        "operator_id": "", 
+        "task_mode": "Auto", 
+        "task_state": "Reset", 
+        "timestamp": 1575225295.19183
+    }, 
+    {
+        "interp_mode": "Idle", 
+        "loaded_file": "/home/groot/qtpyvcp/sim/example_gcode/qtpyvcp.ngc", 
+        "message_text": " External E-Stop triggered\n", 
+        "message_type": "error", 
+        "operator_id": "", 
+        "task_mode": "Auto", 
+        "task_state": "E-Stop", 
+        "timestamp": 1575225311.702201
+    }
+]
