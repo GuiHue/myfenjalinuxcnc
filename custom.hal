@@ -33,21 +33,36 @@ setp watchdog.timeout-0 2.0
 loadrt not count=2
 addf not.0 servo-thread
 
-# Load LUT5 look-up table for logic fucntions; in this case LUT5 to be HIGH (=enable ok) when
+# load 3 lut5 tables
+loadrt lut5 count=3
+
+#Setup lut.2 for summarising drive alarms (wenn any low = lut.2 low)
+addf lut5.2 servo-thread
+setp lut5.2.function 0x1
+# Note JMC servos do not follow regular industrial setup: ok = low
+# Lut5 designed so that lut5 = high when OK (=no alarm)
+# output: 00000001 (bin) = hex 0x1
+net servoalarm1     hm2_7i76e.0.7i76.0.0.input-29 => lut5.2.in-0
+net servoalarm2     hm2_7i76e.0.7i76.0.0.input-30 => lut5.2.in-1
+net servoalarm3     hm2_7i76e.0.7i76.0.0.input-31 => lut5.2.in-2
+
+# Estop lut5 (lut5.0)
+# Load LUT5 look-up table for logic funtions; in this case LUT5 to be HIGH (=enable ok) when
 # in0 (watchdog) high 1
 # in1 (is-alarm) low 0
 # in2 estop-ext high 1
-# following manual this corresponds to 001 = true  --> 101 to hex = 0x20 
-loadrt lut5 count=2
+# in3 drivealarm high 1
+# following manual this corresponds to 1101 = true (1) and only this line  --> 10000000000000 to hex = 0x2000 
 addf lut5.0 servo-thread
-setp lut5.0.function 0x20
+setp lut5.0.function 0x2000
 
 net vfd-watchdog wj200-vfd.0.watchdog-out => watchdog.input-0
 net enable-invers not.0.in <= iocontrol.0.user-request-enable
 net watchdog-on watchdog.enable-in <= not.0.out
-net estop-0 watchdog.ok-out => lut5.0.in-0
-net estop-1 wj200-vfd.0.is-alarm => lut5.0.in-1
+net estop-watchdog watchdog.ok-out => lut5.0.in-0
+net estop-vfdalarm wj200-vfd.0.is-alarm => lut5.0.in-1
 net estop-ext => lut5.0.in-2
+net estop-drivealm lut5.2.out => lut5.0.in-3
 
 #******************************
 # SETUP ESTOP SIGNAL
@@ -61,18 +76,19 @@ net estop-signal lut5.0.out => iocontrol.0.emc-enable-in
 #******************************
 # SETUP VARIOUS MESSAGES
 #******************************
-loadrt message names=m_vfdcom,m_vfderror,m_estopext,m_lowpressure messages="Vfd-Communication lost, VfD-Error (check vfd-display), External E-Stop triggered, Air pressure low" 
+loadrt message names=m_vfdcom,m_vfderror,m_estopext,m_drivealm,m_lowpressure messages="Vfd-Communication lost, VfD-Error (check vfd-display), External E-Stop triggered, Drive Alarm, Air pressure low" 
 addf m_vfdcom servo-thread
 addf m_vfderror servo-thread
 addf m_estopext servo-thread
+addf m_drivealm servo-thread
 addf m_lowpressure servo-thread 
 # Estop related messages
-net estop-0 => m_vfdcom.trigger
-net estop-1 => m_vfderror.trigger
+net estop-watchog => m_vfdcom.trigger
+net estop-vfdalarm => m_vfderror.trigger
 net estop-ext => m_estopext.trigger
-# Send a message when air pressure alarm triggers (singal is inverted; high = ok)
+# Send a message when air pressure alarm triggers (signal is inverted; high = ok)
 net airpressure => m_lowpressure.trigger
-
+net estop-drivealm => m_drivealm.trigger
 
 
 #******************************
