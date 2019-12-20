@@ -33,12 +33,15 @@ net probe-input motion.probe-input <=     <=  hm2_7i76e.0.7i76.0.0.input-12
 # --- ESTOP-EXT ---
 # Mapping PILZ PNOZ Y32 semiconductor output to i07 (high when ok)
 net estop-ext     <=  hm2_7i76e.0.7i76.0.0.input-07
+
 # --- Jianken Spindle Sensor 11 ---
 # Mapping sensor 11 in ATC spindle: signal high = draw bar down (ready to receive tool)
-net spindle_11     <=  hm2_7i76e.0.7i76.0.0.input-11
+# net spindle_11     <=  hm2_7i76e.0.7i76.0.0.input-11
+net spindle_11     motion.digital-in-00 <=  hm2_7i76e.0.7i76.0.0.input-11
 # --- Jianken Spindle Sensor 22 ---
 # Mapping sensor 22 in ATC spindle: signal high = tool clamped
-net spindle_22     <=  hm2_7i76e.0.7i76.0.0.input-10
+# net spindle_22     <=  hm2_7i76e.0.7i76.0.0.input-10
+net spindle_22   motion.digital-in-01  <=  hm2_7i76e.0.7i76.0.0.input-10
 # SIGNAL TABLE
 # 11 low 22 low = drawbar closed, no tool
 # 11 low 22 high = drawbar closed, tool inserted
@@ -47,6 +50,7 @@ net spindle_22     <=  hm2_7i76e.0.7i76.0.0.input-10
 # --- Toogle Button Cabinet Front ---
 # Mapping input from a toggle button on the cabinet to DI 09
 net atc_toogle_button     <=  hm2_7i76e.0.7i76.0.0.input-09
+
 # --- AIR PRESSURE SENSOR 6 bar ---
 # Mapping Festo 527467 sensor in 6bar airline to input 16 (high when ok; invert to deal with message)
 net airpressure     <=  hm2_7i76e.0.7i76.0.0.input-24-not

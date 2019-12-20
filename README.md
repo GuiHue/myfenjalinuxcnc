@@ -3,8 +3,6 @@ This repository holds the latest stable version of my LinuxCNC configuration for
 
 ## This is the ATC branch
 
-## This is the ATC branch
-
 The CNC router's design is based on "Fenja" created by A. Koch of [fraserbruch.de](https://fraeserbruch.de/ "Fenja's home"). Plans and parts are available through him. The design offers various sizes to choose from and requires the owner to chose drives, spindle and control. Furthermore, it is supported by a great community. 
 
 All of the config options presented here are applicable to any CNC router design.

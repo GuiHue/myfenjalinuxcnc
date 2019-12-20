@@ -1,5 +1,5 @@
 ; Testfile I am Lost
-; will jog to machine cero and set all axis to cero
+; will jog to machine zero and set all axis to zero
 
 O<increment> sub
 
