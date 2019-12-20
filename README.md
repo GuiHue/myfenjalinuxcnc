@@ -1,7 +1,9 @@
 # myfenjalinuxcnc
 This repository holds the latest stable version of my LinuxCNC configuration for my CNC Router. It follows LinuxCNC Master (at the time of creation 2.9pre).
 
-The CNC router's design is based on "Fenja" created by A. Koch of [fraeserbruch.de](https://fraeserbruch.de/ "Fenja's home"). Plans and parts are available through him. The design offers various sizes to choose from and requires the owner to chose drives, spindle and control. Furthermore, it is supported by a great community. I highly recommend this work.
+## This is the ATC branch
+
+The CNC router's design is based on "Fenja" created by A. Koch of [fraserbruch.de](https://fraeserbruch.de/ "Fenja's home"). Plans and parts are available through him. The design offers various sizes to choose from and requires the owner to chose drives, spindle and control. Furthermore, it is supported by a great community. 
 
 All of the config options presented here are applicable to any CNC router design.
 
@@ -24,6 +26,12 @@ A word on licensing: I have chosen GPL3.0, hoping it does not interfer with any 
 * Controls various relais using MESA DO depending on the present machine condition
 * Controls various 3/2 valves using  MESA DO within pneumatic setup
 * Checks a Festo 527467 pressure sensor (NC) and triggers a warning message when pressure drop is registered
+
+## ATC specific features
+* This branch is designed to work with a rack style atc in the gmoccapy environment with probe_screen_v2 and various other gagdets.
+* The machine.ini (groot.ini) holds several variables that provide machine specific variables reagrding the tool change process (positions, dwell times etc.)
+* It is based on the assumption that the tool changer is located along X or Y axis and that the pockets are equally spaced
+* It handles specific tool numbers and pockets differently
 
 ## Notes
 * Common errors with probe_screen:
