@@ -60,6 +60,7 @@ A word on licensing: I habe chosen GPL3.0 as the license, hoping it does not int
 * http://linuxcnc.org/docs/devel/html/remap/remap.html#remap:interpreter-action-on-m6
 * https://forum.linuxcnc.org/10-advanced-configuration/36810-implementing-a-tool-changer-is-classicladder-the-way-to-go?start=10
 * https://forum.linuxcnc.org/10-advanced-configuration/4733-rack-tool-changer
+* https://github.com/GuiHue/linuxcnc/tree/master/configs/sim/axis/remap/rack-toolchange
 
 ### XHC-HB04
 * http://linuxcnc.org/docs/html/man/man1/xhc-hb04.1.html
