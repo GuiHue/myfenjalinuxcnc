@@ -1,0 +1,147 @@
+o<rack_change> sub
+
+
+
+M73 (auto-restore modal settings on return)
+
+;(print, rack_change: loaded tool=#<_current_tool> current pocket: #<_current_pocket>)
+;(print, rack_change: selected tool=#<_selected_tool> selected pocket: #<_selected_pocket>)
+;(debug, in change tool_in_spindle=#<tool_in_spindle> current_pocket=#<current_pocket>)
+;(debug, selected_tool=#<selected_tool> selected_pocket=#<selected_pocket>)
+
+;otherwise after the M6 this information is gone!
+#<tool> = #<selected_tool>
+#<pocket> = #<selected_pocket>
+
+; we must execute this only in the milltask interpreter
+; or preview will break, so test for '#<_task>' which is 1 for 
+; the milltask interpreter and 0 in the UI's
+O100 if [#<_task> EQ 0]
+        (DEBUG, Task is Null)
+O100     return [999]
+O100 endif
+
+; Alwas the first first go up to maximum Z clearance
+G90
+G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
+
+
+
+
+; Assumptions
+All tools in a pocket GT 0 AND LE Number Pockets are known and are considered to have entries in the tool table for zero
+
+ gmoccapy can handle macros that call for variables itself - this should allow for a macro to enter a tool into the atc 
+ >> basically call an T<toolnumber> M6 and Perform a measurement
+
+TODO
+- master macro
+- sub macros (check)
+- tool measurement macro (should mostly be manual_change)
+
+; Notes
+EQ NE GT GE LT LE
+
+#33 = #<_hal[thcad10.target-velocity]>
+I did not get an error message and after I closed Linuxcnc, the parameter was saved in linuxcnc.var.
+33	11288.476562
+==> all lower case
+
+
+; INPUT OUTPUT
+rack tool change needs to operate drawbar and flush
+this will require a LUT or other approach to combine the manual button with the motion.digital-out-oo
+
+; net tool-lock   motion.digital-out-00 gladevcp.tool-lock-led  << useless sample
+; net tool-flush  motion.digital-out-01 gladevcp.tool-flush-led
+
+rack tool needs to query motion.digital-in-00 and 01 
+# --- Jianken Spindle Sensor 11 ---
+# Mapping sensor 11 in ATC spindle: signal high = draw bar down (ready to receive tool)
+# net spindle_11     <=  hm2_7i76e.0.7i76.0.0.input-11
+net spindle_11     motion.digital-in-00 <=  hm2_7i76e.0.7i76.0.0.input-11
+# --- Jianken Spindle Sensor 22 ---
+# Mapping sensor 22 in ATC spindle: signal high = tool clamped
+# net spindle_22     <=  hm2_7i76e.0.7i76.0.0.input-10
+net spindle_22   motion.digital-in-01  <=  hm2_7i76e.0.7i76.0.0.input-10
+# SIGNAL TABLE
+# 11 low 22 low = drawbar closed, no tool
+# 11 low 22 high = drawbar closed, tool inserted
+# 11 high, 22 low = drawbar open - tool status unknown
+
+==> müsste auch mit m66 auswertbar sein, da immer nur die Änderung eines Punktes von Interesse ist:
+Bsp: Tool auswerfen
+Release drawbar; wait 2s for 11 change to high THEN move UP THEN check 22 low
+
+    P- - specifies the digital input number from 0 to 3.
+    E- - specifies the analog input number from 0 to 3.
+    L- - specifies the wait mode type.
+        Mode 0: IMMEDIATE - no waiting, returns immediately. The current value of the input is stored in parameter #5399
+        Mode 1: RISE - waits for the selected input to perform a rise event.
+        Mode 2: FALL - waits for the selected input to perform a fall event.
+        Mode 3: HIGH - waits for the selected input to go to the HIGH state.
+        Mode 4: LOW - waits for the selected input to go to the LOW state.
+    Q- - specifies the timeout in seconds for waiting. If the timeout is exceeded, the wait is interrupt, and the variable #5399 will be holding the value -1. The Q value is ignored if the L-word is zero (IMMEDIATE). A Q value of zero is an error if the L-word is non-zero.
+    Mode 0 is the only one permitted for an analog input.
+M66 P0 L3 Q5 (wait up to 5 seconds for digital input 0 to turn on)
+
+
+
+
+
+; GEneral outline
+1. check if spindle is empty
+    if yes: go on --> go to preposition at atc
+    if not: check if _current_pocket within range of pockets _ini[atc_misc]pockets
+        if yes: return to pocket specific pre position, assuming pocket is empty!
+            drop of tool --> submacro
+        if no: move to change positon, throw message for manual removal
+
+2. check if new tool pocket is within range
+    if yes: go to pocket, pick up tool
+    if no: go to change_position and trigger tool call, go and measure the tool
+
+
+subs:
+atc_tool_holder_clear_move
+atc_tool_getput_move
+
+
+
+; ALL OF THIS IS ORIGINAL FROM RACKCHANGE
+
+; unload previous tool
+o300 if [#<_current_pocket> GT 0]
+     o<tool_getput_move> call [#<_current_pocket>]  
+     M62 P #<_ini[pins]lock> ; set lock pin
+     G4  P #<_ini[dwell]lock_time> 
+     o<tool_holder_clear_move> call
+     G4 P #<_ini[dwell]mystery> ; unsure what this is for
+o300 endif
+
+; go to new tool
+o<tool_getput_move> call [#<_selected_pocket>]  
+M64 P #<_ini[pins]lock> ; set lock pin
+M64 P #<_ini[pins]flush> ; set flush pin
+G4  P #<_ini[dwell]new_tool> 
+M65 P #<_ini[pins]flush> ; drop flush pin
+
+; the purpose of this move is unclear to me
+; micges - please explain!
+o400 if [#<_absolute>]
+     G91
+     G0 Z-6 
+     G90
+o400 else
+     G0 Z-6
+o400 endif
+M65 P #<_ini[pins]lock> ; drop lock pin
+G4  P #<_ini[dwell]post_unlock> 
+
+; NB: this is reordered wrt micges patch:
+; tool_holder_clear_move came after load_tool_msg
+o<tool_holder_clear_move> call
+
+; succeed by returning a positive value
+o<rack_change> endsub [1]
+M2
