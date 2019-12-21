@@ -5,7 +5,7 @@ o100 if [EXISTS[#<_ini[ATC_TOOL_SAFE_DISTANCE]X>]]
      G90
      ; First clear Z
      G53 G01 Z #<_ini[ATC_TOOL_SAFE_DISTANCE]Z F#<_ini[ATC_MISC]DROPSPEEDZ>
-     ; Then move away X and Y
+     ; Then move away X and Y in relative coord
      G91
      G53 G01 X -#<_ini[ATC_TOOL_SAFE_DISTANCE]X F#<_ini[ATC_MISC]DROPSPEEDXY>
      G53 G01 Y -#<_ini[ATC_TOOL_SAFE_DISTANCE]Y F#<_ini[ATC_MISC]DROPSPEEDXY>

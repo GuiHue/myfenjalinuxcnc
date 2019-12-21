@@ -112,15 +112,18 @@ net spindle-enable hm2_7i76e.0.7i76.0.0.output-08
 #******************************
 # ATC  SETUP
 #******************************
-# use lut5.1 table to ensure, that atc toogle will only be evalauted positive, when spindle-enable = 0
+
+# use lut5.1 table to ensure, that atc toogle will only be evaluated positive, when spindle-enable = 0
 # output of lut5.1 high, when
 # in0 (spindle-enable) low 0
-# in1 (atc_toogle_button) high 1
-# corresponds to 10 = 1 --> 0x4
+# in1 (atc_toogle_button) high 1 or in2
+# in2 (atc_m6_tool) high 1  or in1
+# corresponds to 001010 = 10 --> 0xA
 addf lut5.1 servo-thread
-setp lut5.1.function 0x4
+setp lut5.1.function 0xA
 net spindle-enable => lut5.1.in-0
 net atc_toogle_button => lut5.1.in-1
+net atc_m6_tool motion.digital-out-00 => lut5.1.in-2
 
 # load a toggle component to allow triggering via pushbutton with constant states
 loadrt toggle 
