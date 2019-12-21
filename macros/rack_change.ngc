@@ -1,19 +1,16 @@
 o<rack_change> sub
-
-
-
 M73 (auto-restore modal settings on return)
+; see MCOde Documentation for testing this
 
-;(print, rack_change: loaded tool=#<_current_tool> current pocket: #<_current_pocket>)
-;(print, rack_change: selected tool=#<_selected_tool> selected pocket: #<_selected_pocket>)
+; print to console (if available)
 ;(debug, in change tool_in_spindle=#<tool_in_spindle> current_pocket=#<current_pocket>)
 ;(debug, selected_tool=#<selected_tool> selected_pocket=#<selected_pocket>)
 
-;otherwise after the M6 this information is gone!
+; Store information otherwise after the M6 this information is gone!
 #<tool> = #<selected_tool>
 #<pocket> = #<selected_pocket>
 
-; we must execute this only in the milltask interpreter
+; we must execute this macro only in the milltask interpreter
 ; or preview will break, so test for '#<_task>' which is 1 for 
 ; the milltask interpreter and 0 in the UI's
 O100 if [#<_task> EQ 0]
@@ -25,7 +22,84 @@ O100 endif
 G90
 G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
 
+; First, get rid of the old tool
+; check if the spindle is empty by checking if tool_in_spindle GT 0
+O200 if [#<tool_in_spindle> GT 0]
+    (DEBUG, Tool No  #<tool_in_spindle> is in the spindle - we need to put it away)
+    ; Check if current_pocket is within range, i.e. GT0, LE _ini[ATC_MISC]POCKETS
+    O210 if [#<current_pocket> GT 0]
+        O220 if [#<current_pocket> LE #<_ini[ATC_MISC]POCKETS>]
+            ; Tool within range, triggering put move to rack, assumign that the pocket is empty!
+            (DEBUG, Putting tool away at rack into pocket #<current_pocket>)
+            ; We are already at safe Z; now rapid to pre psoition for a specific pocket
+            G53 G0 X[#<_ini[ATC_FIRST_POCKET]X> + [#<current_pocket> -1] * #<_ini[ATC_TOOL_SLOT_DELTA]X> - #<_ini[ATC_TOOL_SAFE_DISTANCE]X>] Y[#<_ini[ATC_FIRST_POCKET]Y> + [#<current_pocket> -1] * #<_ini[ATC_TOOL_SLOT_DELTA]Y> - #<_ini[ATC_TOOL_SAFE_DISTANCE]Y>] 
+            ; Now put the tool down gently 
+            o<atc_move_put_tool> call  
+            
+GET RID OF THAT RELATIVE MOVE SHIT
+GET RID OF THAT RELATIVE MOVE SHIT
+GET RID OF THAT RELATIVE MOVE SHIT
+GET RID OF THAT RELATIVE MOVE SHIT
 
+            Release tool
+            Check if Release was ok
+            (DEBUG, Tool placed into pocket)
+            Move back to rapid safe zone
+
+        O220 endif 
+    O210 else
+        ; The tool's pocket number is not within the range of the rack and the tool needs to be removed manually
+        (DEBUG, Pocket is not within range, moving to manual change)
+
+        ; CODE FOR  DROP OFF AT MANUAL CHANGE 
+
+    O210 endif
+0200 elseif [#<tool_in_spindle> EQ 0]
+    ; There is nothing to do here but end the if conditional
+    (DEBUG, There is no tool in the spindle)
+O200 endif
+
+; Second, get new tool
+; Check if the new tool number is EQ 0
+O300 if [#<selected_tool> EQ 0]
+    ; Nothing to here but to move to manual change position and end the program
+    (DEBUG, No new tool specified, Finishing)
+    G53 G0 X[#<_ini[CHANGE_POSITION]X>] Y[#<_ini[CHANGE_POSITION]Y>]
+    G53 G0 Z[#<_ini[CHANGE_POSITION]Z>]
+O300 elseif [#<selected_tool> GT 0]
+    ; Tool is GT 0 and we need to get it
+    (DEBUG, New tool: #<selected_tool> needs to be picked up)
+    ; Again, check if within range of the tool rack, otherwise pick at manual change position and measure
+        O310 if [#<selected_pocket> GT 0]
+        O320 if [#<selected_pocket> LE #<_ini[ATC_MISC]POCKETS>]
+            ; Tool within range, triggering get tool from  rack, assumign that the pocket is filled
+            (DEBUG, Getting tool #<selected_tool> from rack at  pocket #<selected_pocket>)
+
+            ; CODE FOR PICK UP AT RACK
+
+        O320 endif 
+    O310 else
+        ; The tool's pocket number is not within the range of the rack and the tool needs to picket up at the manual change position and measured
+        (DEBUG, Selected pocket is not within range, moving to manual pick up)
+
+        ; CODE FOR  PICK UP AT MANUAL CHANGE POSITION
+
+    O310 endif
+
+O300 endif
+
+o<rack_change> endsub [1]
+M2
+
+
+; unload previous tool
+o300 if [#<_current_pocket> GT 0]
+     o<tool_getput_move> call [#<_current_pocket>]  
+     M62 P #<_ini[pins]lock> ; set lock pin
+     G4  P #<_ini[dwell]lock_time> 
+     o<tool_holder_clear_move> call
+     G4 P #<_ini[dwell]mystery> ; unsure what this is for
+o300 endif
 
 
 ; Assumptions
@@ -88,18 +162,6 @@ M66 P0 L3 Q5 (wait up to 5 seconds for digital input 0 to turn on)
 
 
 
-
-; GEneral outline
-1. check if spindle is empty
-    if yes: go on --> go to preposition at atc
-    if not: check if _current_pocket within range of pockets _ini[atc_misc]pockets
-        if yes: return to pocket specific pre position, assuming pocket is empty!
-            drop of tool --> submacro
-        if no: move to change positon, throw message for manual removal
-
-2. check if new tool pocket is within range
-    if yes: go to pocket, pick up tool
-    if no: go to change_position and trigger tool call, go and measure the tool
 
 
 subs:
