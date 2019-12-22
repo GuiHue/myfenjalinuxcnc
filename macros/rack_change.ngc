@@ -103,7 +103,7 @@ O300 elseif [#<selected_tool> GT 0]
     ; Tool is GT 0 and we need to get it
     (DEBUG, New tool: #<selected_tool> needs to be picked up)
     ; Again, check if within range of the tool rack, otherwise pick at manual change position and measure
-        O310 if [#<selected_pocket> GT 0]
+    O310 if [#<selected_pocket> GT 0]
         O320 if [#<selected_pocket> LE #<_ini[ATC_MISC]POCKETS>]
             ; Tool within range, triggering get tool from  rack, assumign that the pocket is filled
             (DEBUG, Getting tool #<selected_tool> from rack at  pocket #<selected_pocket>)
@@ -149,11 +149,15 @@ O300 elseif [#<selected_tool> GT 0]
             (DEBUG, Tool loaded, ready to go)           
         O320 endif 
     O310 else
-        ; The tool's pocket number is not within the range of the rack and the tool needs to picked up 
+        ; The tool's pocket number is not within the range of the rack and the tool needs to picked up
+        ; requires that external tools do not have a pocket number  
         ; at the manual change position and has to be measured
-        ; THis effectively uses the entire manual cycle for a tool
+        ; This effectively uses the entire manual cycle for a tool
         (DEBUG, Selected pocket is not within range, moving to manual pick up)
-
+        ; rapid move to manual pick up position
+        G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
+        G53 G0 Z[#<_ini[CHANGE_POSITION]Z>]
+        G53 G0 X[#<_ini[CHANGE_POSITION]X>] Y[#<_ini[CHANGE_POSITION]Y>]
         ; cancel tool offset
         G49
         ; using the code being remapped here means 'use builtin behaviour' and should trigger the usual message
@@ -191,7 +195,7 @@ O300 elseif [#<selected_tool> GT 0]
         O340 if [#5070 EQ 0]
             G90
             O340 return [-3] ; indicate probe contact failure to epilog
-        O3400 endif
+        O340 endif
 
         G90
         G53 G0 Z[#<_ini[CHANGE_POSITION]Z>]
