@@ -27,7 +27,7 @@ net neg-lim-y     <=  hm2_7i76e.0.7i76.0.0.input-14-not
 net min-home-z     <=  hm2_7i76e.0.7i76.0.0.input-15
 net neg-lim-z     <=  hm2_7i76e.0.7i76.0.0.input-15-not
 # --- PROBE-IN ---
-net probe-input motion.probe-input <=     <=  hm2_7i76e.0.7i76.0.0.input-12
+net probe-input motion.probe-input <=     <=  hm2_7i76e.0.7i76.0.0.input-12-not
 # --- Servo-Alarm ---
 # mapped in custom.hal
 # --- ESTOP-EXT ---
