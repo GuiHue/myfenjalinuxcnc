@@ -30,7 +30,7 @@ addf watchdog.process servo-thread
 addf watchdog.set-timeouts servo-thread
 setp watchdog.timeout-0 2.0
 
-loadrt not count=2
+loadrt not count=3
 addf not.0 servo-thread
 
 # load 3 lut5 tables
@@ -92,13 +92,12 @@ net estop-drivealm => m_drivealm.trigger
 
 
 #******************************
-# SETUP SERVO ENABLE        NOT USED AT THE MOMENT
+# SETUP SERVO ENABLE        
 #******************************
-# Map Servo Enable to machine-is-enabled using output 08-10 and not.0 for inversion
-#loadrt not count=1
-#addf not.0 servo-thread
-#net machine-is-enabled <= not.0.in
-#net servosenabled not.0.out => hm2_7i76e.0.7i76.0.0.output-08 hm2_7i76e.0.7i76.0.0.output-09 hm2_7i76e.0.7i76.0.0.output-10
+# Map Servo Enable to machine-is-enabled using output 07 and not.0 for inversion
+addf not.2 servo-thread
+net machine-is-enabled <= not.2.in
+net enableservo not.2.out => hm2_7i76e.0.7i76.0.0.output-07
 
 #******************************
 # SWITCH SIGNALS/PINS WHEN SPINDLE IS RUNNING

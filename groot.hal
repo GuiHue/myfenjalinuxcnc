@@ -44,7 +44,8 @@ net spindle_22     <=  hm2_7i76e.0.7i76.0.0.input-10
 # 11 low 22 high = drawbar closed, tool inserted
 # 11 high, 22 low = drawbar open - tool status unknown
 
-# --- Toogle Button Cabinet Front ---
+
+
 # Mapping input from a toggle button on the cabinet to DI 09
 net atc_toogle_button     <=  hm2_7i76e.0.7i76.0.0.input-09
 # --- AIR PRESSURE SENSOR 6 bar ---
@@ -54,9 +55,7 @@ net airpressure     <=  hm2_7i76e.0.7i76.0.0.input-24-not
 #*******************
 #  IO - OUTPUTS 
 #*******************
-# --- ESTOP-OUT ---
-# Map E-stop to an external output to hand over to other devices within cabinet
-net estop-out hm2_7i76e.0.7i76.0.0.output-07
+
 # ---DOUT-01 --- 
 # Maps xxx to switchable Relais AC Socket 1 - currently not used
 net dout-01 hm2_7i76e.0.7i76.0.0.output-01
@@ -84,6 +83,7 @@ net coolant-mist hm2_7i76e.0.7i76.0.0.output-09
 # --- DOUT- 06--- 
 # Maps Valve for ATC cone cleaning: on
 #net spindle_cone_clean_on hm2_7i76e.0.7i76.0.0.output-06
+
 
 #*******************
 #  AXIS X JOINT 0
