@@ -42,9 +42,9 @@ setp lut5.2.function 0x1
 # Note JMC servos do not follow regular industrial setup: ok = low
 # Lut5 designed so that lut5 = high when OK (=no alarm)
 # output: 00000001 (bin) = hex 0x1
-net servoalarm1     hm2_7i76e.0.7i76.0.0.input-29 => lut5.2.in-0
-net servoalarm2     hm2_7i76e.0.7i76.0.0.input-30 => lut5.2.in-1
-net servoalarm3     hm2_7i76e.0.7i76.0.0.input-31 => lut5.2.in-2
+net servoalarm1     hm2_7i76e.0.7i76.0.0.input-21 => lut5.2.in-0
+net servoalarm2     hm2_7i76e.0.7i76.0.0.input-22 => lut5.2.in-1
+net servoalarm3     hm2_7i76e.0.7i76.0.0.input-23 => lut5.2.in-2
 
 # Estop lut5 (lut5.0)
 # Load LUT5 look-up table for logic funtions; in this case LUT5 to be HIGH (=enable ok) when

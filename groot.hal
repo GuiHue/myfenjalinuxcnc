@@ -45,9 +45,9 @@ net spindle_22     <=  hm2_7i76e.0.7i76.0.0.input-10
 # 11 high, 22 low = drawbar open - tool status unknown
 
 
-
 # Mapping input from a toggle button on the cabinet to DI 09
-net atc_toogle_button     <=  hm2_7i76e.0.7i76.0.0.input-09
+net atc_toogle_button     <=  hm2_7i76e.0.7i76.0.0.input-17
+
 # --- AIR PRESSURE SENSOR 6 bar ---
 # Mapping Festo 527467 sensor in 6bar airline to input 16 (high when ok; invert to deal with message)
 net airpressure     <=  hm2_7i76e.0.7i76.0.0.input-24-not
@@ -59,18 +59,6 @@ net airpressure     <=  hm2_7i76e.0.7i76.0.0.input-24-not
 # ---DOUT-01 --- 
 # Maps xxx to switchable Relais AC Socket 1 - currently not used
 net dout-01 hm2_7i76e.0.7i76.0.0.output-01
-# --- DOUT-02 --- 
-# Maps coolant-flood to switchable Relais AC Socket 3 - currently used to turn on socket for vacuum/ dust extraction
-net coolant-flood hm2_7i76e.0.7i76.0.0.output-02   
-# --- DOUT-08 --- 
-# Maps 3/2 way valve 3/2-1 - used for sealair at spindle
-# mapped in custom.hal directly to spindle-enable
-# --- DOUT-09 --- 
-# Maps 3/2 way valve 3/2-2 - used for mist cooler
-net coolant-mist hm2_7i76e.0.7i76.0.0.output-09
-# --- DOUT-10 --- 
-# Maps 3/2 way valve 3/2-3 - not used
-# net dout-10 hm2_7i76e.0.7i76.0.0.output-10
 # --- DOUT-03 --- 
 # Maps Valve for spindle ATC bar: depressurize = clamp
 #net spindle_atc_clamp hm2_7i76e.0.7i76.0.0.output-03 
@@ -83,6 +71,21 @@ net coolant-mist hm2_7i76e.0.7i76.0.0.output-09
 # --- DOUT- 06--- 
 # Maps Valve for ATC cone cleaning: on
 #net spindle_cone_clean_on hm2_7i76e.0.7i76.0.0.output-06
+# --- DOUT-08 --- 
+# Maps 3/2 way valve 3/2-1 - used for sealair at spindle
+# mapped in custom.hal directly to spindle-enable
+# --- DOUT-10 --- 
+# Maps 3/2 way valve 3/2-3 - not used
+# net dout-10 hm2_7i76e.0.7i76.0.0.output-10
+# --- DOUT-14 --- 
+# Maps 3/2 way valve 3/2-2 - used for coolant-mist
+# Maps coolant-mist to output 14 to start air flow at cold end controller; goes to valve 3/2-2
+net coolant-mist hm2_7i76e.0.7i76.0.0.output-14
+#net coolant-mist hm2_7i76e.0.7i76.0.0.output-09
+# --- DOUT-15 --- 
+# Maps coolant-flood to output 15 to start pump for mms cooling at cold end controller; ; goes to valve 3/2-3
+# net coolant-flood hm2_7i76e.0.7i76.0.0.output-02   
+net coolant-flood hm2_7i76e.0.7i76.0.0.output-15   
 
 
 #*******************
