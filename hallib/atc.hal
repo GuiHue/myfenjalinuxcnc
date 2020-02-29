@@ -1,0 +1,23 @@
+#******************************
+# ATC  SETUP
+#******************************
+# use lut5 lut5_atctoogle table to ensure, that atc toogle will only be evalauted positive, when spindle-enable = 0
+# output of lut5_atctoogle high, when
+# in0 (spindle-enable) low 0
+# in1 (atc_toogle_button) high 1
+# corresponds to 10 = 1 --> 0x4
+addf lut5_atctoogle servo-thread
+setp lut5_atctoogle.function 0x4
+net spindle-enable => lut5_atctoogle.in-0
+net atc_toogle_button => lut5_atctoogle.in-1
+
+# use a toggle component to allow triggering via pushbutton with constant states
+addf toggle_atc servo-thread
+net atc_lut5_toogle lut5_atctoogle.out <= toggle_atc.in
+net atc_toggleout toggle_atc.out 
+
+# When atc_toogleout = high ==> release a tool
+# We need an inverted atc_toogleout signal for some pins
+addf n_atctoggle servo-thread
+net atc_toggleout <= n_atctoggle.in
+net atc_toggleout_inverted => n_atctoggle.out

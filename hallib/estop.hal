@@ -1,0 +1,73 @@
+# Hal file for all setup for estop, messages and alarms
+
+
+#  ---estop signals---
+net estop-out     <=  iocontrol.0.user-enable-out
+#net estop-ext     in IO.hal
+
+#******************************
+# SETUP WATCHDOG FOR CRITICAL EVENTS
+#******************************
+# Establish Watchdog functions within LinuxCNC - Watch is-alarm and Heartbeat
+# Load watchdog component 
+loadrt watchdog num_inputs=1
+addf watchdog.process servo-thread
+addf watchdog.set-timeouts servo-thread
+setp watchdog.timeout-0 2.0
+
+
+
+
+#Setup lut5 lut5_servoalarm for summarising drive alarms (wenn any low = lut5_servoalarm low)
+addf lut5_servoalarm servo-thread
+setp lut5_servoalarm.function 0x1
+# Note JMC servos do not follow regular industrial setup: ok = low
+# Lut5 designed so that lut5 = high when OK (=no alarm)
+# output: 00000001 (bin) = hex 0x1
+net servoalarm1     => lut5_servoalarm.in-0
+net servoalarm2     => lut5_servoalarm.in-1
+net servoalarm3     => lut5_servoalarm.in-2
+
+# Estop lut5 (lut5_estop)
+# Load LUT5 look-up table for logic funtions; in this case LUT5 to be HIGH (=enable ok) when
+# in0 (watchdog) high 1
+# in1 (is-alarm) low 0
+# in2 estop-ext high 1
+# in3 drivealarm high 1
+# following manual this corresponds to 1101 = true (1) and only this line  --> 10000000000000 to hex = 0x2000 
+addf lut5_estop servo-thread
+setp lut5_estop.function 0x2000
+
+addf n_watchdog servo-thread
+net vfd-watchdog wj200-vfd.0.watchdog-out => watchdog.input-0
+net enable-invers n_watchdog.in <= iocontrol.0.user-request-enable
+net watchdog-on watchdog.enable-in <= n_watchdog.out
+net estop-watchdog watchdog.ok-out => lut5_estop.in-0
+net estop-vfdalarm wj200-vfd.0.is-alarm => lut5_estop.in-1
+net estop-ext => lut5_estop.in-2
+net estop-drivealm lut5_servoalarm.out => lut5_estop.in-3
+
+#******************************
+# SETUP ESTOP SIGNAL
+#******************************
+# Output to systemwide ESTOP via emc-enable-in in iocontrol 
+net estop-signal lut5_estop.out => iocontrol.0.emc-enable-in
+# Alternative without watchog
+#net estop-ext => iocontrol.0.emc-enable-in
+
+#******************************
+# SETUP VARIOUS MESSAGES
+#******************************
+loadrt message names=m_vfdcom,m_vfderror,m_estopext,m_drivealm,m_lowpressure messages="Vfd-Communication lost, VfD-Error (check vfd-display), External E-Stop triggered, Drive Alarm, Air pressure low" 
+addf m_vfdcom servo-thread
+addf m_vfderror servo-thread
+addf m_estopext servo-thread
+addf m_drivealm servo-thread
+addf m_lowpressure servo-thread 
+# Estop related messages
+net estop-watchog => m_vfdcom.trigger
+net estop-vfdalarm => m_vfderror.trigger
+net estop-ext => m_estopext.trigger
+# Send a message when air pressure alarm triggers (signal is inverted; high = ok)
+net airpressure => m_lowpressure.trigger
+net estop-drivealm => m_drivealm.trigger

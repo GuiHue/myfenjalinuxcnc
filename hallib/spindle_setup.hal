@@ -1,0 +1,33 @@
+#*******************
+#  SPINDLE
+#*******************
+# ---setup spindle control signals---
+net spindle-vel-cmd-rps        <=  spindle.0.speed-out-rps
+net spindle-vel-cmd-rps-abs    <=  spindle.0.speed-out-rps-abs
+net spindle-vel-cmd-rpm        <=  spindle.0.speed-out
+net spindle-vel-cmd-rpm-abs    <=  spindle.0.speed-out-abs
+net spindle-enable             <=  spindle.0.on
+net spindle-cw                 <=  spindle.0.forward
+net spindle-ccw                <=  spindle.0.reverse
+net spindle-brake              <=  spindle.0.brake
+net spindle-revs               =>  spindle.0.revs
+net spindle-at-speed           =>  spindle.0.at-speed
+net spindle-vel-fb-rps         =>  spindle.0.speed-in
+net spindle-index-enable      <=>  spindle.0.index-enable
+
+#******************************
+# SETUP SPINDLE CONTROL VIA MODBUS
+#******************************
+# VFD Connection via Modbus 
+# Load from different Device (i.e. USB when not using onboard components; Baudrate needs to be set in VFD using Hitachi ProDrive)
+loadusr -W wj200_vfd --device /dev/ttyUSB0 --baud 9600 --parity N --data 8 --stop 1
+# loadusr -W wj200_vfd --device /dev/ttyUSB0 --baud 9600 --parity N --stop 1
+setp wj200-vfd.0.mbslaveaddr 1
+setp wj200-vfd.0.enable 1
+
+# Connect relevant commands of spindle.0 to wj200-vfd
+net spindle-vel-cmd-rps-abs => wj200-vfd.0.commanded-frequency
+net spindle-enable spindle.0.on => wj200-vfd.0.run
+net spindle-ccw spindle.0.reverse => wj200-vfd.0.reverse
+net spindle-at-speed <= wj200-vfd.0.is-at-speed
+

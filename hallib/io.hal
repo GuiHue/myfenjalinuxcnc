@@ -1,0 +1,119 @@
+# All hal commans for IO ontrol
+
+#*******************
+#  IO - INPUTS 
+#*******************
+# ---AI-00 --- 
+# ---AI-01 ---
+# ---AI-02 ---
+# ---AI-03 ---
+# ---DI-04 ---
+# ---DI-05 ---
+# ---DI-06 ---
+# ---DI-07 ---
+# --- ESTOP-EXT ---
+# Mapping PILZ PNOZ Y32 semiconductor output to DI07 (high when ok) to estop-ext
+net estop-ext     <=  hm2_7i76e.0.7i76.0.0.input-07
+# ---DI-08 ---
+# ---DI-09 ---
+# ---DI-10 ---
+# --- Jianken Spindle Sensor 1 ---
+# Mapping sensor 1 in ATC spindle: signal high = tool clamped
+net spindle_22     <=  hm2_7i76e.0.7i76.0.0.input-10
+# ---DI-11 ---
+# --- Jianken Spindle Sensor 2 ---
+# Mapping sensor 2 in ATC spindle: signal high = draw bar down (ready to receive tool)
+net spindle_11     <=  hm2_7i76e.0.7i76.0.0.input-11
+
+# SIGNAL TABLE
+# 11 low 22 low = drawbar closed, no tool
+# 11 low 22 high = drawbar closed, tool inserted
+# 11 high, 22 low = drawbar open - tool status unknown
+
+# ---DI-12 ---
+# --- PROBE-IN ---
+net probe-input motion.probe-input <=     <=  hm2_7i76e.0.7i76.0.0.input-12-not
+# ---DI-13 ---
+# --- HOME-X ---
+net min-home-x     <=  hm2_7i76e.0.7i76.0.0.input-13
+net neg-lim-x     <=  hm2_7i76e.0.7i76.0.0.input-13-not
+# ---DI-14 ---
+# --- HOME-Y ---
+net min-home-y     <=  hm2_7i76e.0.7i76.0.0.input-14
+net neg-lim-y     <=  hm2_7i76e.0.7i76.0.0.input-14-not
+# ---DI-15 ---
+# --- HOME-Z ---
+net min-home-z     <=  hm2_7i76e.0.7i76.0.0.input-15
+net neg-lim-z     <=  hm2_7i76e.0.7i76.0.0.input-15-not
+# ---DI-16 ---
+# ---DI-17 ---
+# Mapping input from a toggle button at Z axis to DI 09
+net atc_toogle_button     <=  hm2_7i76e.0.7i76.0.0.input-17
+# ---DI-18 ---
+# ---DI-19 ---
+# ---DI-20 ---
+
+# ---DI-21 ---
+# Connect JMC IHSV/IHSS alarm signal X
+net servoalarm1   <=  hm2_7i76e.0.7i76.0.0.input-21
+# ---DI-22 ---
+# Connect JMC IHSV/IHSS alarm signal Y
+net servoalarm2   <=  hm2_7i76e.0.7i76.0.0.input-22
+# ---DI-23 ---
+# Connect JMC IHSV/IHSS alarm signal Z
+net servoalarm3   <=  hm2_7i76e.0.7i76.0.0.input-23
+# ---DI-24 ---
+# --- AIR PRESSURE SENSOR 6 bar ---
+# Mapping Festo 527467 sensor in 6bar airline to input 16 (high when ok; invert to deal with message)
+net airpressure    <=  hm2_7i76e.0.7i76.0.0.input-24-not
+# ---DI-25 ---
+# ---DI-26 ---
+# ---DI-27 ---
+# ---DI-28 ---
+# ---DI-29 ---
+# ---DI-30 ---
+# ---DI-31 ---
+
+#*******************
+#  IO - OUTPUTS 
+#*******************
+# ---DO-00 --- 
+# triggers waterpump when spindle is active
+net spindle-enable =>  hm2_7i76e.0.7i76.0.0.output-00
+# ---DO-01 --- 
+# Maps xxx to switchable Relais AC Socket 1 - currently not used
+#net dout-01 hm2_7i76e.0.7i76.0.0.output-01
+# --- DO-02 --- 
+# Maps Valve for spindle ATC bar: depressurize = clamp
+# --- DO-03 --- 
+# Maps Valve for spindle ATC bar: depressurize = clamp
+net atc_toggleout_inverted hm2_7i76e.0.7i76.0.0.output-03 
+# --- DO-04 --- 
+# Maps Valve for spindle ATC bar: pressurize = release
+net atc_toggleout hm2_7i76e.0.7i76.0.0.output-04 
+# --- DO-05 --- 
+# Maps Valve for ATC cone cleaning: off
+net atc_toggleout_inverted hm2_7i76e.0.7i76.0.0.output-05 
+# --- DO-06--- 
+# Maps Valve for ATC cone cleaning: on
+net atc_toggleout hm2_7i76e.0.7i76.0.0.output-06 
+# --- DO-07---
+net enableservo => hm2_7i76e.0.7i76.0.0.output-07
+# --- DO-08 --- 
+# Maps 3/2 way valve 3/2-1 - used for sealair at spindle
+# Automatically start sealair when spindle is running
+net spindle-enable hm2_7i76e.0.7i76.0.0.output-08
+# --- DO-09---
+# --- DO-10 --- 
+# Maps 3/2 way valve 3/2-3 - not used
+# net dout-10 hm2_7i76e.0.7i76.0.0.output-10
+# --- DO-11 --- 
+# --- DO-12 --- 
+# --- DO-13 --- 
+# --- DO-14 --- 
+# Maps coolant-mist to output 14 to start air flow at cold end controller; goes to valve 3/2-2
+net coolant-mist hm2_7i76e.0.7i76.0.0.output-14 <=  iocontrol.0.coolant-mist
+# --- DO-15 --- 
+# Maps coolant-flood to output 15 to start pump for mms cooling at cold end controller; ; goes to valve 3/2-3, also valve 3/2-2 for air via aruino in colen control
+net coolant-flood hm2_7i76e.0.7i76.0.0.output-15    <=  iocontrol.0.coolant-flood
+

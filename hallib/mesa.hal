@@ -1,0 +1,29 @@
+# BASIC HAL File for CNC GROOT
+# First, load kins, hostmot2 and mesa stuff
+# This file also loads ALL additional LOADRT Components with names!
+
+loadrt [KINS]KINEMATICS
+loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
+loadrt hostmot2
+loadrt hm2_eth board_ip="192.168.1.121" config=" num_encoders=0 num_pwmgens=0 num_stepgens=3 sserial_port_0=00xxxx" 
+setp    hm2_7i76e.0.watchdog.timeout_ns 5000000
+
+addf hm2_7i76e.0.read          servo-thread
+addf motion-command-handler   servo-thread
+addf motion-controller        servo-thread
+addf hm2_7i76e.0.write         servo-thread
+setp hm2_7i76e.0.dpll.01.timer-us -50
+setp hm2_7i76e.0.stepgen.timer-number 1
+
+# Load various RT Components
+# addf where needed, load by name
+
+loadrt not names=n_servoenable,n_atctoggle,n_watchdog
+loadrt lut5 names=lut5_atctoogle,lut5_servoalarm,lut5_estop
+loadrt toggle names=toggle_atc
+
+
+
+
+
+

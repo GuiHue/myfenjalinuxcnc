@@ -1,0 +1,74 @@
+# Everything related to AXIS Setup and HOMING
+
+
+#*******************
+#  AXIS X JOINT 0
+#*******************
+# Step Gen signals/setup
+setp   hm2_7i76e.0.stepgen.00.dirsetup        [JOINT_0]DIRSETUP
+setp   hm2_7i76e.0.stepgen.00.dirhold         [JOINT_0]DIRHOLD
+setp   hm2_7i76e.0.stepgen.00.steplen         [JOINT_0]STEPLEN
+setp   hm2_7i76e.0.stepgen.00.stepspace       [JOINT_0]STEPSPACE
+setp   hm2_7i76e.0.stepgen.00.position-scale  [JOINT_0]STEP_SCALE
+setp   hm2_7i76e.0.stepgen.00.step_type        0
+setp   hm2_7i76e.0.stepgen.00.control-type     0
+setp   hm2_7i76e.0.stepgen.00.maxaccel         [JOINT_0]STEPGEN_MAXACCEL
+setp   hm2_7i76e.0.stepgen.00.maxvel           [JOINT_0]STEPGEN_MAXVEL
+# ---motor signals---
+net x-pos-cmd    hm2_7i76e.0.stepgen.00.position-cmd <= joint.0.motor-pos-cmd
+net x-pos-fb     hm2_7i76e.0.stepgen.00.position-fb => joint.0.motor-pos-fb
+net x-enable     hm2_7i76e.0.stepgen.00.enable <= joint.0.amp-enable-out
+# ---setup home / limit switch signals---
+net neg-lim-x joint.0.neg-lim-sw-in
+net min-home-x 	=> joint.0.home-sw-in
+
+#*******************
+#  AXIS Y JOINT 1
+#*******************
+# Step Gen signals/setup
+setp   hm2_7i76e.0.stepgen.01.dirsetup        [JOINT_1]DIRSETUP
+setp   hm2_7i76e.0.stepgen.01.dirhold         [JOINT_1]DIRHOLD
+setp   hm2_7i76e.0.stepgen.01.steplen         [JOINT_1]STEPLEN
+setp   hm2_7i76e.0.stepgen.01.stepspace       [JOINT_1]STEPSPACE
+setp   hm2_7i76e.0.stepgen.01.position-scale  [JOINT_1]STEP_SCALE
+setp   hm2_7i76e.0.stepgen.01.step_type        0
+setp   hm2_7i76e.0.stepgen.01.control-type     0
+setp   hm2_7i76e.0.stepgen.01.maxaccel         [JOINT_1]STEPGEN_MAXACCEL
+setp   hm2_7i76e.0.stepgen.01.maxvel           [JOINT_1]STEPGEN_MAXVEL
+# ---motor signals---
+net y-pos-cmd    hm2_7i76e.0.stepgen.01.position-cmd <= joint.1.motor-pos-cmd
+net y-pos-fb     hm2_7i76e.0.stepgen.01.position-fb => joint.1.motor-pos-fb
+net y-enable     hm2_7i76e.0.stepgen.01.enable <= joint.1.amp-enable-out
+# ---setup home / limit switch signals---
+net neg-lim-y joint.1.neg-lim-sw-in
+net min-home-y 	=> joint.1.home-sw-in
+
+#*******************
+#  AXIS Z JOINT 2
+#*******************
+# Step Gen signals/setup
+setp   hm2_7i76e.0.stepgen.02.dirsetup        [JOINT_2]DIRSETUP
+setp   hm2_7i76e.0.stepgen.02.dirhold         [JOINT_2]DIRHOLD
+setp   hm2_7i76e.0.stepgen.02.steplen         [JOINT_2]STEPLEN
+setp   hm2_7i76e.0.stepgen.02.stepspace       [JOINT_2]STEPSPACE
+setp   hm2_7i76e.0.stepgen.02.position-scale  [JOINT_2]STEP_SCALE
+setp   hm2_7i76e.0.stepgen.02.step_type        0
+setp   hm2_7i76e.0.stepgen.02.control-type     0
+setp   hm2_7i76e.0.stepgen.02.maxaccel         [JOINT_2]STEPGEN_MAXACCEL
+setp   hm2_7i76e.0.stepgen.02.maxvel           [JOINT_2]STEPGEN_MAXVEL
+# ---motor signals---
+net z-pos-cmd    hm2_7i76e.0.stepgen.02.position-cmd <= joint.2.motor-pos-cmd
+net z-pos-fb     hm2_7i76e.0.stepgen.02.position-fb => joint.2.motor-pos-fb
+net z-enable     hm2_7i76e.0.stepgen.02.enable <= joint.2.amp-enable-out
+# ---setup home / limit switch signals---
+net neg-lim-z joint.2.neg-lim-sw-in
+net min-home-z 	=> joint.2.home-sw-in
+
+
+#******************************
+# SETUP SERVO ENABLE        
+#******************************
+# Map Servo Enable to machine-is-enabled using output 07 and not n_servoenable for inversion
+addf n_servoenable servo-thread
+net machine-is-enabled <= n_servoenable.in
+net enableservo  n_servoenable.out 

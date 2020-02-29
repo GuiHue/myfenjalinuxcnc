@@ -1,0 +1,3 @@
+# All HAL commands for spindle GUI in gmoccapy
+
+#net wj200-vfd.0.motor-current => spindleUI.meter_amps
