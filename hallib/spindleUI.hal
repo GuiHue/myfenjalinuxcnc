@@ -1,3 +1,5 @@
 # All HAL commands for spindle GUI in gmoccapy
 
-#net wj200-vfd.0.motor-current => spindleUI.meter_amps
+net vfdtempUI wj200-vfd.0.heatsink-temp => spindleUI.meter_temp
+net motorcurrentUI wj200-vfd.0.motor-current => spindleUI.meter_amps
+net spindle-vel-cmd-rpm spindleUI.meter_rpm

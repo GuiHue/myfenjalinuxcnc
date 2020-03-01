@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="2.24"/>
+  <!-- interface-requires gladevcp 0.0 -->
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkWindow" id="window1">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkTable" id="table1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="n_rows">2</property>
+        <child>
+          <object class="GtkTable" id="table2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="n_rows">11</property>
+            <property name="n_columns">3</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <object class="HAL_LED" id="hal_led1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="led_blink_rate">0</property>
+              </object>
+            </child>
+            <child>
+              <object class="HAL_Label" id="hal_label1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">label</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="HAL_Label" id="hal_label2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">label</property>
+                <property name="label_pin_type">2</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="hbox2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="HAL_Meter" id="meter_rpm">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="bg_color">#ffffffffffff</property>
+                <property name="label">RPM</property>
+                <property name="majorscale">5000</property>
+                <property name="max">24000</property>
+                <property name="minorscale">1000</property>
+                <property name="sublabel">1/min</property>
+                <property name="value">5000</property>
+                <property name="z0_border">18000</property>
+                <property name="z0_color">#000080800000</property>
+                <property name="z1_border">22000</property>
+                <property name="z1_color">#ffffffff0000</property>
+                <property name="z2_color">#ffff00000000</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="HAL_Meter" id="meter_amps">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="bg_color">#ffffffffffff</property>
+                <property name="label">Current</property>
+                <property name="majorscale">1</property>
+                <property name="max">10</property>
+                <property name="minorscale">0.5</property>
+                <property name="sublabel">A</property>
+                <property name="value">5</property>
+                <property name="z0_border">5</property>
+                <property name="z0_color">#000080800000</property>
+                <property name="z1_border">6</property>
+                <property name="z1_color">#ffffffff0000</property>
+                <property name="z2_color">#ffff00000000</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="HAL_Meter" id="meter_temp">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="bg_color">#ffffffffffff</property>
+                <property name="label">VFD Temp</property>
+                <property name="max">80</property>
+                <property name="minorscale">10</property>
+                <property name="sublabel">°C</property>
+                <property name="value">50</property>
+                <property name="z0_border">40</property>
+                <property name="z0_color">#000080800000</property>
+                <property name="z1_border">60</property>
+                <property name="z1_color">#ffffffff0000</property>
+                <property name="z2_color">#ffff00000000</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
