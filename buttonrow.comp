@@ -1,0 +1,54 @@
+component buttonrow "Button Mux";
+pin io bit io_auto;
+pin io bit io_on;
+pin io bit io_off;
+
+pin out bit led_auto;
+pin out bit led_on;
+pin out bit led_off;
+
+pin in bit val_auto;
+pin out bit out;
+
+pin in bit disable;
+
+param rw unsigned state = 0;
+
+function _ nofp;
+license "GPL"; // indicates GPL v2 or later
+;;
+int tmp = 0;
+
+if (disable) {
+	out=0;
+} else {
+	if (io_auto==1) state=0;
+	if (io_off==1) state=1;
+	if (io_on==1) state=2;
+
+	switch (state) {
+		// Auto
+		 case 0: 	led_auto = 1;
+				led_off = 0;
+				led_on=0;	
+				out=val_auto;
+				break;
+		// Aus
+		 case 1: 	led_auto = 0;
+				led_off = 1;
+				led_on=0;
+				out=0;
+				break;
+		// Ein
+		 case 2: 	led_auto = 0;
+				led_off = 0;
+				led_on=1;
+				out=1;
+				break;
+		}
+}
+
+io_auto=0;
+io_on=0;
+io_off=0;
+

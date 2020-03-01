@@ -19,11 +19,11 @@ net estop-ext     <=  hm2_7i76e.0.7i76.0.0.input-07
 # ---DI-10 ---
 # --- Jianken Spindle Sensor 1 ---
 # Mapping sensor 1 in ATC spindle: signal high = tool clamped
-net spindle_22     <=  hm2_7i76e.0.7i76.0.0.input-10
+net spindle_tool     <=  hm2_7i76e.0.7i76.0.0.input-10
 # ---DI-11 ---
 # --- Jianken Spindle Sensor 2 ---
 # Mapping sensor 2 in ATC spindle: signal high = draw bar down (ready to receive tool)
-net spindle_11     <=  hm2_7i76e.0.7i76.0.0.input-11
+net spindle_drawbar     <=  hm2_7i76e.0.7i76.0.0.input-11
 
 # SIGNAL TABLE
 # 11 low 22 low = drawbar closed, no tool
@@ -78,13 +78,12 @@ net airpressure    <=  hm2_7i76e.0.7i76.0.0.input-24-not
 #  IO - OUTPUTS 
 #*******************
 # ---DO-00 --- 
-# triggers waterpump when spindle is active
-net spindle-enable =>  hm2_7i76e.0.7i76.0.0.output-00
+# Start spindle water pump
+net cooling_enable   =>  hm2_7i76e.0.7i76.0.0.output-00
 # ---DO-01 --- 
 # Maps xxx to switchable Relais AC Socket 1 - currently not used
 #net dout-01 hm2_7i76e.0.7i76.0.0.output-01
 # --- DO-02 --- 
-# Maps Valve for spindle ATC bar: depressurize = clamp
 # --- DO-03 --- 
 # Maps Valve for spindle ATC bar: depressurize = clamp
 net atc_toggleout_inverted hm2_7i76e.0.7i76.0.0.output-03 
@@ -102,11 +101,9 @@ net enableservo => hm2_7i76e.0.7i76.0.0.output-07
 # --- DO-08 --- 
 # Maps 3/2 way valve 3/2-1 - used for sealair at spindle
 # Automatically start sealair when spindle is running
-net spindle-enable hm2_7i76e.0.7i76.0.0.output-08
+net dustsealair_enable hm2_7i76e.0.7i76.0.0.output-08
 # --- DO-09---
 # --- DO-10 --- 
-# Maps 3/2 way valve 3/2-3 - not used
-# net dout-10 hm2_7i76e.0.7i76.0.0.output-10
 # --- DO-11 --- 
 # --- DO-12 --- 
 # --- DO-13 --- 
