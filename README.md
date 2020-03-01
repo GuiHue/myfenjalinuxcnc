@@ -16,6 +16,7 @@ The purpose of this GIT is to have a repo for my own changes to the config. Howe
 * Uses NC inductive limit switches on each axis and furthermore uses these for homing
 * Connects LinuxCNC to a PILZ safety relais using the relais' semi conductor (Y32) output. This triggers estop in linuxcnc when a hardware button is pushed and cuts power to the drives.  
 * Uses an XHC-HB04 wireless pendant with slightly modified key mapping
+* Alternatively uses TSHW by surmetall(Tom) and Talla83: http://www.talla83.de/Tshw.html
 * Uses probe_screen_v2 (see [probe_screen_v2](https://github.com/verser-git/probe_screen_v2)) together with a wireless touch probe by [vers.by](https://vers.by/en) and a wire based tool length sensor at a fixed location on the machine table
 * Includes fixed macros and probe_screen.py for use with LinuxCNC 2.8/ 2.9 (dealing with joint/axis changes and changes to command.jog in LinuxCNC Python interface; seperate fork can be found on [github](https://github.com/GuiHue/probe_screen_v2))
 * Uses JMC iHSV57xxx servos on X and Y axis; JMC Closed Loop Stepper on Z, run as stepper drives with STP/DIR signals from the MESA stepgens
