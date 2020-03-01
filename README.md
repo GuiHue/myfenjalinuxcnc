@@ -29,11 +29,17 @@ The purpose of this GIT is to have a repo for my own changes to the config. Howe
 
 ## Notes
 * Common errors with probe_screen:
-* Funny offset issues will arise, when gmoccapy tool change functions are still activated in gmoccapy settings while using probe_screen. Gmoccapy settings can be changed at the approriate place in the menu
-  
+** Funny offset issues will arise, when gmoccapy tool change functions are still activated in gmoccapy settings while using probe_screen. Gmoccapy settings can be changed at the approriate place in the menu
+* Config contains various comments hoping to clarify net commands
+* HAL files in the config are located in folder "hallib" and are split by various topics
+** mesa.hal is the basic file for the setup, containing hostmot2 setup, mesa related commands and all loadrt calls for common hal components such as not, and2, etc. These are called by name, not by number.
+** io.hal contains all net commands regarding the 32 inputs of MESA 7i76e (AI00-Ai03 and DI04-DI31) and 16 outputs DO00-DO15, it is called last
+
 ## Hardware
-* The machine consists of an aluminum extrusion design with some milled components made from plate material.
-* Working envelope roughly X/Y/Z 635/1240/165 mm
+* The machine consists of an aluminum extrusion design with some milled components made from milled plate material in EN AW 5083.
+* Working envelope is roughly X/Y/Z 635/1240/165 mm
+* control cabinet uses 400V16A three phase power split into 3 x 16A 230V single phase power. All components run of single phase power
+* Spindle is cooled using a CW-3000 chiller
 
 ## Useful links
 ### LinuxCNC General
