@@ -18,7 +18,7 @@ setp hm2_7i76e.0.stepgen.timer-number 1
 # Load various RT Components
 # addf where needed, load by name
 
-loadrt not names=n_servoenable,n_atctoggle,n_watchdog
+loadrt not names=n_servoenable,n_atctoggle,n_watchdog,n_coneclean
 loadrt lut5 names=lut5_atctoogle,lut5_servoalarm,lut5_estop
 loadrt toggle names=toggle_atc
 

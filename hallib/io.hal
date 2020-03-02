@@ -81,9 +81,8 @@ net airpressure    <=  hm2_7i76e.0.7i76.0.0.input-24-not
 # Start spindle water pump
 net cooling_enable   =>  hm2_7i76e.0.7i76.0.0.output-00
 # ---DO-01 --- 
-# Maps xxx to switchable Relais AC Socket 1 - currently not used
-#net dout-01 hm2_7i76e.0.7i76.0.0.output-01
 # --- DO-02 --- 
+
 # --- DO-03 --- 
 # Maps Valve for spindle ATC bar: depressurize = clamp
 net atc_toggleout_inverted hm2_7i76e.0.7i76.0.0.output-03 
@@ -96,6 +95,7 @@ net atc_toggleout_inverted hm2_7i76e.0.7i76.0.0.output-05
 # --- DO-06--- 
 # Maps Valve for ATC cone cleaning: on
 net atc_toggleout hm2_7i76e.0.7i76.0.0.output-06 
+
 # --- DO-07---
 net enableservo => hm2_7i76e.0.7i76.0.0.output-07
 # --- DO-08 --- 

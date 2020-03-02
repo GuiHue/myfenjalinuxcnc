@@ -257,189 +257,6 @@
               <placeholder/>
             </child>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
               <object class="HAL_LED" id="led_airpressure">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -455,6 +272,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Air pressure 6 bar</property>
+                <property name="track_visited_links">False</property>
+                <property name="text_template"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -469,6 +288,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Status Overview</property>
                 <property name="use_underline">True</property>
+                <property name="text_template"/>
                 <attributes>
                   <attribute name="style" value="italic"/>
                   <attribute name="underline" value="True"/>
@@ -484,6 +304,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Tool in spindle</property>
+                <property name="text_template"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -497,6 +318,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Tool clamp open</property>
+                <property name="text_template"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -532,12 +354,13 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Tool</property>
+                <property name="text_template"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">6</property>
-                <property name="bottom_attach">7</property>
+                <property name="top_attach">7</property>
+                <property name="bottom_attach">8</property>
               </packing>
             </child>
             <child>
@@ -545,12 +368,13 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Pocket</property>
+                <property name="text_template"/>
               </object>
               <packing>
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
-                <property name="top_attach">6</property>
-                <property name="bottom_attach">7</property>
+                <property name="top_attach">7</property>
+                <property name="bottom_attach">8</property>
               </packing>
             </child>
             <child>
@@ -558,17 +382,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Current</property>
-              </object>
-              <packing>
-                <property name="top_attach">7</property>
-                <property name="bottom_attach">8</property>
-              </packing>
-            </child>
-            <child>
-              <object class="HAL_Label" id="hal_label8">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Prepared</property>
+                <property name="text_template"/>
               </object>
               <packing>
                 <property name="top_attach">8</property>
@@ -576,15 +390,29 @@
               </packing>
             </child>
             <child>
+              <object class="HAL_Label" id="hal_label8">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Prepared</property>
+                <property name="text_template"/>
+              </object>
+              <packing>
+                <property name="top_attach">9</property>
+                <property name="bottom_attach">10</property>
+              </packing>
+            </child>
+            <child>
               <object class="HAL_Label" id="label_tool_current">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="yalign">0.47999998927116394</property>
+                <property name="track_visited_links">False</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">7</property>
-                <property name="bottom_attach">8</property>
+                <property name="top_attach">8</property>
+                <property name="bottom_attach">9</property>
               </packing>
             </child>
             <child>
@@ -595,20 +423,23 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">8</property>
-                <property name="bottom_attach">9</property>
+                <property name="top_attach">9</property>
+                <property name="bottom_attach">10</property>
               </packing>
             </child>
             <child>
               <object class="HAL_Label" id="hal_pocket_current">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="yalign">0.49000000953674316</property>
+                <property name="label" translatable="yes">n/A</property>
+                <property name="text_template"/>
               </object>
               <packing>
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
-                <property name="top_attach">7</property>
-                <property name="bottom_attach">8</property>
+                <property name="top_attach">8</property>
+                <property name="bottom_attach">9</property>
               </packing>
             </child>
             <child>
@@ -619,8 +450,8 @@
               <packing>
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
-                <property name="top_attach">8</property>
-                <property name="bottom_attach">9</property>
+                <property name="top_attach">9</property>
+                <property name="bottom_attach">10</property>
               </packing>
             </child>
             <child>
@@ -690,8 +521,8 @@
               <packing>
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
-                <property name="top_attach">10</property>
-                <property name="bottom_attach">11</property>
+                <property name="top_attach">11</property>
+                <property name="bottom_attach">12</property>
               </packing>
             </child>
             <child>
@@ -699,12 +530,13 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Water cooling</property>
+                <property name="text_template"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">10</property>
-                <property name="bottom_attach">11</property>
+                <property name="top_attach">11</property>
+                <property name="bottom_attach">12</property>
               </packing>
             </child>
             <child>
@@ -774,101 +606,25 @@
               <packing>
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
-                <property name="top_attach">11</property>
-                <property name="bottom_attach">12</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkHBox" id="hbox4">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="homogeneous">True</property>
-                <child>
-                  <object class="HAL_LightButton" id="lb_coneclean_off">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="border_width">3</property>
-                    <property name="button_on_text" translatable="yes">Off</property>
-                    <property name="button_text" translatable="yes">Off</property>
-                    <property name="corner_radius">1</property>
-                    <property name="font_off_color">#000000000000</property>
-                    <property name="font_on_color">#000000000000</property>
-                    <property name="has_hal_pins">False</property>
-                    <property name="light_off_color">#e6e6e6e6e6e6</property>
-                    <property name="light_on_color">#cb7800000000</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="HAL_LightButton" id="lb_coneclean_on">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="border_width">3</property>
-                    <property name="button_on_text" translatable="yes">On</property>
-                    <property name="button_text" translatable="yes">On</property>
-                    <property name="corner_radius">1</property>
-                    <property name="font_off_color">#000000000000</property>
-                    <property name="font_on_color">#000000000000</property>
-                    <property name="light_off_color">#e6e6e6e6e6e6</property>
-                    <property name="light_on_color">#0000cbcb0000</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="HAL_LightButton" id="lb_coneclean_auto">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="border_width">3</property>
-                    <property name="button_on_text" translatable="yes">Auto</property>
-                    <property name="button_text" translatable="yes">Auto</property>
-                    <property name="corner_radius">1</property>
-                    <property name="font_off_color">#000000000000</property>
-                    <property name="font_on_color">#000000000000</property>
-                    <property name="has_hal_pins">False</property>
-                    <property name="light_is_on">True</property>
-                    <property name="light_off_color">#e666e666e666</property>
-                    <property name="light_on_color">#ffffe4a40c35</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="right_attach">3</property>
                 <property name="top_attach">12</property>
                 <property name="bottom_attach">13</property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
             </child>
             <child>
               <object class="HAL_Label" id="hal_label10">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Dust seal</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">11</property>
-                <property name="bottom_attach">12</property>
-              </packing>
-            </child>
-            <child>
-              <object class="HAL_Label" id="hal_label11">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Cone clean</property>
+                <property name="text_template"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -891,17 +647,6 @@
             </child>
             <child>
               <placeholder/>
-            </child>
-            <child>
-              <object class="HAL_LED" id="led_coneclean">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="led_blink_rate">0</property>
-              </object>
-              <packing>
-                <property name="top_attach">12</property>
-                <property name="bottom_attach">13</property>
-              </packing>
             </child>
             <child>
               <object class="HAL_LED" id="led_dustseal">
@@ -910,8 +655,8 @@
                 <property name="led_blink_rate">0</property>
               </object>
               <packing>
-                <property name="top_attach">11</property>
-                <property name="bottom_attach">12</property>
+                <property name="top_attach">12</property>
+                <property name="bottom_attach">13</property>
               </packing>
             </child>
             <child>
@@ -921,8 +666,8 @@
                 <property name="led_blink_rate">0</property>
               </object>
               <packing>
-                <property name="top_attach">10</property>
-                <property name="bottom_attach">11</property>
+                <property name="top_attach">11</property>
+                <property name="bottom_attach">12</property>
               </packing>
             </child>
             <child>
@@ -940,6 +685,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Manual Control</property>
                 <property name="use_underline">True</property>
+                <property name="text_template"/>
                 <attributes>
                   <attribute name="style" value="italic"/>
                   <attribute name="underline" value="True"/>
@@ -948,8 +694,8 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">9</property>
-                <property name="bottom_attach">10</property>
+                <property name="top_attach">10</property>
+                <property name="bottom_attach">11</property>
               </packing>
             </child>
             <child>
@@ -971,6 +717,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Clamp tool</property>
+                <property name="text_template"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -1007,12 +754,50 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Unclamp tool</property>
+                <property name="text_template"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
                 <property name="top_attach">5</property>
                 <property name="bottom_attach">6</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <object class="HAL_Label" id="hal_label11">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Cone clean</property>
+                <property name="text_template"/>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">6</property>
+                <property name="bottom_attach">7</property>
+              </packing>
+            </child>
+            <child>
+              <object class="HAL_LED" id="led_coneclean">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="led_blink_rate">0</property>
+              </object>
+              <packing>
+                <property name="top_attach">6</property>
+                <property name="bottom_attach">7</property>
               </packing>
             </child>
           </object>

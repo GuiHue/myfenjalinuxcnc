@@ -1,0 +1,1 @@
+pin+n_coneclean.in pin+n_coneclean.out sig+atc_toggleout sig+atc_toggleout_inverted sig+br_coneclean_io_auto sig+br_coneclean_io_off sig+br_coneclean_io_on sig+coneclean_disable sig+coolant-flood sig+coneclean_enable pin+br_coneclean.val-auto pin+br_coneclean.out pin+br_coneclean.io-on pin+br_coneclean.io-off

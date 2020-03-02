@@ -4,43 +4,32 @@
 ####
 # Setup buttons
 ####
-loadrt buttonrow names=br_water,br_dustseal,br_coneclean,br_clamptool,br_unclamptool
+loadrt buttonrow names=br_water,br_dustseal
 addf br_water servo-thread
-#addf br_dustseal servo-thread
-#addf br_coneclean servo-thread
-#addf br_clamptool servo-thread
-#addf br_unclamptool servo-thread
+addf br_dustseal servo-thread
+
 
 
 # button row water cooling
-net br_water_io_auto      br_water.io_auto  <= spindleUI.lb_water_auto-button
-net br_water_io_auto_led  br_water.led_auto => spindleUI.lb_water_auto-light
-net br_water_io_off      br_water.io_off  <= spindleUI.lb_water_off-button
-net br_water_io_off_led  br_water.led_off => spindleUI.lb_water_off-light
-net br_water_io_on      br_water.io_on  <= spindleUI.lb_water_on-button
-net br_water_io_on_led  br_water.led_on => spindleUI.lb_water_on-light
-net spindle-enable	    br_water.val_auto 
+net br_water_io_auto      br_water.io-auto  <= spindleUI.lb_water_auto-button
+net br_water_io_auto_led  br_water.led-auto => spindleUI.lb_water_auto-light
+net br_water_io_off      br_water.io-off  <= spindleUI.lb_water_off-button
+net br_water_io_off_led  br_water.led-off => spindleUI.lb_water_off-light
+net br_water_io_on      br_water.io-on  <= spindleUI.lb_water_on-button
+net br_water_io_on_led  br_water.led-on => spindleUI.lb_water_on-light
+net spindle-enable	    br_water.val-auto 
 net cooling_enable      br_water.out	
 
 # button row dust seal air
-net br_dustseal_io_auto      br_dustseal.io_auto  <= spindleUI.lb_dustseal_auto-button
-net br_dustseal_io_auto_led  br_dustseal.led_auto => spindleUI.lb_dustseal_auto-light
-net br_dustseal_io_off      br_dustseal.io_off  <= spindleUI.lb_dustseal_off-button
-net br_dustseal_io_off_led  br_dustseal.led_off => spindleUI.lb_dustseal_off-light
-net br_dustseal_io_on      br_dustseal.io_on  <= spindleUI.lb_dustseal_on-button
-net br_dustseal_io_on_led  br_dustseal.led_on => spindleUI.lb_dustseal_on-light
-net spindle-enable	    br_dustseal.val_auto 
+net br_dustseal_io_auto      br_dustseal.io-auto  <= spindleUI.lb_dustseal_auto-button
+net br_dustseal_io_auto_led  br_dustseal.led-auto => spindleUI.lb_dustseal_auto-light
+net br_dustseal_io_off      br_dustseal.io-off  <= spindleUI.lb_dustseal_off-button
+net br_dustseal_io_off_led  br_dustseal.led-off => spindleUI.lb_dustseal_off-light
+net br_dustseal_io_on      br_dustseal.io-on  <= spindleUI.lb_dustseal_on-button
+net br_dustseal_io_on_led  br_dustseal.led-on => spindleUI.lb_dustseal_on-light
+net spindle-enable	    br_dustseal.val-auto 
 net dustsealair_enable      br_dustseal.out
 
-# cone clean is more complicated as this is a 5/3 valve that is abused --> requires inverted signals
-# Maps Valve for ATC cone cleaning: off
-#net atc_toggleout_inverted hm2_7i76e.0.7i76.0.0.output-05 
-# --- DO-06--- 
-# Maps Valve for ATC cone cleaning: on
-#net atc_toggleout hm2_7i76e.0.7i76.0.0.output-06 
-
-
-# Use for all spindle things with ATC
 
 #4. Wenn man das Modul sperren möchte (so wie ich die Ventile vom ATC wenn die Spindel dreht :huh: ), geht das über den disable-Eingang. Der setzt out hart auf 0.
 # net spindle-running br_lock.disable
@@ -61,14 +50,19 @@ net airpressure     spindleUI.led_airpressure
 net spindle_tool    spindleUI.led_toolinspindle
 net spindle_drawbar spindleUI.led_clampopen
 
+
+net atc_toggleout spindleUI.led_unclamptool
+net atc_toggleout_inverted spindleUI.led_clamptool
+
 # Feedback from active components
 net cooling_enable spindleUI.led_water
 net dustsealair_enable spindleUI.led_dustseal
+net atc_toggleout spindleUI.led_coneclean
 
 # Tool Information
-net toolnumber iocontrol.0.tool−number => spindleUI.label_tool_current
-net toolprepnumber iocontrol.0.tool−prep−number => spindleUI.label_tool_prep
-net pocketprepnumer iocontrol.0.tool−prep−pocket => spindleUI.label_pocket_prep
+net toolnumber  iocontrol.0.tool-number spindleUI.label_tool_current 
+net toolprepnumber iocontrol.0.tool-prep-number => spindleUI.label_tool_prep
+net pocketprepnumer iocontrol.0.tool-prep-pocket => spindleUI.label_pocket_prep
 
 
 
