@@ -440,87 +440,6 @@
               <placeholder/>
             </child>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
               <object class="HAL_LED" id="led_airpressure">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -617,8 +536,8 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">4</property>
-                <property name="bottom_attach">5</property>
+                <property name="top_attach">6</property>
+                <property name="bottom_attach">7</property>
               </packing>
             </child>
             <child>
@@ -630,8 +549,8 @@
               <packing>
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
-                <property name="top_attach">4</property>
-                <property name="bottom_attach">5</property>
+                <property name="top_attach">6</property>
+                <property name="bottom_attach">7</property>
               </packing>
             </child>
             <child>
@@ -641,8 +560,8 @@
                 <property name="label" translatable="yes">Current</property>
               </object>
               <packing>
-                <property name="top_attach">5</property>
-                <property name="bottom_attach">6</property>
+                <property name="top_attach">7</property>
+                <property name="bottom_attach">8</property>
               </packing>
             </child>
             <child>
@@ -652,8 +571,8 @@
                 <property name="label" translatable="yes">Prepared</property>
               </object>
               <packing>
-                <property name="top_attach">6</property>
-                <property name="bottom_attach">7</property>
+                <property name="top_attach">8</property>
+                <property name="bottom_attach">9</property>
               </packing>
             </child>
             <child>
@@ -664,8 +583,8 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">5</property>
-                <property name="bottom_attach">6</property>
+                <property name="top_attach">7</property>
+                <property name="bottom_attach">8</property>
               </packing>
             </child>
             <child>
@@ -676,8 +595,8 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">6</property>
-                <property name="bottom_attach">7</property>
+                <property name="top_attach">8</property>
+                <property name="bottom_attach">9</property>
               </packing>
             </child>
             <child>
@@ -688,8 +607,8 @@
               <packing>
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
-                <property name="top_attach">5</property>
-                <property name="bottom_attach">6</property>
+                <property name="top_attach">7</property>
+                <property name="bottom_attach">8</property>
               </packing>
             </child>
             <child>
@@ -700,8 +619,8 @@
               <packing>
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
-                <property name="top_attach">6</property>
-                <property name="bottom_attach">7</property>
+                <property name="top_attach">8</property>
+                <property name="bottom_attach">9</property>
               </packing>
             </child>
             <child>
@@ -771,8 +690,8 @@
               <packing>
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
-                <property name="top_attach">8</property>
-                <property name="bottom_attach">9</property>
+                <property name="top_attach">10</property>
+                <property name="bottom_attach">11</property>
               </packing>
             </child>
             <child>
@@ -784,8 +703,8 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">8</property>
-                <property name="bottom_attach">9</property>
+                <property name="top_attach">10</property>
+                <property name="bottom_attach">11</property>
               </packing>
             </child>
             <child>
@@ -855,8 +774,8 @@
               <packing>
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
-                <property name="top_attach">9</property>
-                <property name="bottom_attach">10</property>
+                <property name="top_attach">11</property>
+                <property name="bottom_attach">12</property>
               </packing>
             </child>
             <child>
@@ -928,79 +847,8 @@
               <packing>
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
-                <property name="top_attach">10</property>
-                <property name="bottom_attach">11</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkHBox" id="hbox5">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="homogeneous">True</property>
-                <child>
-                  <object class="HAL_LightButton" id="lb_clamptool_off">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="border_width">3</property>
-                    <property name="button_on_text" translatable="yes">Off</property>
-                    <property name="button_text" translatable="yes">Off</property>
-                    <property name="corner_radius">1</property>
-                    <property name="font_off_color">#000000000000</property>
-                    <property name="font_on_color">#000000000000</property>
-                    <property name="light_off_color">#e6e6e6e6e6e6</property>
-                    <property name="light_on_color">#cb7800000000</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="HAL_LightButton" id="lb_clamptool_on">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="border_width">3</property>
-                    <property name="button_on_text" translatable="yes">On</property>
-                    <property name="button_text" translatable="yes">On</property>
-                    <property name="corner_radius">1</property>
-                    <property name="font_off_color">#000000000000</property>
-                    <property name="font_on_color">#000000000000</property>
-                    <property name="light_off_color">#e6e6e6e6e6e6</property>
-                    <property name="light_on_color">#0000cbcb0000</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="HAL_LightButton" id="lb_clamptool_auto">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="border_width">3</property>
-                    <property name="button_on_text" translatable="yes">Auto</property>
-                    <property name="button_text" translatable="yes">Auto</property>
-                    <property name="corner_radius">1</property>
-                    <property name="font_off_color">#000000000000</property>
-                    <property name="font_on_color">#000000000000</property>
-                    <property name="light_is_on">True</property>
-                    <property name="light_off_color">#e666e666e666</property>
-                    <property name="light_on_color">#ffffe4a40c35</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="right_attach">3</property>
-                <property name="top_attach">11</property>
-                <property name="bottom_attach">12</property>
+                <property name="top_attach">12</property>
+                <property name="bottom_attach">13</property>
               </packing>
             </child>
             <child>
@@ -1012,8 +860,8 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">9</property>
-                <property name="bottom_attach">10</property>
+                <property name="top_attach">11</property>
+                <property name="bottom_attach">12</property>
               </packing>
             </child>
             <child>
@@ -1025,103 +873,6 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">10</property>
-                <property name="bottom_attach">11</property>
-              </packing>
-            </child>
-            <child>
-              <object class="HAL_Label" id="hal_label12">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Clamp tool</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">11</property>
-                <property name="bottom_attach">12</property>
-              </packing>
-            </child>
-            <child>
-              <object class="HAL_Label" id="hal_label13">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Unclamp tool</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">12</property>
-                <property name="bottom_attach">13</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkHBox" id="hbox6">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="homogeneous">True</property>
-                <child>
-                  <object class="HAL_LightButton" id="lb_unclamptool_off">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="border_width">3</property>
-                    <property name="button_on_text" translatable="yes">Off</property>
-                    <property name="button_text" translatable="yes">Off</property>
-                    <property name="corner_radius">1</property>
-                    <property name="font_off_color">#000000000000</property>
-                    <property name="font_on_color">#000000000000</property>
-                    <property name="light_off_color">#e6e6e6e6e6e6</property>
-                    <property name="light_on_color">#cb7800000000</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="HAL_LightButton" id="lb_unclamptool_on">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="border_width">3</property>
-                    <property name="button_on_text" translatable="yes">On</property>
-                    <property name="button_text" translatable="yes">On</property>
-                    <property name="corner_radius">1</property>
-                    <property name="font_off_color">#000000000000</property>
-                    <property name="font_on_color">#000000000000</property>
-                    <property name="light_off_color">#e6e6e6e6e6e6</property>
-                    <property name="light_on_color">#0000cbcb0000</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="HAL_LightButton" id="lb_unclamptool_auto">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="border_width">3</property>
-                    <property name="button_on_text" translatable="yes">Auto</property>
-                    <property name="button_text" translatable="yes">Auto</property>
-                    <property name="corner_radius">1</property>
-                    <property name="font_off_color">#000000000000</property>
-                    <property name="font_on_color">#000000000000</property>
-                    <property name="light_is_on">True</property>
-                    <property name="light_off_color">#e666e666e666</property>
-                    <property name="light_on_color">#ffffe4a40c35</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="right_attach">3</property>
                 <property name="top_attach">12</property>
                 <property name="bottom_attach">13</property>
               </packing>
@@ -1139,15 +890,7 @@
               <placeholder/>
             </child>
             <child>
-              <object class="HAL_LED" id="led_clamptool">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="led_blink_rate">0</property>
-              </object>
-              <packing>
-                <property name="top_attach">11</property>
-                <property name="bottom_attach">12</property>
-              </packing>
+              <placeholder/>
             </child>
             <child>
               <object class="HAL_LED" id="led_coneclean">
@@ -1156,8 +899,8 @@
                 <property name="led_blink_rate">0</property>
               </object>
               <packing>
-                <property name="top_attach">10</property>
-                <property name="bottom_attach">11</property>
+                <property name="top_attach">12</property>
+                <property name="bottom_attach">13</property>
               </packing>
             </child>
             <child>
@@ -1167,8 +910,8 @@
                 <property name="led_blink_rate">0</property>
               </object>
               <packing>
-                <property name="top_attach">9</property>
-                <property name="bottom_attach">10</property>
+                <property name="top_attach">11</property>
+                <property name="bottom_attach">12</property>
               </packing>
             </child>
             <child>
@@ -1178,23 +921,12 @@
                 <property name="led_blink_rate">0</property>
               </object>
               <packing>
-                <property name="top_attach">8</property>
-                <property name="bottom_attach">9</property>
+                <property name="top_attach">10</property>
+                <property name="bottom_attach">11</property>
               </packing>
             </child>
             <child>
               <placeholder/>
-            </child>
-            <child>
-              <object class="HAL_LED" id="led_unclamptool">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="led_blink_rate">0</property>
-              </object>
-              <packing>
-                <property name="top_attach">12</property>
-                <property name="bottom_attach">13</property>
-              </packing>
             </child>
             <child>
               <placeholder/>
@@ -1206,7 +938,7 @@
               <object class="HAL_Label" id="hal_label14">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Manual Override</property>
+                <property name="label" translatable="yes">Manual Control</property>
                 <property name="use_underline">True</property>
                 <attributes>
                   <attribute name="style" value="italic"/>
@@ -1216,8 +948,71 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">7</property>
-                <property name="bottom_attach">8</property>
+                <property name="top_attach">9</property>
+                <property name="bottom_attach">10</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <object class="HAL_LED" id="led_clamptool">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="led_blink_rate">0</property>
+              </object>
+              <packing>
+                <property name="top_attach">4</property>
+                <property name="bottom_attach">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="HAL_Label" id="hal_label12">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Clamp tool</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">4</property>
+                <property name="bottom_attach">5</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <object class="HAL_LED" id="led_unclamptool">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="led_blink_rate">0</property>
+              </object>
+              <packing>
+                <property name="top_attach">5</property>
+                <property name="bottom_attach">6</property>
+              </packing>
+            </child>
+            <child>
+              <object class="HAL_Label" id="hal_label13">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Unclamp tool</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">5</property>
+                <property name="bottom_attach">6</property>
               </packing>
             </child>
           </object>
