@@ -1,4 +1,6 @@
 # Include your custom_postgui HAL commands here
+#source hallib/tshw.hal
+
 
 # Connect spindle information to gmoccapy spindle info display
 net spindle-at-speed => gmoccapy.spindle_at_speed_led 

@@ -1,0 +1,140 @@
+###################################################################
+# TsHW Talla simple Hand Wheel  LinuxCNC Version 2.9
+###################################################################
+# ilowpass und and2   
+#
+# Wenn diese schon in einer anderen HAL geladen bzw. verwendet werden,
+# dann muss dies in der Struktur beachtet werden.
+# Denn doppeltes laden von Komponenten ist nicht möglich.
+# Es müssen die loadrt Befehle auskommentiert werden und
+# die loadrt Befehle in den anderen HAL Dateien mit diesen Namen 
+# ergänzt werden.
+# addf kann hier bleiben :-)
+# 
+# Damit der Zero der Achsen geht müssen in der INI die MDI Commands 
+# angelegt werden 
+#
+#	[HALUI]
+#	MDI_COMMAND = G10 L20 P1 X0
+#	MDI_COMMAND = G10 L20 P1 Y0
+#	MDI_COMMAND = G10 L20 P1 Z0
+#
+# Mit setp shw.enc-smooth.gain  kann die Beschleunigung eingestellt werden.
+# und mit setp shw.enc-smooth.scale die Übersetzung
+# 
+#
+# Die HAL am besten in der "postgui_call_list.hal" aufrufen damit diese
+# nach der GUI geladen wird wegen dem Aufruf von axisui.notifications-clear!
+#
+###################################################################
+
+####################
+##      TsHW      ##
+####################
+
+addf shw.enc-smooth servo-thread
+
+setp shw.enc-smooth.scale 1
+setp shw.enc-smooth.gain  0.025
+
+setp axis.x.jog-vel-mode 1
+setp axis.y.jog-vel-mode 1
+setp axis.z.jog-vel-mode 1
+
+
+addf shw.ena-x servo-thread
+addf shw.ena-y servo-thread
+addf shw.ena-z servo-thread
+
+addf shw.zero-x servo-thread
+addf shw.zero-y servo-thread
+addf shw.zero-z servo-thread
+
+loadrt mux8 names=shw.step-choice
+addf shw.step-choice servo-thread
+
+net key-0001  => shw.step-choice.sel0
+net key-001   => shw.step-choice.sel1
+net key-01    => shw.step-choice.sel2
+
+setp shw.step-choice.in1 0.001
+setp shw.step-choice.in2 0.01
+setp shw.step-choice.in4 0.1
+
+net step-choice <= shw.step-choice.out
+net step-choice => axis.x.jog-scale
+net step-choice => axis.y.jog-scale
+net step-choice => axis.z.jog-scale
+
+# --- Auswahl Schrittweite ---
+net key-0001 <= hm2_7i76e.0.TsHW.0.1.key-02
+net key-0001 => hm2_7i76e.0.TsHW.0.1.led-02
+net key-001 <= hm2_7i76e.0.TsHW.0.1.key-05
+net key-001 => hm2_7i76e.0.TsHW.0.1.led-05
+net key-01 <= hm2_7i76e.0.TsHW.0.1.key-08
+net key-01 => hm2_7i76e.0.TsHW.0.1.led-08
+
+# --- Auswahl der Achsen ---
+net key-x <= hm2_7i76e.0.TsHW.0.1.key-01
+net key-x => hm2_7i76e.0.TsHW.0.1.led-01
+net key-x => shw.ena-x.in0
+net ena-x shw.ena-x.out => axis.x.jog-enable
+
+net key-y <= hm2_7i76e.0.TsHW.0.1.key-06
+net key-y => hm2_7i76e.0.TsHW.0.1.led-06
+net key-y => shw.ena-y.in0
+net ena-y shw.ena-y.out => axis.y.jog-enable
+
+net key-z <= hm2_7i76e.0.TsHW.0.1.key-07
+net key-z => hm2_7i76e.0.TsHW.0.1.led-07
+net key-z => shw.ena-z.in0
+net ena-z shw.ena-z.out => axis.z.jog-enable
+
+# --- Freigabe Taste ---
+net key-ena <= hm2_7i76e.0.TsHW.0.1.key-00
+net key-ena => shw.ena-x.in1
+net key-ena => shw.ena-y.in1
+net key-ena => shw.ena-z.in1
+net key-ena => halui.mode.manual
+#net key-ena => axisui.notifications-clear 	# Fehler resetten
+net key-ena => hm2_7i76e.0.TsHW.0.1.led-00
+
+# --- Encoder ---
+net enc-00 shw.enc-smooth.in <= hm2_7i76e.0.TsHW.0.1.encoder-0.count
+net enc-01 <= shw.enc-smooth.out
+net enc-01 => axis.x.jog-counts
+net enc-01 => axis.y.jog-counts
+net enc-01 => axis.z.jog-counts
+
+# --- Start Button ---
+net key-03 <= hm2_7i76e.0.TsHW.0.1.key-03 
+net key-03 => halui.program.run
+net key-03 => halui.mode.auto
+#net green-on => hm2_7i76e.0.TsHW.0.1.led-03  # <-aus Ampel.hal
+
+# --- Achsen Nullen ---
+net key-04 <= hm2_7i76e.0.TsHW.0.1.key-04 
+#net yellow-on => hm2_7i76e.0.TsHW.0.1.led-04
+net key-04 => shw.zero-x.in1
+net key-04 => shw.zero-y.in1
+net key-04 => shw.zero-z.in1
+net key-04 => halui.mode.mdi
+
+net key-z => shw.zero-z.in0
+net key-x => shw.zero-x.in0
+net key-y => shw.zero-y.in0
+
+net zero-x shw.zero-x.out => halui.mdi-command-00
+net zero-y shw.zero-y.out => halui.mdi-command-01
+net zero-z shw.zero-z.out => halui.mdi-command-02
+
+# --- Stopp Button ---
+#net key-09 <= hm2_7i76e.0.TsHW.0.1.key-09 
+#net key-09 => halui.program.stop
+#net red-on => hm2_7i76e.0.TsHW.0.1.led-09 # <-aus Ampel.hal
+
+# --- Not-Stopp ---
+#net key-10 <= hm2_7i76e.0.TsHW.0.1.key-10
+# estop wird in der 'RedDragon.hal' verarbeitet
+
+###################################################################
