@@ -41,6 +41,18 @@ setp axis.x.jog-vel-mode 1
 setp axis.y.jog-vel-mode 1
 setp axis.z.jog-vel-mode 1
 
+# Inverter used for inverting LE function
+addf n_key0 servo-thread
+addf n_key1 servo-thread
+addf n_key2 servo-thread
+addf n_key3 servo-thread
+addf n_key4 servo-thread
+addf n_key5 servo-thread
+addf n_key6 servo-thread
+addf n_key7 servo-thread
+addf n_key8 servo-thread
+addf n_key9 servo-thread
+addf n_key10 servo-thread
 
 addf shw.ena-x servo-thread
 addf shw.ena-y servo-thread
@@ -67,37 +79,37 @@ net step-choice => axis.y.jog-scale
 net step-choice => axis.z.jog-scale
 
 # --- Auswahl Schrittweite ---
-net key-0001 <= hm2_7i76e.0.TsHW.0.1.key-02
-net key-0001 => hm2_7i76e.0.TsHW.0.1.led-02
-net key-001 <= hm2_7i76e.0.TsHW.0.1.key-05
-net key-001 => hm2_7i76e.0.TsHW.0.1.led-05
-net key-01 <= hm2_7i76e.0.TsHW.0.1.key-08
-net key-01 => hm2_7i76e.0.TsHW.0.1.led-08
+net key-0001  n_key2.in <= hm2_7i76e.0.TsHW.0.1.key-02
+net key-0001not n_key2.out => hm2_7i76e.0.TsHW.0.1.led-02
+net key-001 n_key5.in <= hm2_7i76e.0.TsHW.0.1.key-05
+net key-001not n_key5.out => hm2_7i76e.0.TsHW.0.1.led-05
+net key-01 n_key8.in <= hm2_7i76e.0.TsHW.0.1.key-08
+net key-01-not n_key8.out => hm2_7i76e.0.TsHW.0.1.led-08
 
 # --- Auswahl der Achsen ---
-net key-x <= hm2_7i76e.0.TsHW.0.1.key-01
-net key-x => hm2_7i76e.0.TsHW.0.1.led-01
+net key-x <= n_key1.in hm2_7i76e.0.TsHW.0.1.key-01
+net key-x-not n_key1.out => hm2_7i76e.0.TsHW.0.1.led-01
 net key-x => shw.ena-x.in0
 net ena-x shw.ena-x.out => axis.x.jog-enable
 
-net key-y <= hm2_7i76e.0.TsHW.0.1.key-06
-net key-y => hm2_7i76e.0.TsHW.0.1.led-06
+net key-y <= n_key6.in hm2_7i76e.0.TsHW.0.1.key-06
+net key-y-not => n_key6.out hm2_7i76e.0.TsHW.0.1.led-06
 net key-y => shw.ena-y.in0
 net ena-y shw.ena-y.out => axis.y.jog-enable
 
-net key-z <= hm2_7i76e.0.TsHW.0.1.key-07
-net key-z => hm2_7i76e.0.TsHW.0.1.led-07
+net key-z <= n_key7.in hm2_7i76e.0.TsHW.0.1.key-07
+net key-z-not n_key7.out => hm2_7i76e.0.TsHW.0.1.led-07
 net key-z => shw.ena-z.in0
 net ena-z shw.ena-z.out => axis.z.jog-enable
 
 # --- Freigabe Taste ---
-net key-ena <= hm2_7i76e.0.TsHW.0.1.key-00
+net key-ena <= n_key0.in hm2_7i76e.0.TsHW.0.1.key-00
 net key-ena => shw.ena-x.in1
 net key-ena => shw.ena-y.in1
 net key-ena => shw.ena-z.in1
 net key-ena => halui.mode.manual
 #net key-ena => axisui.notifications-clear 	# Fehler resetten
-net key-ena => hm2_7i76e.0.TsHW.0.1.led-00
+net key-ena-not n_key0.out => hm2_7i76e.0.TsHW.0.1.led-00
 
 # --- Encoder ---
 net enc-00 shw.enc-smooth.in <= hm2_7i76e.0.TsHW.0.1.encoder-0.count
@@ -129,8 +141,8 @@ net zero-y shw.zero-y.out => halui.mdi-command-01
 net zero-z shw.zero-z.out => halui.mdi-command-02
 
 # --- Stopp Button ---
-#net key-09 <= hm2_7i76e.0.TsHW.0.1.key-09 
-#net key-09 => halui.program.stop
+net key-09 <= hm2_7i76e.0.TsHW.0.1.key-09 
+net key-09 => halui.program.stop
 #net red-on => hm2_7i76e.0.TsHW.0.1.led-09 # <-aus Ampel.hal
 
 # --- Not-Stopp ---
