@@ -16,8 +16,9 @@ All of the config options presented here are applicable to any CNC router design
 * Tool change is currently done via manual tool handling and using a push button to toggle between valve settings for tool release and clamping. LUT5 components are used to check whether spindle is enabled (=turning) or not and ensures, that ATC functions are not triggered while the spindle is in operation. This will lead to the destruction of the spindle.
 * Uses NC inductive limit switches on each axis (one each) and furthermore uses these for homing. Axis limits are doen using soft limits
 * Connects LinuxCNC software to a PILZ safety relais (PNOZ 11) using the relais' semi conductor output (Y32). This triggers estop in linuxcnc when a hardware button is pushed and cuts power to the axis drives and is wired to the vfd.  
-* Uses an XHC-HB04 wireless pendant with slightly modified key mapping
-* Alternatively uses TSHW by surmetall (Tom) and Talla83; see http://www.talla83.de/Tshw.html
+* Provide the Option to use two different pendants
+ * XHC-HB04 wireless pendant with slightly modified key mapping: needs to be activated by removing '# from groot.ini at two places
+ * Alternatively uses TSHW by surmetall (Tom) and Talla83; see http://www.talla83.de/Tshw.html; see hallib/tshw.hal further changes in estop.hal and groot.ini to load different hal files
 * Uses probe_screen_v2 (see [probe_screen_v2](https://github.com/verser-git/probe_screen_v2)) together with a wireless touch probe by [vers.by](https://vers.by/en) and a wire based tool length sensor at a fixed location on the machine table
 * Includes fixed macros and probe_screen.py for use with LinuxCNC 2.8/ 2.9 (dealing with joint/axis changes and changes to command.jog in LinuxCNC Python interface; seperate fork can be found on [github](https://github.com/GuiHue/probe_screen_v2))
 * Uses JMC iHSV57xxx servos on X and Y axis; JMC Closed Loop Stepper on Z, run as stepper drives with STP/DIR signals from the MESA stepgens
