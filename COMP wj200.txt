@@ -1,1 +1,0 @@
-do halcompile --install /home/user/Downloads/vfd/wj200_vfd.comp
