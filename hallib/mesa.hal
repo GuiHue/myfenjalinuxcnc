@@ -23,7 +23,7 @@ loadrt lut5 names=lut5_atctoogle,lut5_servoalarm,lut5_estop
 loadrt toggle names=toggle_atc
 loadrt ilowpass names=shw.enc-smooth		# to create smoother motion while jogging with an MPG.
 loadrt and2 names=shw.ena-x,shw.ena-y,shw.ena-z,shw.zero-x,shw.zero-y,shw.zero-z
-
+loadrt or2 names=or.coolant
 
 
 

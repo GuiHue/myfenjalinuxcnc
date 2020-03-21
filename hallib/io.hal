@@ -81,6 +81,11 @@ net airpressure    <=  hm2_7i76e.0.7i76.0.0.input-24-not
 # Start spindle water pump
 net cooling_enable   =>  hm2_7i76e.0.7i76.0.0.output-00
 # ---DO-01 --- 
+addf or.coolant servo-thread
+net coolant-flood or.coolant.in0 
+net coolant-mist or.coolant.in1
+net ortriggerpump or.coolant.out =>  hm2_7i76e.0.7i76.0.0.output-01 
+
 # --- DO-02 --- 
 
 # --- DO-03 --- 
@@ -111,6 +116,6 @@ net dustsealair_enable hm2_7i76e.0.7i76.0.0.output-08
 # Maps coolant-mist to output 14 to start air flow at cold end controller; goes to valve 3/2-2
 net coolant-mist hm2_7i76e.0.7i76.0.0.output-14 <=  iocontrol.0.coolant-mist
 # --- DO-15 --- 
-# Maps coolant-flood to output 15 to start pump for mms cooling at cold end controller; ; goes to valve 3/2-3, also valve 3/2-2 for air via aruino in colen control
+# Maps coolant-flood to output 15 to start pump for mms cooling at cold end controller; ; goes to valve 3/2-3, also valve 3/2-2 for air via arduino in cold end control
 net coolant-flood hm2_7i76e.0.7i76.0.0.output-15    <=  iocontrol.0.coolant-flood
 
