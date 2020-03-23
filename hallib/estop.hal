@@ -34,7 +34,8 @@ net servoalarm3     => lut5_servoalarm.in-2
 # in1 (is-alarm) low 0
 # in2 estop-ext high 1
 # in3 drivealarm high 1
-# following manual this corresponds to 1101 = true (1) and only this line  --> 10000000000000 to hex = 0x2000 
+# in4 tshw_estop_key-10 low  
+# following manual this corresponds to 01101 = true (1) and only this line  --> 10000000000000 to hex = 0x2000 
 addf lut5_estop servo-thread
 setp lut5_estop.function 0x2000
 
@@ -46,6 +47,7 @@ net estop-watchdog watchdog.ok-out => lut5_estop.in-0
 net estop-vfdalarm wj200-vfd.0.is-alarm => lut5_estop.in-1
 net estop-ext => lut5_estop.in-2
 net estop-drivealm lut5_servoalarm.out => lut5_estop.in-3
+net tshw_estop_key-10 lut5_estop.in-4
 
 #******************************
 # SETUP ESTOP SIGNAL

@@ -18,6 +18,7 @@ O100 endif
 
 ;first go up
 G90
+
 G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
 ; then move to change position
 G53 G0 X[#<_ini[CHANGE_POSITION]X>] Y[#<_ini[CHANGE_POSITION]Y>]
@@ -28,7 +29,7 @@ G49
 
 ; using the code being remapped here means 'use builtin behaviour'
 M6
-
+;M64 P0
 O200 if [#<_hal[probe.use_toolmeasurement]> EQ 0]
 O200 return [3] ; indicate no tool measurement 
 O200 endif
@@ -43,7 +44,7 @@ O300 endif
 O400 if [#<_hal[probe.ps_probevel]> LE 0]
 O400 return [-2] ; indicate probevel <= 0 
 O400 endif
-
+;M65 P0
 F #<_hal[probe.ps_searchvel]>
 G91
 G38.2 Z #<_ini[TOOLSENSOR]MAXPROBE>

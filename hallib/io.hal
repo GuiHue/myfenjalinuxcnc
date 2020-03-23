@@ -111,6 +111,9 @@ net dustsealair_enable hm2_7i76e.0.7i76.0.0.output-08
 # --- DO-10 --- 
 # --- DO-11 --- 
 # --- DO-12 --- 
+# Maps Valve 3 to In8
+net cleantoollenghtsensor hm2_7i76e.0.7i76.0.0.output-12 motion.digital-out-00 
+
 # --- DO-13 --- 
 # --- DO-14 --- 
 # Maps coolant-mist to output 14 to start air flow at cold end controller; goes to valve 3/2-2

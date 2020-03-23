@@ -69,9 +69,9 @@ net key-0001  => shw.step-choice.sel0
 net key-001   => shw.step-choice.sel1
 net key-01    => shw.step-choice.sel2
 
-setp shw.step-choice.in1 0.001
-setp shw.step-choice.in2 0.01
-setp shw.step-choice.in4 0.1
+setp shw.step-choice.in1 0.01
+setp shw.step-choice.in2 0.1
+setp shw.step-choice.in4 1.0
 
 net step-choice <= shw.step-choice.out
 net step-choice => axis.x.jog-scale
@@ -140,13 +140,13 @@ net zero-x shw.zero-x.out => halui.mdi-command-00
 net zero-y shw.zero-y.out => halui.mdi-command-01
 net zero-z shw.zero-z.out => halui.mdi-command-02
 
-# --- Stopp Button ---
+# --- Stop Button ---
 net key-09 <= hm2_7i76e.0.TsHW.0.1.key-09 
 net key-09 => halui.program.stop
 #net red-on => hm2_7i76e.0.TsHW.0.1.led-09 # <-aus Ampel.hal
 
-# --- Not-Stopp ---
-#net key-10 <= hm2_7i76e.0.TsHW.0.1.key-10
-# estop wird in der 'RedDragon.hal' verarbeitet
+# --- Ermegency SOFT -Stopp ---
+net tshw_estop_key-10 <= hm2_7i76e.0.TsHW.0.1.key-10
+
 
 ###################################################################

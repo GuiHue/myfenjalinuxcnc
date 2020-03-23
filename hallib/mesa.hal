@@ -3,7 +3,7 @@
 # This file also loads ALL additional LOADRT Components with names!
 
 loadrt [KINS]KINEMATICS
-loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
+loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS num_dio=5
 loadrt hostmot2
 loadrt hm2_eth board_ip="192.168.1.121" config=" num_encoders=0 num_pwmgens=0 num_stepgens=3 sserial_port_0=00000000" 
 setp    hm2_7i76e.0.watchdog.timeout_ns 5000000
