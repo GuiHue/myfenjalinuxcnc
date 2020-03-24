@@ -19,11 +19,11 @@ net estop-ext     <=  hm2_7i76e.0.7i76.0.0.input-07
 # ---DI-10 ---
 # --- Jianken Spindle Sensor 1 ---
 # Mapping sensor 1 in ATC spindle: signal high = tool clamped
-net spindle_tool     <=  hm2_7i76e.0.7i76.0.0.input-10
+net spindle_tool     <=  hm2_7i76e.0.7i76.0.0.input-10 motion.digital-in-00
 # ---DI-11 ---
 # --- Jianken Spindle Sensor 2 ---
 # Mapping sensor 2 in ATC spindle: signal high = draw bar down (ready to receive tool)
-net spindle_drawbar     <=  hm2_7i76e.0.7i76.0.0.input-11
+net spindle_drawbar     <=  hm2_7i76e.0.7i76.0.0.input-11 motion.digital-in-01
 
 # SIGNAL TABLE
 # 11 low 22 low = drawbar closed, no tool
@@ -90,16 +90,16 @@ net ortriggerpump or.coolant.out =>  hm2_7i76e.0.7i76.0.0.output-01
 
 # --- DO-03 --- 
 # Maps Valve for spindle ATC bar: depressurize = clamp
-net atc_toggleout_inverted hm2_7i76e.0.7i76.0.0.output-03 
+net atc_toggleout_inverted hm2_7i76e.0.7i76.0.0.output-03  motion.digital-out-01
 # --- DO-04 --- 
 # Maps Valve for spindle ATC bar: pressurize = release
-net atc_toggleout hm2_7i76e.0.7i76.0.0.output-04 
+net atc_toggleout hm2_7i76e.0.7i76.0.0.output-04 motion.digital-out-02
 # --- DO-05 --- 
 # Maps Valve for ATC cone cleaning: off
-net atc_toggleout_inverted hm2_7i76e.0.7i76.0.0.output-05 
+net atc_toggleout_inverted hm2_7i76e.0.7i76.0.0.output-05 motion.digital-out-03
 # --- DO-06--- 
 # Maps Valve for ATC cone cleaning: on
-net atc_toggleout hm2_7i76e.0.7i76.0.0.output-06 
+net atc_toggleout hm2_7i76e.0.7i76.0.0.output-06 motion.digital-out-04
 
 # --- DO-07---
 net enableservo => hm2_7i76e.0.7i76.0.0.output-07
