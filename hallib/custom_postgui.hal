@@ -7,6 +7,11 @@ net spindle-at-speed => gmoccapy.spindle_at_speed_led
 net spindle-cmd-rps-abs => gmoccapy.spindle_feedback_bar
 
 
+
+
+
+
+
 # Probe_screen_v2 with vers.by probe
 # The next two lines are only needed if the pins had been connected before
 unlinkp iocontrol.0.tool-change

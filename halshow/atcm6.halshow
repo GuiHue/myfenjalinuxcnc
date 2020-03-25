@@ -1,0 +1,1 @@
+pin+iocontrol.0.tool-change pin+halui.mode.is-manual pin+halui.mode.is-mdi pin+halui.mode.is-auto pin+halui.mode.is-teleop pin+halui.mode.is-joint pin+halui.mode.auto pin+halui.program.is-running sig+atc_toggleout sig+atc_toggleout_inverted sig+atc_toogle_button sig+lut5_out_atcclamp sig+lut5_out_atcflushoff sig+lut5_out_atcflushon sig+lut5_out_atcrelease
