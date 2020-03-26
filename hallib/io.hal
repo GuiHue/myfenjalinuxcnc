@@ -87,83 +87,24 @@ net coolant-mist or.coolant.in1
 net ortriggerpump or.coolant.out =>  hm2_7i76e.0.7i76.0.0.output-01 
 
 # --- DO-02 --- 
-
 # --- DO-03 --- 
-
-
-addf lut5.atcclamp servo-thread
-addf lut5.atcrelease servo-thread
-addf lut5.atcflushon servo-thread
-addf lut5.atcflushoff servo-thread
-
-# When atc_toogleout = high ==> release a tool
-
 # Maps Valve for spindle ATC bar: depressurize = clamp
-# Default this pin is high!!
-# high always, exent when i0 0, i1 1, i2 1, i3 0 OR i0 1, i1 0, i2 0, i3 1 
-setp lut5.atcclamp.function 0xFDBF
-# Manual signal atc_toogle
-net atc_toggleout_inverted lut5.atcclamp.in-0
-# automatic signal via motion-dIO
-net atcclampmotion motion.digital-out-01 lut5.atcclamp.in-1
-# use halui.mode.is-auto to detect, whether or not the machine is running in automatic mode, meaning button is ignored
-net AUTO-mode  lut5.atcclamp.in-2
-# use halui.mode.is-MDI to detect, whether or not a toolchange was triggered manually, meaning button is taken into account
-net MDI-mode   lut5.atcclamp.in-3
-net lut5_out_atcclamp lut5.atcclamp.out hm2_7i76e.0.7i76.0.0.output-03
-
+# net lut5_out_atcclamp lut5.atcclamp.out hm2_7i76e.0.7i76.0.0.output-03
 #net atc_toggleout_inverted hm2_7i76e.0.7i76.0.0.output-03
 
 # --- DO-04 --- 
 # Maps Valve for spindle ATC bar: pressurize = release
-# Default OFF
-# high never, except when i0 0, i1 1, i2 1, i3 o OR i0 1, i1 0, i2 0, i3 1
-setp lut5.atcrelease.function 0x240
-# Manual signal atc_toogle
-net atc_toggleout lut5.atcrelease.in-0
-# automatic signal via motion-dIO
-net atcreleasemotion motion.digital-out-02 lut5.atcrelease.in-1
-# use halui.mode.is-auto to detect, whether or not the machine is running in automatic mode, meaning button is ignored
-net AUTO-mode  lut5.atcrelease.in-2
-# use halui.mode.is-MDI to detect, whether or not a toolchange was triggered manually, meaning button is taken into account
-net MDI-mode    lut5.atcrelease.in-3
-net lut5_out_atcrelease lut5.atcrelease.out hm2_7i76e.0.7i76.0.0.output-04
-
+# net lut5_out_atcrelease lut5.atcrelease.out hm2_7i76e.0.7i76.0.0.output-04
 #net atc_toggleout hm2_7i76e.0.7i76.0.0.output-04 
-
 
 # --- DO-05 --- 
 # Maps Valve for ATC cone cleaning: off
-# Default this pin is high!!
-# high always, exent when i0 0, i1 1, i2 1, i3 0 OR i0 1, i1 0, i2 0, i3 1 
-setp lut5.atcflushoff.function 0xFDBF
-# Manual signal atc_toogle
-net atc_toggleout_inverted lut5.atcflushoff.in-0
-# automatic signal via motion-dIO
-net atcflushoffmotion motion.digital-out-03 lut5.atcflushoff.in-1
-# use halui.mode.is-auto to detect, whether or not the machine is running in automatic mode, meaning button is ignored
-net AUTO-mode  lut5.atcflushoff.in-2
-# use halui.mode.is-MDI to detect, whether or not a toolchange was triggered manually, meaning button is taken into account
-net MDI-mode   lut5.atcflushoff.in-3
-net lut5_out_atcflushoff lut5.atcflushoff.out hm2_7i76e.0.7i76.0.0.output-05
-
+# net lut5_out_atcflushoff lut5.atcflushoff.out hm2_7i76e.0.7i76.0.0.output-05
 #net atc_toggleout_inverted hm2_7i76e.0.7i76.0.0.output-05 
 
 # --- DO-06--- 
 # Maps Valve for ATC cone cleaning: on
-# Default OFF
-# high never, except when i0 0, i1 1, i2 1, i3 o OR i0 1, i1 0, i2 0, i3 1
-setp lut5.atcflushon.function 0x240
-# Manual signal atc_toogle
-net atc_toggleout lut5.atcflushon.in-0
-# automatic signal via motion-dIO
-net atcflushonmotion motion.digital-out-04 lut5.atcflushon.in-1
-# use halui.mode.is-auto to detect, whether or not the machine is running in automatic mode, meaning button is ignored
-net AUTO-mode  lut5.atcflushon.in-2
-# use halui.mode.is-MDI to detect, whether or not a toolchange was triggered manually, meaning button is taken into account
-net MDI-mode   lut5.atcflushon.in-3
-net lut5_out_atcflushon lut5.atcflushon.out hm2_7i76e.0.7i76.0.0.output-06
-
+#net lut5_out_atcflushon lut5.atcflushon.out hm2_7i76e.0.7i76.0.0.output-06
 #net atc_toggleout hm2_7i76e.0.7i76.0.0.output-06
 
 # --- DO-07---

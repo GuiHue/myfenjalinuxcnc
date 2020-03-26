@@ -1,6 +1,8 @@
 #******************************
 # ATC  SETUP
 #******************************
+
+
 # use lut5 lut5_atctoogle table to ensure, that atc toogle will only be evalauted positive, when spindle-enable = 0
 # output of lut5_atctoogle high, when
 # in0 (spindle-enable) low 0
@@ -21,3 +23,67 @@ net atc_toggleout toggle_atc.out
 addf n_atctoggle servo-thread
 net atc_toggleout <= n_atctoggle.in
 net atc_toggleout_inverted => n_atctoggle.out
+
+# Normal Behaviour = Spindle Clamped (with or Without tool) 
+# atc_toggleout_inverted = high
+# atc_toggleout = low
+
+
+#*******************
+#   Mapping for Dual operation with manual Switch (atc_toogle) and motion.digital-out
+#*******************
+
+# Load lut5 Tables
+addf lut5.atcclamp servo-thread
+addf lut5.atcrelease servo-thread
+addf lut5.atcflushon servo-thread
+addf lut5.atcflushoff servo-thread
+# All lut5 use the following pin setup
+# in-0 atc_toggleout (_inverted)    Default (varies)
+# in-1 motion.digital-outxx signal  Default 0 
+# in-2 iocontrol.0.tool−change --> tells us that an actual m6, not the remap, has been triggered, this only happens when
+#       MDI M6
+#       or M6 native call is released
+#       All other changes happen using M61 Q# and G43 
+# uses signal tool-change from probe_screen/probe_screen.hal
+
+
+# ATC CLAMP
+# Uses Valve for spindle drawbar: depressurize (off) = release
+# Default this pin is high # When atc_toogleout_inverted = high ==> Clamp tool
+# high always, except when motion i1 is high (overrules) or button (low) + tool-change (high)  trigger signal
+# motion pin always goes first (even when tool-change)  
+setp lut5.atcclamp.function 0x23
+net atc_toggleout_inverted lut5.atcclamp.in-0
+net atcclamp_motion motion.digital-out-01 lut5.atcclamp.in-1
+net tool-change  lut5.atcclamp.in-2
+net lut5_out_atcclamp lut5.atcclamp.out hm2_7i76e.0.7i76.0.0.output-03
+
+# ATC RELEASE
+# Uses Valve for spindle ATC bar: pressurize (ON, high)= release
+# Default OFF atc_toogleout = low
+# high never, except when setp lut5.atcrelease.function 0xEC
+net atc_toggleout lut5.atcrelease.in-0
+net atcrelease_motion motion.digital-out-02 lut5.atcrelease.in-1
+net tool-change   lut5.atcrelease.in-2
+net lut5_out_atcrelease lut5.atcrelease.out hm2_7i76e.0.7i76.0.0.output-04
+
+# FLUSH OFF
+# Maps Valve for ATC cone cleaning: off
+# Default this pin is high! ON
+# high always, exent when i0 0, i1 1, i2 1, i3 0 OR i0 1, i1 0, i2 0, i3 1 
+setp lut5.atcflushoff.function 0x23
+net atc_toggleout_inverted lut5.atcflushoff.in-0
+net atcflushoff_motion motion.digital-out-03 lut5.atcflushoff.in-1
+net tool-change  lut5.atcflushoff.in-2
+net lut5_out_atcflushoff lut5.atcflushoff.out hm2_7i76e.0.7i76.0.0.output-05
+
+# --- DO-06--- 
+# Maps Valve for ATC cone cleaning: on
+# Default OFF atc_toogleout = low
+# high never, except when 
+setp lut5.atcflushon.function 0xEC
+net atc_toggleout lut5.atcflushon.in-0
+net atcflushon_motion motion.digital-out-05 lut5.atcflushon.in-1
+net tool-change   lut5.atcflushon.in-2
+net lut5_out_atcflushon lut5.atcflushon.out hm2_7i76e.0.7i76.0.0.output-06
