@@ -82,7 +82,7 @@ O200 if [#<tool_in_spindle> GT 0]
             M65 P #<_ini[ATC_PINS]FLUSH_ON>
             M65 P #<_ini[ATC_PINS]FLUSH_OFF>
             M65 P #<_ini[ATC_PINS]TOOL_CLAMP>  
-            
+            m6
             (print, Tool released and cleared to safe Z)
         O220 else
             ; The tool's pocket number is not within the range of the rack and the tool needs to be removed manually
@@ -90,25 +90,29 @@ O200 if [#<tool_in_spindle> GT 0]
             (print, Pocket is not within range, moving to manual change)
             G53 G0 X[#<_ini[CHANGE_POSITION]X>] Y[#<_ini[CHANGE_POSITION]Y>]
             G53 G0 Z[#<_ini[CHANGE_POSITION]Z>]
-            (MSG, Please remove tool manually from spindle using release button. Afterwards press OK)
-            M1
+            ;(MSG, Please remove tool manually from spindle using release button. Afterwards press OK)
+            ; Abuse M6 for a dialog with the user
+            T0
+            M6
+            T#<newtool>
+            G53G0Z-50
             ; Turn off flush and close drawbar
             ; M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
             ; M65 P #<_ini[ATC_PINS]FLUSH_ON>
             ; M65 P #<_ini[ATC_PINS]FLUSH_OFF>
             ; M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
             ; Check if the tool is really gone (LOW)
-            M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L4 Q0
+            M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L4 Q1
             O920 IF [#5399 LT 0]
                 (print, Error! Tool still in spindle - Aborting!)
                 M2
             O920 ENDIF 
         o220 endif
     
-    O920 IF [#5399 LT 0]
+    O990 IF [#5399 LT 0]
         (print, Error! Tool still in spindle - Aborting!)
         M2
-    O920 ENDIF      
+    O990 ENDIF      
         
     ; We are now without a tool at some position either safely above pocket or a change position
     O210 endif
@@ -117,6 +121,6 @@ O200 else
     (print, There is no tool in the spindle - No action required at this time)
 O200 endif
 (print, End of Program)
-
+;M6
 o<rack_change> endsub [1]
 M2
