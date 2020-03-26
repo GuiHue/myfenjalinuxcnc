@@ -14,10 +14,8 @@ M73
 (print, selected_tool=#<selected_tool> selected_pocket=#<selected_pocket>)
 ; Store information otherwise after the M6 this information is gone!
 
-#1 = #<tool_in_spindle>
 #<newtool> = #<selected_tool>
 #<newpocket> = #<selected_pocket>
-(print, #1)
 ; we must execute this macro only in the milltask interpreter
 ; or preview will break, so test for '#<_task>' which is 1 for 
 ; the milltask interpreter and 0 in the UI's
@@ -51,25 +49,25 @@ O200 if [#<tool_in_spindle> GT 0]
             ; first move X
             G53 G01 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<current_pocket> -1] * #<_ini[ATC]DELTA_X>] F#<_ini[ATC]DROPSPEEDXY>
              ; second move Y
-             G53 G01 Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<current_pocket> -1] * #<_ini[ATC]DELTA_Y>] F#<_ini[ATC]DROPSPEEDXY>
+            G53 G01 Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<current_pocket> -1] * #<_ini[ATC]DELTA_Y>] F#<_ini[ATC]DROPSPEEDXY>
             ; third move Z partially rapid
             G53 G01 Z[#<_ini[ATC]SAFEZ>]  F#<_ini[ATC]DROPSPEEDRAPID> 
             G53 G01 Z[#<_ini[ATC]FIRSTPOCKET_Z>]   F#<_ini[ATC]DROPSPEEDZ>
             ; Release the tool from the spindle, immediately turn on pin
             ; This specific machine has a complex behaviour for ATC actuation, since we are dealing with pins and not signals, we need to simulatenously trigger to signals
-            ; TOOL_CLAMP 1; TOOL_RELEASE 0; FLUSH_OFF 0; FLUSH_ON 1
-            M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
+            ; Motion pins have different behaviour from button pins
+            ; TOOL_CLAMP 1; TOOL_RELEASE 1; FLUSH_OFF 1; FLUSH_ON 1
+            M64 P #<_ini[ATC_PINS]TOOL_RELEASE>
             M64 P #<_ini[ATC_PINS]FLUSH_ON>
-            M65 P #<_ini[ATC_PINS]FLUSH_OFF>
+            M64 P #<_ini[ATC_PINS]FLUSH_OFF>
             M64 P #<_ini[ATC_PINS]TOOL_CLAMP>
             G4 P1
-            m6
             ; Check if Release was ok by watching pin to turn high (L3)
-            ; M66 P #<_ini[ATC_PINS]SENSOR_DRAWBAR> L3 Q #<_ini[ATC]POST_UNLOCK>
-            ; O900 IF [#5399 LT 0]
-            ;     (MSG, Timeout! Drawbar did not unlock - Aborting!)
-            ;     M2
-            ; O900 ENDIF   
+            M66 P #<_ini[ATC_PINS]SENSOR_DRAWBAR> L3 Q #<_ini[ATC]POST_UNLOCK>
+            O900 IF [#5399 LT 0]
+                 (PRINT, Timeout! Drawbar did not unlock - Aborting!)
+                 M2
+            O900 ENDIF   
             ; Move back to rapid safe Z above the current_pocket
             G53 G01 Z #<_ini[ATC]SAFEZ> F#<_ini[ATC]DROPSPEEDRAPID> 
             ; After this move there should be no tool left; check pin for going LOW L4 
@@ -82,15 +80,16 @@ O200 if [#<tool_in_spindle> GT 0]
             ; TOOL_CLAMP 1; TOOL_RELEASE 0; FLUSH_OFF 1; FLUSH_ON 0
             M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
             M65 P #<_ini[ATC_PINS]FLUSH_ON>
-            M64 P #<_ini[ATC_PINS]FLUSH_OFF>
-            M64 P #<_ini[ATC_PINS]TOOL_CLAMP>  
+            M65 P #<_ini[ATC_PINS]FLUSH_OFF>
+            M65 P #<_ini[ATC_PINS]TOOL_CLAMP>  
+            
             (print, Tool released and cleared to safe Z)
         O220 else
             (print, Pocket is not within range, moving to manual change)
         o220 endif
     
     O920 IF [#5399 LT 0]
-        (MSG, Error! Tool still in spindle - Aborting!)
+        (print, Error! Tool still in spindle - Aborting!)
         M2
     O920 ENDIF      
         

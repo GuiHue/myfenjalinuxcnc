@@ -33,6 +33,16 @@ net atc_toggleout_inverted => n_atctoggle.out
 #   Mapping for Dual operation with manual Switch (atc_toogle) and motion.digital-out
 #*******************
 
+addf lut5.manualmode servo-thread
+setp lut5.manualmode.function 0xfffffffe
+net MDI-mode    lut5.manualmode.in-0
+net JOINTmode  lut5.manualmode.in-1
+net MANUALmode lut5.manualmode.in-2
+net TELEOPmode lut5.manualmode.in-3
+net AUTO-mode lut5.manualmode.in-4
+net enablemanualatc lut5.manualmode.out
+
+
 # Load lut5 Tables
 addf lut5.atcclamp servo-thread
 addf lut5.atcrelease servo-thread
@@ -48,7 +58,7 @@ addf lut5.atcflushoff servo-thread
 # uses signal tool-change from probe_screen/probe_screen.hal
 
 
-# ATC CLAMP
+# TOOL CLAMP
 # Uses Valve for spindle drawbar: depressurize (off) = release
 # Default this pin is high # When atc_toogleout_inverted = high ==> Clamp tool
 # high always, except when motion i1 is high (overrules) or button (low) + tool-change (high)  trigger signal
@@ -56,16 +66,17 @@ addf lut5.atcflushoff servo-thread
 setp lut5.atcclamp.function 0x23
 net atc_toggleout_inverted lut5.atcclamp.in-0
 net atcclamp_motion motion.digital-out-01 lut5.atcclamp.in-1
-net tool-change  lut5.atcclamp.in-2
+net enablemanualatc  lut5.atcclamp.in-2
 net lut5_out_atcclamp lut5.atcclamp.out hm2_7i76e.0.7i76.0.0.output-03
 
-# ATC RELEASE
+# TOOL RELEASE
 # Uses Valve for spindle ATC bar: pressurize (ON, high)= release
 # Default OFF atc_toogleout = low
-# high never, except when setp lut5.atcrelease.function 0xEC
+# high never, except when 
+setp lut5.atcrelease.function 0xEC
 net atc_toggleout lut5.atcrelease.in-0
 net atcrelease_motion motion.digital-out-02 lut5.atcrelease.in-1
-net tool-change   lut5.atcrelease.in-2
+net enablemanualatc   lut5.atcrelease.in-2
 net lut5_out_atcrelease lut5.atcrelease.out hm2_7i76e.0.7i76.0.0.output-04
 
 # FLUSH OFF
@@ -75,15 +86,15 @@ net lut5_out_atcrelease lut5.atcrelease.out hm2_7i76e.0.7i76.0.0.output-04
 setp lut5.atcflushoff.function 0x23
 net atc_toggleout_inverted lut5.atcflushoff.in-0
 net atcflushoff_motion motion.digital-out-03 lut5.atcflushoff.in-1
-net tool-change  lut5.atcflushoff.in-2
+net enablemanualatc  lut5.atcflushoff.in-2
 net lut5_out_atcflushoff lut5.atcflushoff.out hm2_7i76e.0.7i76.0.0.output-05
 
-# --- DO-06--- 
+# FLUSH ON
 # Maps Valve for ATC cone cleaning: on
 # Default OFF atc_toogleout = low
 # high never, except when 
 setp lut5.atcflushon.function 0xEC
 net atc_toggleout lut5.atcflushon.in-0
-net atcflushon_motion motion.digital-out-05 lut5.atcflushon.in-1
-net tool-change   lut5.atcflushon.in-2
+net atcflushon_motion motion.digital-out-04 lut5.atcflushon.in-1
+net enablemanualatc   lut5.atcflushon.in-2
 net lut5_out_atcflushon lut5.atcflushon.out hm2_7i76e.0.7i76.0.0.output-06

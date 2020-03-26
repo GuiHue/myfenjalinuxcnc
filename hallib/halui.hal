@@ -23,9 +23,12 @@ net jog-selected-pos      halui.axis.selected.plus
 net jog-selected-neg      halui.axis.selected.minus
 net machine-is-on         halui.machine.is-on
 net jog-speed             halui.axis.jog-speed
+
 net MDI-mode              halui.mode.is-mdi
 net AUTO-mode              halui.mode.is-auto
-
+net MANUALmode         halui.mode.is-manual
+net JOINTmode halui.mode.is-joint
+net TELEOPmode halui.mode.is-teleop
 
 #  ---motion  signals---
 net in-position               <=  motion.in-position
