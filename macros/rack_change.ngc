@@ -65,18 +65,18 @@ O200 if [#<tool_in_spindle> GT 0]
             ; Check if Release was ok by watching pin to turn high (L3)
             M66 P #<_ini[ATC_PINS]SENSOR_DRAWBAR> L3 Q #<_ini[ATC]POST_UNLOCK>
             O900 IF [#5399 LT 0]
-                 (PRINT, Timeout! Drawbar did not unlock - Aborting!)
+                 (print, Timeout! Drawbar did not unlock - Aborting!)
                  M2
             O900 ENDIF   
             ; Move back to rapid safe Z above the current_pocket
             G53 G01 Z #<_ini[ATC]SAFEZ> F#<_ini[ATC]DROPSPEEDRAPID> 
             ; After this move there should be no tool left; check pin for going LOW L4 
-            ; M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L4 Q #<_ini[ATC]POST_UNLOCK>
-            ; O910 IF [#5399 LT 0]
-            ;     (DEBUG, Timeout! Tool still in spindle - Aborting!)
-            ;     M2
-            ; O910 ENDIF   
-            ; This specific machine has a complex behaviour for ATC actuation, since we are dealing with pins and not signals, we need to simulatenously trigger to signals
+            M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L4 Q #<_ini[ATC]POST_UNLOCK>
+            O910 IF [#5399 LT 0]
+                 (print, Timeout! Tool still in spindle - Aborting!)
+                 M2
+            O910 ENDIF   
+            ; This specific machine has a complex behaviour for ATC actutaion, since we are dealing with pins and not signals, we need to simulatenously trigger to signals
             ; TOOL_CLAMP 1; TOOL_RELEASE 0; FLUSH_OFF 1; FLUSH_ON 0
             M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
             M65 P #<_ini[ATC_PINS]FLUSH_ON>
@@ -85,7 +85,24 @@ O200 if [#<tool_in_spindle> GT 0]
             
             (print, Tool released and cleared to safe Z)
         O220 else
+            ; The tool's pocket number is not within the range of the rack and the tool needs to be removed manually
+            ; Tool is still at safe Z height from before
             (print, Pocket is not within range, moving to manual change)
+            G53 G0 X[#<_ini[CHANGE_POSITION]X>] Y[#<_ini[CHANGE_POSITION]Y>]
+            G53 G0 Z[#<_ini[CHANGE_POSITION]Z>]
+            (MSG, Please remove tool manually from spindle using release button. Afterwards press OK)
+            M1
+            ; Turn off flush and close drawbar
+            ; M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
+            ; M65 P #<_ini[ATC_PINS]FLUSH_ON>
+            ; M65 P #<_ini[ATC_PINS]FLUSH_OFF>
+            ; M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
+            ; Check if the tool is really gone (LOW)
+            M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L4 Q0
+            O920 IF [#5399 LT 0]
+                (print, Error! Tool still in spindle - Aborting!)
+                M2
+            O920 ENDIF 
         o220 endif
     
     O920 IF [#5399 LT 0]
