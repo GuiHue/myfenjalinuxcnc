@@ -13,9 +13,19 @@ M73
 (print, in change tool_in_spindle=#<tool_in_spindle> current_pocket=#<current_pocket>)
 (print, selected_tool=#<selected_tool> selected_pocket=#<selected_pocket>)
 ; Store information otherwise after the M6 this information is gone!
-
+(print, prep-pocket #<_hal[iocontrol.0.tool-prep-pocket]>)
 #<newtool> = #<selected_tool>
-#<newpocket> = #<selected_pocket>
+#<newpocket> = #<_hal[iocontrol.0.tool-prep-pocket]>
+#<oldtool> = #<tool_in_spindle>
+T#<oldtool>
+G4p5
+(print, prep-pocket2 #<_hal[iocontrol.0.tool-prep-pocket]>)
+
+#<oldpocket> = #<_hal[iocontrol.0.tool-prep-pocket]>
+T#<newtool>
+(print, oldtool #<oldtool>, oldpocket #<oldpocket>)
+(print, newtool #<newtool> and newpocket #<newpocket>)
+
 ; we must execute this macro only in the milltask interpreter
 ; or preview will break, so test for '#<_task>' which is 1 for 
 ; the milltask interpreter and 0 in the UI's
