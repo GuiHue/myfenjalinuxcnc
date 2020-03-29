@@ -20,15 +20,11 @@ M73
 (print, tool_in_spindle=#<_tool_in_spindle> current_pocket=#<_current_pocket>)
 (print, selected_tool=#<_selected_tool> selected_pocket=#<_selected_pocket>)
 (print, prep-pocket #<_hal[iocontrol.0.tool-prep-pocket]>)
-; Store information otherwise after the M6 this information is gone!
 (print, Global variable 5190: #5190)
 #<newtool> = #<selected_tool>
 #<newpocket> = #<_hal[iocontrol.0.tool-prep-pocket]>
 #<oldtool> = #<tool_in_spindle>
-; Read from global persitent numbered variable #5190 the pocket number of the tool-in-spindle
 #<oldpocket> = #5190
-
-; Store the new pocket into a global persitent variable so that the next program can mak euse of it
 #5190 = #<_hal[iocontrol.0.tool-prep-pocket]>
 (print, Global variable 5190 after change: #5190)
 

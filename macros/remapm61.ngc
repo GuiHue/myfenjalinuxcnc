@@ -10,14 +10,16 @@
 
 o<remapm61> sub
 ;(auto-restore modal settings on return)
-M73 
+; M73 
 ; see MCOde Documentation for testing this
 ; print to console (if available)
 (print, in change tool_in_spindle=#<tool_in_spindle> current_pocket=#<current_pocket>)
 (print, selected_tool=#<selected_tool> selected_pocket=#<selected_pocket>)
+(print, selected_tool=#<tool> selected_pocket=#<pocket>)
+
 (print, prep-pocket #<_hal[iocontrol.0.tool-prep-pocket]>)
 
-#5190=#<_hal[iocontrol.0.tool-prep-pocket]>
+;#5190=#<_hal[iocontrol.0.tool-prep-pocket]>
 
 M61
 
