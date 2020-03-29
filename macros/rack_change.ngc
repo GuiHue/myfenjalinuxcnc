@@ -4,25 +4,34 @@
 ; Toolnumber is not equal to pocket number
 ; pocket number  is the discriminating factor for pick up procedure (from rack, from manual position)
 ; all tools need to be measured 
+
+; Uses global numbered variable #5190 to store the pocket of the tool that gets mounted as a work aorund for the broken handler in linuxcnc tooltable
+
 o<rack_change> sub
 
 ;(auto-restore modal settings on return)
 M73 
 ; see MCOde Documentation for testing this
 ; print to console (if available)
-(print, in change tool_in_spindle=#<tool_in_spindle> current_pocket=#<current_pocket>)
+(print, Information from regular LinuxCNC)
+(print, tool_in_spindle=#<tool_in_spindle> current_pocket=#<current_pocket>)
 (print, selected_tool=#<selected_tool> selected_pocket=#<selected_pocket>)
-; Store information otherwise after the M6 this information is gone!
+(print, Information with global variables)
+(print, tool_in_spindle=#<_tool_in_spindle> current_pocket=#<_current_pocket>)
+(print, selected_tool=#<_selected_tool> selected_pocket=#<_selected_pocket>)
 (print, prep-pocket #<_hal[iocontrol.0.tool-prep-pocket]>)
+; Store information otherwise after the M6 this information is gone!
+(print, Global variable 5190: #5190)
 #<newtool> = #<selected_tool>
 #<newpocket> = #<_hal[iocontrol.0.tool-prep-pocket]>
 #<oldtool> = #<tool_in_spindle>
-T#<oldtool>
-G4p5
-(print, prep-pocket2 #<_hal[iocontrol.0.tool-prep-pocket]>)
+; Read from global persitent numbered variable #5190 the pocket number of the tool-in-spindle
+#<oldpocket> = #5190
 
-#<oldpocket> = #<_hal[iocontrol.0.tool-prep-pocket]>
-T#<newtool>
+; Store the new pocket into a global persitent variable so that the next program can mak euse of it
+#5190 = #<_hal[iocontrol.0.tool-prep-pocket]>
+(print, Global variable 5190 after change: #5190)
+
 (print, oldtool #<oldtool>, oldpocket #<oldpocket>)
 (print, newtool #<newtool> and newpocket #<newpocket>)
 
@@ -48,18 +57,18 @@ G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-5]
 ; check if the spindle is empty by checking if tool_in_spindle GT 0
 O200 if [#<tool_in_spindle> GT 0]
     (print, Tool No  #<tool_in_spindle> is in the spindle - we need to put it away)
-    ; Check if current_pocket is within range, i.e. GT0, LE _ini[ATC_MISC]POCKETS
-    O210 if [#<current_pocket> GT 0]
-        O220 if [#<current_pocket> LE #<_ini[ATC]NUMPOCKETS>]
+    ; Check if oldpocket is within range, i.e. GT0, LE _ini[ATC_MISC]POCKETS
+    O210 if [#<oldpocket> GT 0]
+        O220 if [#<oldpocket> LE #<_ini[ATC]NUMPOCKETS>]
             ;Tool within range, triggering put move to rack, assuming that the pocket is empty!
-             (print, Putting tool away into rack in pocket #<current_pocket>)
+             (print, Putting tool away into rack in pocket #<oldpocket>)
             ; We are already at safe Z; now rapid to pre position for a specific pocket
-            G53 G0 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<current_pocket> -1] * #<_ini[ATC]DELTA_X> - #<_ini[ATC]SAFE_X>] Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<current_pocket> -1] * #<_ini[ATC]DELTA_Y> - #<_ini[ATC]SAFE_Y>] 
+            G53 G0 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<oldpocket> -1] * #<_ini[ATC]DELTA_X> - #<_ini[ATC]SAFE_X>] Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<oldpocket> -1] * #<_ini[ATC]DELTA_Y> - #<_ini[ATC]SAFE_Y>] 
             ; Now put the tool down gently 
             ; first move X
-            G53 G01 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<current_pocket> -1] * #<_ini[ATC]DELTA_X>] F#<_ini[ATC]DROPSPEEDXY>
+            G53 G01 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<oldpocket> -1] * #<_ini[ATC]DELTA_X>] F#<_ini[ATC]DROPSPEEDXY>
              ; second move Y
-            G53 G01 Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<current_pocket> -1] * #<_ini[ATC]DELTA_Y>] F#<_ini[ATC]DROPSPEEDXY>
+            G53 G01 Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<oldpocket> -1] * #<_ini[ATC]DELTA_Y>] F#<_ini[ATC]DROPSPEEDXY>
             ; third move Z partially rapid
             G53 G01 Z[#<_ini[ATC]SAFEZ>]  F#<_ini[ATC]DROPSPEEDRAPID> 
             G53 G01 Z[#<_ini[ATC]FIRSTPOCKET_Z>]   F#<_ini[ATC]DROPSPEEDZ>
@@ -78,7 +87,7 @@ O200 if [#<tool_in_spindle> GT 0]
                  (print, Timeout! Drawbar did not unlock - Aborting!)
                  M2
             O900 ENDIF   
-            ; Move back to rapid safe Z above the current_pocket
+            ; Move back to rapid safe Z above the oldpocket
             G53 G01 Z #<_ini[ATC]SAFEZ> F#<_ini[ATC]DROPSPEEDRAPID> 
             ; After this move there should be no tool left; check pin for going LOW L4 
             M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L4 Q #<_ini[ATC]POST_UNLOCK>
@@ -101,16 +110,16 @@ O200 if [#<tool_in_spindle> GT 0]
             G53 G0 X[#<_ini[CHANGE_POSITION]X>] Y[#<_ini[CHANGE_POSITION]Y>]
             G53 G0 Z[#<_ini[CHANGE_POSITION]Z>]
             ;(MSG, Please remove tool manually from spindle using release button. Afterwards press OK)
-            ; Abuse M6 for a dialog with the user
+            ; Abuse M6 for a dialog with the user by briefly killing the requested tool and replacing it with T0
             T0
             M6
             T#<newtool>
             G53G0Z-50
-            ; Turn off flush and close drawbar
-            ; M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
-            ; M65 P #<_ini[ATC_PINS]FLUSH_ON>
-            ; M65 P #<_ini[ATC_PINS]FLUSH_OFF>
-            ; M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
+            ; Turn off flush and close drawbar to eliminate noise
+            M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
+            M65 P #<_ini[ATC_PINS]FLUSH_ON>
+            M65 P #<_ini[ATC_PINS]FLUSH_OFF>
+            M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
             ; Check if the tool is really gone (LOW)
             M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L4 Q1
             O920 IF [#5399 LT 0]
@@ -131,6 +140,7 @@ O200 else
     (print, There is no tool in the spindle - No action required at this time)
 O200 endif
 (print, End of Program)
-;M6
+M6
+
 o<rack_change> endsub [1]
 M2
