@@ -3,7 +3,7 @@
 # This file also loads ALL additional LOADRT Components with names!
 
 loadrt [KINS]KINEMATICS
-loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS num_dio=9
+loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS num_dio=9 num_aio=1 
 loadrt hostmot2
 loadrt hm2_eth board_ip="192.168.1.121" config=" num_encoders=0 num_pwmgens=0 num_stepgens=3 sserial_port_0=00000000" 
 setp    hm2_7i76e.0.watchdog.timeout_ns 5000000
@@ -24,6 +24,7 @@ loadrt toggle names=toggle_atc
 loadrt ilowpass names=shw.enc-smooth		# to create smoother motion while jogging with an MPG.
 loadrt and2 names=shw.ena-x,shw.ena-y,shw.ena-z,shw.zero-x,shw.zero-y,shw.zero-z
 loadrt or2 names=or.coolant
+loadrt conv_s32_float names=s32float.tool
 
 
 

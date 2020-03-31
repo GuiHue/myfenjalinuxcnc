@@ -98,3 +98,9 @@ net atc_toggleout lut5.atcflushon.in-0
 net atcflushon_motion motion.digital-out-04 lut5.atcflushon.in-1
 net enablemanualatc   lut5.atcflushon.in-2
 net lut5_out_atcflushon lut5.atcflushon.out hm2_7i76e.0.7i76.0.0.output-06
+
+
+
+addf s32float.tool servo-thread
+net transferpocket iocontrol.0.tool-prep-pocket s32float.tool.in
+net transferpcoekt2 s32float.tool.out motion.analog-in-00
