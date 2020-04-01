@@ -102,5 +102,5 @@ net lut5_out_atcflushon lut5.atcflushon.out hm2_7i76e.0.7i76.0.0.output-06
 
 
 addf s32float.tool servo-thread
-net transferpocket iocontrol.0.tool-prep-pocket s32float.tool.in
-net transferpcoekt2 s32float.tool.out motion.analog-in-00
+net pocketprepnumer s32float.tool.in
+net transferpocket2 s32float.tool.out motion.analog-in-00

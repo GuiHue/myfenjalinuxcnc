@@ -60,9 +60,14 @@ net dustsealair_enable spindleUI.led_dustseal
 net atc_toggleout spindleUI.led_coneclean
 
 # Tool Information
-net toolnumber  iocontrol.0.tool-number spindleUI.label_tool_current 
-net toolprepnumber iocontrol.0.tool-prep-number => spindleUI.label_tool_prep
-net pocketprepnumer iocontrol.0.tool-prep-pocket => spindleUI.label_pocket_prep
+net toolnumber  iocontrol.0.tool-number 
+net toolprepnumber iocontrol.0.tool-prep-number  
+net pocketprepnumer iocontrol.0.tool-prep-pocket 
+
+
+net toolnumber spindleUI.label_tool_current 
+net toolprepnumber spindleUI.label_tool_prep
+net pocketprepnumer spindleUI.label_pocket_prep
 
 
 
