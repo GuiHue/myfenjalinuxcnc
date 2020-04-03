@@ -45,9 +45,9 @@ G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
 
 ; First, get rid of the old tool
 ; check if the spindle is empty by checking if tool_in_spindle GT 0
-O200 if [#<newtool> GT 0]
-    (print, Tool No  #<newtool> is in the spindle - we need to put it away)
-    ; Check if oldpocket is within range, i.e. GT0, LE _ini[ATC_MISC]POCKETS
+O200 if [#<oldtool> GT 0]
+    (print, Tool No  #<oldtool> is in the spindle - we need to put it away)
+    ; Check if oldpocket is within range
     O210 if [#<oldpocket> GT 0]
         O220 if [#<oldpocket> LE #<_ini[ATC]NUMPOCKETS>]
             ;Tool within range, triggering put move to rack, assuming that the pocket is empty!
@@ -65,19 +65,22 @@ O200 if [#<newtool> GT 0]
             ; Release the tool from the spindle, immediately turn on pin
             ; This specific machine has a complex behaviour for ATC actuation, since we are dealing with pins and not signals, we need to simulatenously trigger to signals
             ; Motion pins have different behaviour from button pins
-            ; TOOL_CLAMP 1; TOOL_RELEASE 1; FLUSH_OFF 1; FLUSH_ON 1
+            ; Eject tool
+            ; TOOL_CLAMP 0; TOOL_RELEASE 1; FLUSH_OFF0; FLUSH_ON 1
+            M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
             M64 P #<_ini[ATC_PINS]TOOL_RELEASE>
+            M65 P #<_ini[ATC_PINS]FLUSH_OFF>
             M64 P #<_ini[ATC_PINS]FLUSH_ON>
-            M64 P #<_ini[ATC_PINS]FLUSH_OFF>
-            M64 P #<_ini[ATC_PINS]TOOL_CLAMP>
+
+
             ; G4 P #<_ini[ATC]LOCK_TIME>
             ; Check if Release was ok by watching pin to turn high (L3)
             M66 P #<_ini[ATC_PINS]SENSOR_DRAWBAR> L3 Q #<_ini[ATC]POST_UNLOCK>
             O900 IF [#5399 LT 0]
                  (print, Timeout! Drawbar did not unlock - Aborting!)
-                 ;M2
+                 M2
             O900 ENDIF   
-            ; Move back to rapid safe Z above the oldpocket
+            ; Move back to safe Z above the oldpocket
             G53 G01 Z #<_ini[ATC]SAFE_Z> F#<_ini[ATC]DROPSPEEDZ> 
             ; After this move there should be no tool left; check pin for going LOW L4 
             M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L4 Q #<_ini[ATC]POST_UNLOCK>
@@ -87,10 +90,15 @@ O200 if [#<newtool> GT 0]
             O910 ENDIF   
             ; This specific machine has a complex behaviour for ATC actutaion, since we are dealing with pins and not signals, we need to simulatenously trigger to signals
             ; TOOL_CLAMP 1; TOOL_RELEASE 0; FLUSH_OFF 1; FLUSH_ON 0
+            (print, Turning off pneumatics)
+            ; clamp tool
+            ; TOOL_CLAMP 1; TOOL_RELEASE 0; FLUSH_OFF1; FLUSH_ON 0
+            M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
             M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
-            M65 P #<_ini[ATC_PINS]FLUSH_ON>
             M65 P #<_ini[ATC_PINS]FLUSH_OFF>
-            M65 P #<_ini[ATC_PINS]TOOL_CLAMP>  
+            M65 P #<_ini[ATC_PINS]FLUSH_ON>
+        
+
             ; Escape from rack
             ; first move X
             G53 G01 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<oldpocket> -1] * #<_ini[ATC]DELTA_X> - #<_ini[ATC]SAFE_X>]  F#<_ini[ATC]DROPSPEEDXY>
@@ -111,10 +119,12 @@ O200 if [#<newtool> GT 0]
             M6
             T#<newtool>
             ; Turn off flush and close drawbar to eliminate noise
-            M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
-            M65 P #<_ini[ATC_PINS]FLUSH_ON>
-            M65 P #<_ini[ATC_PINS]FLUSH_OFF>
+            ; clamp tool
+            ; TOOL_CLAMP 1; TOOL_RELEASE 0; FLUSH_OFF1; FLUSH_ON 0
             M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
+            M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
+            M65 P #<_ini[ATC_PINS]FLUSH_OFF>
+            M65 P #<_ini[ATC_PINS]FLUSH_ON>
             ; Check if the tool is really gone (LOW)
             M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L4 Q1
             O920 IF [#5399 LT 0]
@@ -123,7 +133,6 @@ O200 if [#<newtool> GT 0]
             O920 ENDIF
             (print, Finished  manual drop off) 
         o220 endif
-    
     (print,  We are now without a tool at some position either safely above pocket or the manual change position)
 
     O210 endif
@@ -163,14 +172,15 @@ O300 elseif [#<newtool> GT 0]
             G53 G01 Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<newpocket> -1] * #<_ini[ATC]DELTA_Y>] F#<_ini[ATC]DROPSPEEDXY>
             ; third move Z partially rapid
             G53 G01 Z[#<_ini[ATC]SAFE_Z>]  F#<_ini[ATC]DROPSPEEDRAPID> 
-            (print, above  pocket #<newpocket>, opening rawbar)
+            (print, above  pocket #<newpocket>, opening drawbar)
 
             ; Open the drawbar immediately
-            ; TOOL_CLAMP 1; TOOL_RELEASE 1; FLUSH_OFF 1; FLUSH_ON 1
+            ; Eject tool
+            ; TOOL_CLAMP 0; TOOL_RELEASE 1; FLUSH_OFF0; FLUSH_ON 1
             M64 P #<_ini[ATC_PINS]TOOL_RELEASE>
+            M64 P #<_ini[ATC_PINS]TOOL_CLAMP>
             M64 P #<_ini[ATC_PINS]FLUSH_ON>
             M64 P #<_ini[ATC_PINS]FLUSH_OFF>
-            M64 P #<_ini[ATC_PINS]TOOL_CLAMP>
              ; Check if the drawbar is open HIGH L3 within permissible time
             (print, opened ATC, picking)
             M66 P #<_ini[ATC_PINS]SENSOR_DRAWBAR> L3 Q #<_ini[ATC]LOCK_TIME>
@@ -182,10 +192,12 @@ O300 elseif [#<newtool> GT 0]
             G53 G01 Z #<_ini[ATC]FIRSTPOCKET_Z> F#<_ini[ATC]DROPSPEEDZ>
             ; Clamp tool
             (Print, at pocket height, Now clamp the tool)
+            ; clamp tool
+            ; TOOL_CLAMP 1; TOOL_RELEASE 0; FLUSH_OFF1; FLUSH_ON 0
+            M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
             M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
-            M65 P #<_ini[ATC_PINS]FLUSH_ON>
             M65 P #<_ini[ATC_PINS]FLUSH_OFF>
-            M65 P #<_ini[ATC_PINS]TOOL_CLAMP>  
+            M65 P #<_ini[ATC_PINS]FLUSH_ON>
             ; Check if the drawbar is locked LOW L4 within permissible time
             M66 P #<_ini[ATC_PINS]SENSOR_DRAWBAR> L4 Q #<_ini[ATC]LOCK_TIME>
             O940 IF [#5399 LT 0]
