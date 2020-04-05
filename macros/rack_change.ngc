@@ -67,9 +67,9 @@ O200 if [#<oldtool> GT 0]
             ; Motion pins have different behaviour from button pins
             ; Eject tool
             ; TOOL_CLAMP 0; TOOL_RELEASE 1; FLUSH_OFF0; FLUSH_ON 1
-            M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
+            M64 P #<_ini[ATC_PINS]TOOL_CLAMP>
             M64 P #<_ini[ATC_PINS]TOOL_RELEASE>
-            M65 P #<_ini[ATC_PINS]FLUSH_OFF>
+            M64 P #<_ini[ATC_PINS]FLUSH_OFF>
             M64 P #<_ini[ATC_PINS]FLUSH_ON>
 
 
