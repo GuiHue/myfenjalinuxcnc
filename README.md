@@ -77,3 +77,6 @@ All of the config options presented here are applicable to any CNC router design
 ### New QTPYVCP based GUI (Which may well be the future GUI to use!)
 * https://github.com/kcjengr/probe_basic
 * https://kcjengr.github.io/probe_basic/dev_install.html
+
+###
+* halcompile for buttonrow: halcompile --install buttonrow.comp
