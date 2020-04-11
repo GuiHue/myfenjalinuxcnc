@@ -65,6 +65,25 @@ net neg-lim-z joint.2.neg-lim-sw-in
 net min-home-z 	=> joint.2.home-sw-in
 
 
+#*******************
+#  AXIS A JOINT 3
+#*******************
+# Step Gen signals/setup
+#setp   hm2_7i76e.0.stepgen.03.dirsetup        [JOINT_3]DIRSETUP
+#setp   hm2_7i76e.0.stepgen.03.dirhold         [JOINT_3]DIRHOLD
+#setp   hm2_7i76e.0.stepgen.03.steplen         [JOINT_3]STEPLEN
+#setp   hm2_7i76e.0.stepgen.03.stepspace       [JOINT_3]STEPSPACE
+#setp   hm2_7i76e.0.stepgen.03.position-scale  [JOINT_3]STEP_SCALE
+#setp   hm2_7i76e.0.stepgen.03.step_type        0
+#setp   hm2_7i76e.0.stepgen.03.control-type     0
+#setp   hm2_7i76e.0.stepgen.03.maxaccel         [JOINT_3]STEPGEN_MAXACCEL
+#setp   hm2_7i76e.0.stepgen.03.maxvel           [JOINT_3]STEPGEN_MAXVEL
+# ---motor signals---
+#net a-pos-cmd    hm2_7i76e.0.stepgen.03.position-cmd <= joint.3.motor-pos-cmd
+#net a-pos-fb     hm2_7i76e.0.stepgen.03.position-fb => joint.3.motor-pos-fb
+#net a-enable     hm2_7i76e.0.stepgen.03.enable <= joint.3.amp-enable-out
+# ---setup home / limit switch signals---
+
 #******************************
 # SETUP SERVO ENABLE        
 #******************************
