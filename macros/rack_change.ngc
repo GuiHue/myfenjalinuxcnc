@@ -13,6 +13,7 @@ o<rack_change> sub
 
 ;(auto-restore modal settings on return)
 M73 
+
 ; print to console (if available)
 (print, Storing tool an pocket information in local variables)
 #<newtool> = #<selected_tool>
@@ -39,6 +40,7 @@ G90
 G40
 ; Cancel tool offset (not needed until the end)
 G49
+G64 P0.015
 (print, Moved safe Z)
 ; First things first, rapid to safe Z
 G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
@@ -60,7 +62,7 @@ O200 if [#<oldtool> GT 0]
              ; second move Y
             G53 G01 Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<oldpocket> -1] * #<_ini[ATC]DELTA_Y>] F#<_ini[ATC]DROPSPEEDXY>
             ; third move Z partially rapid
-            G53 G01 Z[#<_ini[ATC]SAFE_Z>]  F#<_ini[ATC]DROPSPEEDRAPID> 
+            G53 G01 Z[#<_ini[ATC]OFF_HEIGHT_Z>]  F#<_ini[ATC]DROPSPEEDRAPID> 
             G53 G01 Z[#<_ini[ATC]FIRSTPOCKET_Z>]   F#<_ini[ATC]DROPSPEEDZ>
             ; Release the tool from the spindle, immediately turn on pin
             ; This specific machine has a complex behaviour for ATC actuation, since we are dealing with pins and not signals, we need to simulatenously trigger to signals
@@ -81,7 +83,7 @@ O200 if [#<oldtool> GT 0]
                  M2
             O900 ENDIF   
             ; Move back to safe Z above the oldpocket
-            G53 G01 Z #<_ini[ATC]SAFE_Z> F#<_ini[ATC]DROPSPEEDZ> 
+            G53 G01 Z #<_ini[ATC]OFF_HEIGHT_Z> F#<_ini[ATC]DROPSPEEDZ> 
             ; After this move there should be no tool left; check pin for going LOW L4 
             M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L4 Q #<_ini[ATC]POST_UNLOCK>
             O910 IF [#5399 LT 0]
@@ -97,7 +99,8 @@ O200 if [#<oldtool> GT 0]
             M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
             M65 P #<_ini[ATC_PINS]FLUSH_OFF>
             M65 P #<_ini[ATC_PINS]FLUSH_ON>
-        
+            G53 G01 Z #<_ini[ATC]SAFE_Z> F#<_ini[ATC]DROPSPEEDRAPID> 
+            
 
             ; Escape from rack
             ; first move X
@@ -171,7 +174,7 @@ O300 elseif [#<newtool> GT 0]
              ; second move Y
             G53 G01 Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<newpocket> -1] * #<_ini[ATC]DELTA_Y>] F#<_ini[ATC]DROPSPEEDXY>
             ; third move Z partially rapid
-            G53 G01 Z[#<_ini[ATC]SAFE_Z>]  F#<_ini[ATC]DROPSPEEDRAPID> 
+            G53 G01 Z[#<_ini[ATC]OFF_HEIGHT_Z>]  F#<_ini[ATC]DROPSPEEDRAPID> 
             (print, above  pocket #<newpocket>, opening drawbar)
 
             ; Open the drawbar immediately
@@ -211,13 +214,17 @@ O300 elseif [#<newtool> GT 0]
                 M2
             O950 ENDIF
             (print, Tool locked, drawbar closed, ready to move)
-            ; Move slowly up Z
-            G53 G01 Z #<_ini[ATC]SAFE_Z> F#<_ini[ATC]DROPSPEEDZ>
-            ; Move slowly to safe pre position XY to avoid crashing long tools into the rack's forks
+            ; Move slowly up to offheight_Z
+            G53 G01 Z #<_ini[ATC]OFF_HEIGHT_Z> F#<_ini[ATC]DROPSPEEDZ>
+            ;rapid to safe Z
+            G53 G01 Z #<_ini[ATC]SAFE_Z> F#<_ini[ATC]DROPSPEEDRAPID>
+            (print, At safe Z during pickup )
+            ; Move slowly to safe pre position XY to avoid crashing long tools into the rack forks
             ; first move X
-            G53 G01 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<newpocket> -1] * #<_ini[ATC]DELTA_X>] F#<_ini[ATC]DROPSPEEDXY>
+            G53 G00 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<newpocket> -1] * #<_ini[ATC]DELTA_X> + #<_ini[ATC]SAFE_X>] 
             ; second move Y
-            G53 G01 X[#<_ini[ATC]FIRSTPOCKET_Y> + [#<newpocket> -1] * #<_ini[ATC]DELTA_Y>] F#<_ini[ATC]DROPSPEEDXY>            ; Load the tool number 
+            G53 G00 Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<newpocket> -1] * #<_ini[ATC]DELTA_Y> - #<_ini[ATC]SAFE_Y>] 
+            ; Load tool number
             (print, Moving finished, tool loaded, now tell linucnc about the toolchange using M61)
             M61 Q#<newtool>
             ; Rapid to safe Z

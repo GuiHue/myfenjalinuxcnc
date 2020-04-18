@@ -89,23 +89,21 @@ net ortriggerpump or.coolant.out =>  hm2_7i76e.0.7i76.0.0.output-01
 # --- DO-02 --- 
 # --- DO-03 --- 
 # Maps Valve for spindle ATC bar: depressurize = clamp
-# net lut5_out_atcclamp lut5.atcclamp.out hm2_7i76e.0.7i76.0.0.output-03
-#net atc_toggleout_inverted hm2_7i76e.0.7i76.0.0.output-03
+net lut5_out_atcclamp lut5.atcclamp.out hm2_7i76e.0.7i76.0.0.output-03
 
 # --- DO-04 --- 
 # Maps Valve for spindle ATC bar: pressurize = release
-# net lut5_out_atcrelease lut5.atcrelease.out hm2_7i76e.0.7i76.0.0.output-04
-#net atc_toggleout hm2_7i76e.0.7i76.0.0.output-04 
+net lut5_out_atcrelease lut5.atcrelease.out hm2_7i76e.0.7i76.0.0.output-04
+
 
 # --- DO-05 --- 
 # Maps Valve for ATC cone cleaning: off
-# net lut5_out_atcflushoff lut5.atcflushoff.out hm2_7i76e.0.7i76.0.0.output-05
-#net atc_toggleout_inverted hm2_7i76e.0.7i76.0.0.output-05 
+net lut5_out_atcflushoff lut5.atcflushoff.out hm2_7i76e.0.7i76.0.0.output-05
 
 # --- DO-06--- 
 # Maps Valve for ATC cone cleaning: on
-#net lut5_out_atcflushon lut5.atcflushon.out hm2_7i76e.0.7i76.0.0.output-06
-#net atc_toggleout hm2_7i76e.0.7i76.0.0.output-06
+net lut5_out_atcflushon lut5.atcflushon.out hm2_7i76e.0.7i76.0.0.output-06
+
 
 # --- DO-07---
 net enableservo => hm2_7i76e.0.7i76.0.0.output-07

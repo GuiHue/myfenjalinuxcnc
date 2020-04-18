@@ -63,41 +63,45 @@ addf lut5.atcflushoff servo-thread
 # Default this pin is high # When atc_toogleout_inverted = high ==> Clamp tool
 # high always, except when motion i1 is high (overrules) or button (low) + tool-change (high)  trigger signal
 # motion pin always goes first (even when tool-change)  
+# output Do-03
 setp lut5.atcclamp.function 0x23
 net atc_toggleout_inverted lut5.atcclamp.in-0
 net atcclamp_motion motion.digital-out-01 lut5.atcclamp.in-1
 net enablemanualatc  lut5.atcclamp.in-2
-net lut5_out_atcclamp lut5.atcclamp.out hm2_7i76e.0.7i76.0.0.output-03
+
 
 # TOOL RELEASE
 # Uses Valve for spindle ATC bar: pressurize (ON, high)= release
 # Default OFF atc_toogleout = low
-# high never, except when 
+# high never, except when
+# output Do-04 
 setp lut5.atcrelease.function 0xEC
 net atc_toggleout lut5.atcrelease.in-0
 net atcrelease_motion motion.digital-out-02 lut5.atcrelease.in-1
 net enablemanualatc   lut5.atcrelease.in-2
-net lut5_out_atcrelease lut5.atcrelease.out hm2_7i76e.0.7i76.0.0.output-04
+
 
 # FLUSH OFF
 # Maps Valve for ATC cone cleaning: off
 # Default this pin is high! ON
 # high always, exent when i0 0, i1 1, i2 1, i3 0 OR i0 1, i1 0, i2 0, i3 1 
+# output Do-05
 setp lut5.atcflushoff.function 0x23
 net atc_toggleout_inverted lut5.atcflushoff.in-0
 net atcflushoff_motion motion.digital-out-03 lut5.atcflushoff.in-1
 net enablemanualatc  lut5.atcflushoff.in-2
-net lut5_out_atcflushoff lut5.atcflushoff.out hm2_7i76e.0.7i76.0.0.output-05
+
 
 # FLUSH ON
 # Maps Valve for ATC cone cleaning: on
 # Default OFF atc_toogleout = low
-# high never, except when 
+# high never, except when
+# output Do-06 
 setp lut5.atcflushon.function 0xEC
 net atc_toggleout lut5.atcflushon.in-0
 net atcflushon_motion motion.digital-out-04 lut5.atcflushon.in-1
 net enablemanualatc   lut5.atcflushon.in-2
-net lut5_out_atcflushon lut5.atcflushon.out hm2_7i76e.0.7i76.0.0.output-06
+
 
 
 
