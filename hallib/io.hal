@@ -31,8 +31,6 @@ net spindle_drawbar     <=  hm2_7i76e.0.7i76.0.0.input-11 motion.digital-in-01
 # 11 high, 22 low = drawbar open - tool status unknown
 
 # ---DI-12 ---
-# --- PROBE-IN ---
-net probe-input motion.probe-input <=     <=  hm2_7i76e.0.7i76.0.0.input-12-not
 # ---DI-13 ---
 # --- HOME-X ---
 net min-home-x     <=  hm2_7i76e.0.7i76.0.0.input-13
@@ -47,7 +45,7 @@ net min-home-z     <=  hm2_7i76e.0.7i76.0.0.input-15
 net neg-lim-z     <=  hm2_7i76e.0.7i76.0.0.input-15-not
 # ---DI-16 ---
 # ---DI-17 ---
-# Mapping input from a toggle button at Z axis to DI 09
+# Mapping input from a toggle button at Z axis to DI 17
 net atc_toogle_button     <=  hm2_7i76e.0.7i76.0.0.input-17
 # ---DI-18 ---
 # ---DI-19 ---
@@ -67,8 +65,15 @@ net servoalarm3   <=  hm2_7i76e.0.7i76.0.0.input-23
 # Mapping Festo 527467 sensor in 6bar airline to input 16 (high when ok; invert to deal with message)
 net airpressure    <=  hm2_7i76e.0.7i76.0.0.input-24-not
 # ---DI-25 ---
+# --- PROBE-IN ---
+net probe-input motion.probe-input <=     <=  hm2_7i76e.0.7i76.0.0.input-25-not
 # ---DI-26 ---
+# --- Probe Error signal from vers.by probe; to be checked pror to measurement using G38 - not fully implemented yet ---
+net probe-error hm2_7i76e.0.7i76.0.0.input-26
 # ---DI-27 ---
+# --- TS Overtravel toolsensor overtravel detector - triggers estop  NC behaviour - High when Ok---
+net tsovertravel hm2_7i76e.0.7i76.0.0.input-27-not
+
 # ---DI-28 ---
 # ---DI-29 ---
 # ---DI-30 ---

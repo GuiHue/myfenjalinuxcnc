@@ -256,10 +256,13 @@ O300 elseif [#<newtool> GT 0]
             O980 ENDIF  
             (print, A tool is manually loaded and we can continue with measurement)
         O320 ENDIF
+        ; Turn on airblast to clean sensor
+        M64 P #<_ini[ATC_PINS]CLEAN_TS>
         ; Perform tool measurement - first rapid to toolsensorposition
         G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
         G53 G0 X[#<_ini[TOOLSENSOR]X>] Y[#<_ini[TOOLSENSOR]Y>]
         G53 G0 Z[#<_ini[TOOLSENSOR]Z>]
+
         ; Check certain inputs in probe_screen
         O420 if [#<_hal[probe.ps_searchvel]> LE 0]
             O420 return [-1] ; indicate searchvel <= 0 
@@ -267,6 +270,9 @@ O300 elseif [#<newtool> GT 0]
         O430 if [#<_hal[probe.ps_probevel]> LE 0]
             O430 return [-2] ; indicate probevel <= 0 
         O430 endif
+        ; Turn off airblast to clean sensor
+        M65 P #<_ini[ATC_PINS]CLEAN_TS>
+        
         ; Perform tool measurement in relative motion
         F #<_hal[probe.ps_searchvel]>
         G91

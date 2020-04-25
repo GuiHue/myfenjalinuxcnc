@@ -23,10 +23,12 @@ addf lut5_servoalarm servo-thread
 setp lut5_servoalarm.function 0x1
 # Note JMC servos do not follow regular industrial setup: ok = low
 # Lut5 designed so that lut5 = high when OK (=no alarm)
+# Lazy Hack: added Tool Sensor Overtravel here temporarily
 # output: 00000001 (bin) = hex 0x1
 net servoalarm1     => lut5_servoalarm.in-0
 net servoalarm2     => lut5_servoalarm.in-1
 net servoalarm3     => lut5_servoalarm.in-2
+net tsovertravel    => lut5_servoalarm.in-3
 
 # Estop lut5 (lut5_estop)
 # Load LUT5 look-up table for logic funtions; in this case LUT5 to be HIGH (=enable ok) when
