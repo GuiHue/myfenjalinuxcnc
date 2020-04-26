@@ -85,14 +85,14 @@ O200 if [#<oldtool> GT 0]
             ; Move back to safe Z above the oldpocket
             G53 G01 Z #<_ini[ATC]OFF_HEIGHT_Z> F#<_ini[ATC]DROPSPEEDZ> 
             ; After this move there should be no tool left; check pin for going LOW L4 
-            M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L4 Q #<_ini[ATC]POST_UNLOCK>
-            O910 IF [#5399 LT 0]
-                 (print, Timeout! Tool still in spindle - Aborting!)
-                 M2
-            O910 ENDIF   
-            ; This specific machine has a complex behaviour for ATC actutaion, since we are dealing with pins and not signals, we need to simulatenously trigger to signals
+            ; M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L4 Q #<_ini[ATC]POST_UNLOCK>
+            ; O910 IF [#5399 LT 0]
+            ;      (print, Timeout! Tool still in spindle - Aborting!)
+            ;      M2
+            ; O910 ENDIF   
+            ; ; This specific machine has a complex behaviour for ATC actutaion, since we are dealing with pins and not signals, we need to simulatenously trigger to signals
             ; TOOL_CLAMP 1; TOOL_RELEASE 0; FLUSH_OFF 1; FLUSH_ON 0
-            (print, Turning off pneumatics)
+
             ; clamp tool
             ; TOOL_CLAMP 1; TOOL_RELEASE 0; FLUSH_OFF1; FLUSH_ON 0
             M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
@@ -100,7 +100,7 @@ O200 if [#<oldtool> GT 0]
             M65 P #<_ini[ATC_PINS]FLUSH_OFF>
             M65 P #<_ini[ATC_PINS]FLUSH_ON>
             G53 G01 Z #<_ini[ATC]SAFE_Z> F#<_ini[ATC]DROPSPEEDRAPID> 
-            
+             (print, Turning off pneumatics)           
 
             ; Escape from rack
             ; first move X
@@ -152,6 +152,10 @@ G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
 O300 if [#<newtool> EQ 0]
     ; Nothing to here but to move to manual change position and end the program
     (print, No new tool specified, Finishing)
+    M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
+    M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
+    M65 P #<_ini[ATC_PINS]FLUSH_OFF>
+    M65 P #<_ini[ATC_PINS]FLUSH_ON>
     G53 G0 X[#<_ini[ATC]CHANGEX>] Y[#<_ini[ATC]CHANGEY>]
     G53 G0 Z[#<_ini[ATC]CHANGEZ>]
     M2
@@ -256,11 +260,13 @@ O300 elseif [#<newtool> GT 0]
             O980 ENDIF  
             (print, A tool is manually loaded and we can continue with measurement)
         O320 ENDIF
-        ; Turn on airblast to clean sensor
-        M64 P #<_ini[ATC_PINS]CLEAN_TS>
+
         ; Perform tool measurement - first rapid to toolsensorposition
         G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
-        G53 G0 X[#<_ini[TOOLSENSOR]X>] Y[#<_ini[TOOLSENSOR]Y>]
+        G53 G0 X[#<_ini[TOOLSENSOR]X>] Y[#<_ini[TOOLSENSOR]Y> - #<_ini[ATC]SAFE_Y>]
+        ; Turn on airblast to clean sensor
+        M64 P #<_ini[ATC_PINS]CLEAN_TS>
+        G53 G01 X[#<_ini[TOOLSENSOR]X>] Y[#<_ini[TOOLSENSOR]Y>] F#<_ini[ATC]DROPSPEEDRAPID>
         G53 G0 Z[#<_ini[TOOLSENSOR]Z>]
 
         ; Check certain inputs in probe_screen
@@ -288,10 +294,12 @@ O300 elseif [#<newtool> GT 0]
 
         G90
         G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
+        G53 G0 Y[#<_ini[TOOLSENSOR]Y> - #<_ini[ATC]SAFE_Y>]
+        (print, moving away from ts)
         #<touch_result> = #5063
         #<probeheight> = #<_hal[probe.probeheight]> 
         #<blockheight> = #<_hal[probe.blockheight]>
-        (DEBUG, #<touch_result>  #<probeheight>  #<blockheight>)
+        (print, #<touch_result>  #<probeheight>  #<blockheight>)
         G10 L1 P#<newtool> Z[#<touch_result> - #<_hal[probe.probeheight]> + #<_hal[probe.blockheight]>]
         G43
     O310 endif
