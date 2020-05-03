@@ -1,0 +1,41 @@
+; Maro for repeated measurements along Z
+O<Repeatzminus> sub
+
+G17
+G21
+G54
+G61
+G40
+G49
+G80
+G90
+G92.1
+
+F4000
+G54 
+G1 Z25
+G1 x0y0
+G1 z5
+
+; Number of repeats
+#1 = 10
+#9=0 
+;G91
+
+O100 while [#9 lt #1]
+    F150
+    G1Z0
+    G4P1
+    G1Z5 F500
+    G4P0.5
+    #9=[#9+1]
+O100 endwhile
+
+G90
+G53 G0 Z0 
+
+
+O<Repeatzminus> endsub
+
+M2
+

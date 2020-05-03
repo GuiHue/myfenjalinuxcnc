@@ -1,0 +1,50 @@
+; Maro for repeated measurements along Z
+O<Probeztest> sub
+
+G17
+G21
+G54
+G61
+G40
+G49
+G80
+G90
+G92.1
+
+F4000
+G54 
+G1 Z50
+G1 x0y0
+G1 z5
+
+(LOGOPEN,probe-results.ngc)
+; Number of repeats
+#1 = 10
+#9=0 
+G91
+
+O100 while [#9 lt #1]
+    F 300
+    G38.2 Z -5.5
+    (LOG, #9 1st X#5061 Y#5062 Z#5063)
+    G4 P1
+    G1 Z0.5 F750
+    ; Slow seond measurement
+    G4 P0.5
+    F10
+    G38.2 Z-1 
+    (LOG, #9 2nd X#5061 Y#5062 Z#5063)
+    G4 P1
+    G1 Z5 F3000
+    #9=[#9+1]
+O100 endwhile
+(LOGCLOSE)
+
+G90
+G53 G0 Z0 
+
+
+O<Probeztest> endsub
+
+M2
+

@@ -1,0 +1,28 @@
+; Macro to warum up the spindle
+O<Warmup> sub
+
+G17
+G21
+G54
+G61
+G40
+G49
+G80
+G90
+
+S6000 m3
+G4 P180
+S12000
+G4 P180
+S18000
+G4 P180
+S22000
+G4 P180
+M5
+
+(DEBUG, Spinddle warum-up completed)
+
+O<Warmup> endsub
+
+M2
+
