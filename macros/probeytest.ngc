@@ -1,0 +1,60 @@
+; Maro for repeated measurements along Y
+O<Probeytest> sub
+
+G17
+G21
+G54
+G61
+G40
+G49
+G80
+G90
+G92.1
+
+F3000
+G56
+G1z0 
+G1 y-25
+G1 y-3
+
+(LOGOPEN,probe-results_y_300-5.csv)
+; Number of repeats
+#1 = 25
+; Fast speed
+#2 = 300
+;300-250-200-150
+; Slow Speed
+#3 = 5
+;5-10-15-20-25
+
+#9=0 
+G91
+
+(LOG, Fast #2, Slow #3)
+(LOG, seq attempt x y z)
+
+    O100 while [#9 lt #1]
+        F #2
+        G38.2 Y 4
+        (LOG, #9;1;#2;#3;#5061;#5062;#5063)
+        G4 P0.5
+        G1 Y-0.5 F750
+        ; Slow seond measurement
+        G4 P0.5
+        F #3
+        G38.2 Y1 
+        (LOG, #9;2;#2;#3;#5061;#5062;#5063)
+        G4 P0.5
+        G1 Y-3 F3000
+        #9=[#9+1]
+    O100 endwhile
+(LOGCLOSE)
+
+G90
+G1 Y-25 F3000
+
+
+O<Probeytest> endsub
+
+M2
+

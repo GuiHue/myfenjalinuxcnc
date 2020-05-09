@@ -17,24 +17,32 @@ G1 Z50
 G1 x0y0
 G1 z5
 
-(LOGOPEN,probe-results.ngc)
+(LOGOPEN,probe-results_z_300-5.csv)
 ; Number of repeats
-#1 = 10
+#1 = 25
+; Fast speed
+#2 = 300
+;300-250-200-150
+; Slow Speed
+#3 = 5
+;10-15-20-25
 #9=0 
 G91
+(LOG, Fast #2, Slow #3)
+(LOG, seq attempt x y z)
 
 O100 while [#9 lt #1]
-    F 300
+    F #2
     G38.2 Z -5.5
-    (LOG, #9 1st X#5061 Y#5062 Z#5063)
-    G4 P1
+    (LOG, #9;1;#5061;#5062;#5063)
+    G4 P0.5
     G1 Z0.5 F750
     ; Slow seond measurement
     G4 P0.5
-    F10
+    F #3
     G38.2 Z-1 
-    (LOG, #9 2nd X#5061 Y#5062 Z#5063)
-    G4 P1
+    (LOG, #9;2;#5061;#5062;#5063)
+    G4 P0.5
     G1 Z5 F3000
     #9=[#9+1]
 O100 endwhile
