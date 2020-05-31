@@ -94,21 +94,32 @@ net ortriggerpump or.coolant.out =>  hm2_7i76e.0.7i76.0.0.output-01
 # --- DO-02 --- 
 # --- DO-03 --- 
 # Maps Valve for spindle ATC bar: depressurize = clamp
-net lut5_out_atcclamp lut5.atcclamp.out hm2_7i76e.0.7i76.0.0.output-03
+# 5/3 valve with NC default position
+# valve exit 4 (top)
+# when high this valve is open 
+# normal condition = drawbar closed ==> this pin = high
+#  signal drawbar_open is defined as: when high ==> OPEN
+# This means that this pin gets the default signal of drawbar_open which is LOW
+#net drawbar_open hm2_7i76e.0.7i76.0.0.output-03
 
 # --- DO-04 --- 
 # Maps Valve for spindle ATC bar: pressurize = release
-net lut5_out_atcrelease lut5.atcrelease.out hm2_7i76e.0.7i76.0.0.output-04
+# valve exit 2 (bottom)
+# when high this valve is open 
+# normal condition = drawbar closed ==> this pin = low
+#  signal drawbar_open is defined as: when high ==> OPEN
+# This means that this pin gets the inverted signal of drawbar_open (drawbar_open_inv) which is HIGH
+#net drawbar_open_inv  hm2_7i76e.0.7i76.0.0.output-04
 
+# AT Drawbar operation
+# to OPEN the drawbar (release tool):  drawbar_open = high __> valve exit 2/output 4 = high, exit 4/output 3 = low
+# to LOCK the drawbardefault state (clamp tool): drawbar_open = low __> valve exit 2/output 4= low, exit 4/output 3 = high
 
 # --- DO-05 --- 
-# Maps Valve for ATC cone cleaning: off
-net lut5_out_atcflushoff lut5.atcflushoff.out hm2_7i76e.0.7i76.0.0.output-05
-
-# --- DO-06--- 
-# Maps Valve for ATC cone cleaning: on
-net lut5_out_atcflushon lut5.atcflushon.out hm2_7i76e.0.7i76.0.0.output-06
-
+# Maps Valve for ATC cone cleaning 3/2 valve, on/off High = valve open
+# air can only get thorugh the cone when the drawbar is open, we can therefore use the some signal drawbar_open to actuate this pin
+# default state of this pin is LOW which is == drawbar_open
+net drawbar_open hm2_7i76e.0.7i76.0.0.output-05
 
 # --- DO-07---
 net enableservo => hm2_7i76e.0.7i76.0.0.output-07

@@ -2,27 +2,49 @@
 # ATC  SETUP
 #******************************
 
+# INTRODUCTION
+#
+# This machine uses two different ways to actuate the atc mechanism (i.e. the drawbar)
+# 1. Manual interaction by the operator using a pushbutton mounted on the Z axis
+# 2. Automatic interaction using the toolchange macro for M6 remap using motion.digitial-pins
+#
+# For safe operation of the drawbar, the spindle MUST STOP before actuating the drawbar.
+# The most relevant signal that is available for this is from the VFD: wj200-vfd.0.is-running which is mapped to signal: spindle-running
 
-# use lut5 lut5_atctoogle table to ensure, that atc toogle will only be evalauted positive, when spindle-enable = 0
-# output of lut5_atctoogle high, when
+# Sequence of checks is as follows
+# 1. provide toggle to process the push button signal and maintain a constant state
+# 1.1 during manual interaction spindle-running = LOW is checked as a redundancy
+# 2. Use a lut5 to check if manual interaction is permitted by evaluating the mode the machine is in (2nd redundancy)
+# this is to ensure that linuxcnc, once the machine is running, maintains a chance to check which tool is in the spindle by forcing the user to M6 Tx
+# 3. Evaluate signaltrain from both manual and automatic interaction AND check against spindle-running using lut5 (3rd redundancy)
+# Thereby creating the drawbar_open signal (and its inverted state drawbar_open_inv)
+
+# For automatic interaction only one pin remains, which gives the machine a trigger signal to open or close similar to the toggled manual interaction signal
+
+# use lut5 lut5_manualatctoggle to ensure, that atc toogle will only be evaluated positive, when spindle-running = 0
+# spindle-running is directly taken from wj200 vfd and more meaningful than spindle.0.enable
+# output of lut5_manualatctoggle high, when
 # in0 (spindle-enable) low 0
 # in1 (atc_toogle_button) high 1
 # corresponds to 10 = 1 --> 0x4
-addf lut5_atctoogle servo-thread
-setp lut5_atctoogle.function 0x4
-net spindle-enable => lut5_atctoogle.in-0
-net atc_toogle_button => lut5_atctoogle.in-1
+addf lut5_manualatctoggle servo-thread
+setp lut5_manualatctoggle.function 0x4
+net sspindle-running => lut5_manualatctoggle.in-0
+net atc_toogle_button => lut5_manualatctoggle.in-1
 
-# use a toggle component to allow triggering via pushbutton with constant states
-addf toggle_atc servo-thread
-net atc_lut5_toogle lut5_atctoogle.out <= toggle_atc.in
-net atc_toggleout toggle_atc.out 
+# use a toggle component to allow triggering of manual atc via pushbutton
+# signal lut5_manualatctoggle = trigger signal for manual control 
+addf toogle_manualatc servo-thread
+net toggle_lut5_manualatctoggle lut5_manualatctoggle.out <= toogle_manualatc.in
+net signal_toogle_manualatc toogle_manualatc.out 
 
-# When atc_toogleout = high ==> release a tool
+# signal_toogle_manualatc is the signal that holds the state for the manual release of the tool changer
+
+# When signal_toogle_manualatc = high ==> release a tool
 # We need an inverted atc_toogleout signal for some pins
 addf n_atctoggle servo-thread
-net atc_toggleout <= n_atctoggle.in
-net atc_toggleout_inverted => n_atctoggle.out
+net signal_toogle_manualatc <= n_atctoggle.in
+net signal_toogle_manualatc_inverted => n_atctoggle.out
 
 # Normal Behaviour = Spindle Clamped (with or Without tool) 
 # atc_toggleout_inverted = high
@@ -81,30 +103,23 @@ net atcrelease_motion motion.digital-out-02 lut5.atcrelease.in-1
 net enablemanualatc   lut5.atcrelease.in-2
 
 
-# FLUSH OFF
-# Maps Valve for ATC cone cleaning: off
-# Default this pin is high! ON
-# high always, exent when i0 0, i1 1, i2 1, i3 0 OR i0 1, i1 0, i2 0, i3 1 
-# output Do-05
-setp lut5.atcflushoff.function 0x23
-net atc_toggleout_inverted lut5.atcflushoff.in-0
-net atcflushoff_motion motion.digital-out-03 lut5.atcflushoff.in-1
-net enablemanualatc  lut5.atcflushoff.in-2
-
-
-# FLUSH ON
-# Maps Valve for ATC cone cleaning: on
+# FLUSH / Cone clean
+# Maps Valve for ATC cone cleaning, 3/2 valve hat goes on and off
 # Default OFF atc_toogleout = low
 # high never, except when
 # output Do-06 
 setp lut5.atcflushon.function 0xEC
 net atc_toggleout lut5.atcflushon.in-0
-net atcflushon_motion motion.digital-out-04 lut5.atcflushon.in-1
+net atcflushon_motion motion.digital-out-03 lut5.atcflushon.in-1
 net enablemanualatc   lut5.atcflushon.in-2
 
+# Invert teh drawbar_open signal to create the oposing signal
+addf n_drawbar_open servo-thread
+net drawbar_open <= n_drawbar_open.in
+net drawbar_open_inv => n_drawbar_open.out
 
 
-
+# This is a map of the pocketprepnumber to an analog pin to correctly transfer the informaton into the M6 remap as the regular handler appears to be broken
 addf s32float.tool servo-thread
 net pocketprepnumer s32float.tool.in
 net transferpocket2 s32float.tool.out motion.analog-in-00

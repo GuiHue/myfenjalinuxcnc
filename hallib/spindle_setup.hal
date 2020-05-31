@@ -31,3 +31,4 @@ net spindle-enable spindle.0.on => wj200-vfd.0.run
 net spindle-ccw spindle.0.reverse => wj200-vfd.0.reverse
 net spindle-at-speed <= wj200-vfd.0.is-at-speed
 
+net spindle-running <= wj200-vfd.0.is-running 

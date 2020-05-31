@@ -70,14 +70,16 @@ O200 elseif [#<oldtool> GT 0]
             G53 G01 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<oldpocket> -1] * #<_ini[ATC]DELTA_X>] F#<_ini[ATC]DROPSPEEDXY>
              ; second move Y
             G53 G01 Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<oldpocket> -1] * #<_ini[ATC]DELTA_Y>] F#<_ini[ATC]DROPSPEEDXY>
+            ; Wait briefly before opening spindle to ensure it has stopped, additionally spindle on = false is checke in hal
+            G4  P #<_ini[ATC]WAITSPINDLE>
+
             ; third move Z partially rapid
             G53 G01 Z[#<_ini[ATC]OFF_HEIGHT_Z>]  F#<_ini[ATC]DROPSPEEDRAPID> 
             G53 G01 Z[#<_ini[ATC]FIRSTPOCKET_Z>]   F#<_ini[ATC]DROPSPEEDZ>
             ; Release the tool from the spindle
             M64 P #<_ini[ATC_PINS]TOOL_CLAMP>
             M64 P #<_ini[ATC_PINS]TOOL_RELEASE>
-            M64 P #<_ini[ATC_PINS]FLUSH_OFF>
-            M64 P #<_ini[ATC_PINS]FLUSH_ON>
+            M64 P #<_ini[ATC_PINS]FLUSH>
             G4 P0.2
             ;Check if Release was ok by watching pin to turn high (L3)
             M66 P #<_ini[ATC_PINS]SENSOR_DRAWBAR> L0
@@ -98,8 +100,7 @@ O200 elseif [#<oldtool> GT 0]
             ; Close spindle, stop cleaning air
             M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
             M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
-            M65 P #<_ini[ATC_PINS]FLUSH_OFF>
-            M65 P #<_ini[ATC_PINS]FLUSH_ON>
+            M65 P #<_ini[ATC_PINS]FLUSH>
              (print, Drawbar closed, Flush off off) 
             G53 G01 Z #<_ini[ATC]SAFE_Z> F#<_ini[ATC]DROPSPEEDRAPID> 
             ; Now carefully escape from rack forks
@@ -125,8 +126,7 @@ O200 elseif [#<oldtool> GT 0]
             ; TOOL_CLAMP 1; TOOL_RELEASE 0; FLUSH_OFF1; FLUSH_ON 0
             M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
             M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
-            M65 P #<_ini[ATC_PINS]FLUSH_OFF>
-            M65 P #<_ini[ATC_PINS]FLUSH_ON>
+            M65 P #<_ini[ATC_PINS]FLUSH>
             G4 P0.2
             ; Check if the tool is really gone (LOW)
             M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L0
@@ -182,14 +182,17 @@ O300 elseif [#<newtool> GT 0]
             G53 G01 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<newpocket> -1] * #<_ini[ATC]DELTA_X>] F#<_ini[ATC]DROPSPEEDXY>
              ; second move Y
             G53 G01 Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<newpocket> -1] * #<_ini[ATC]DELTA_Y>] F#<_ini[ATC]DROPSPEEDXY>
+            ; Wait briefly before opening spindle to ensure it has stopped, additionally spindle on = false is checke in hal
+            G4  P #<_ini[ATC]WAITSPINDLE>
             ; third move Z partially rapid
-            G53 G01 Z[#<_ini[ATC]OFF_HEIGHT_Z>]  F#<_ini[ATC]DROPSPEEDRAPID> 
+            G53 G01 Z[#<_ini[ATC]OFF_HEIGHT_Z>]  F#<_ini[ATC]DROPSPEEDRAPID>
+            ; Wait briefly before opening spindle to ensure it has stopped, additionally spindle on = false is checke in hal
+            G4  P #<_ini[ATC]WAITSPINDLE>
             (print, above  pocket #<newpocket>, opening drawbar)
-            ; Open drabar, flush on
+            ; Open drawbar, flush on
             M64 P #<_ini[ATC_PINS]TOOL_RELEASE>
             M64 P #<_ini[ATC_PINS]TOOL_CLAMP>
-            M64 P #<_ini[ATC_PINS]FLUSH_ON>
-            M64 P #<_ini[ATC_PINS]FLUSH_OFF>
+            M64 P #<_ini[ATC_PINS]FLUSH>
             g4 p0.2
              ; Check if the drawbar is open HIGH L3 within permissible time
             (print, opened ATC, picking)
@@ -206,8 +209,7 @@ O300 elseif [#<newtool> GT 0]
             (Print, at pocket height, Now clamp the tool)
             M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
             M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
-            M65 P #<_ini[ATC_PINS]FLUSH_OFF>
-            M65 P #<_ini[ATC_PINS]FLUSH_ON>
+            M65 P #<_ini[ATC_PINS]FLUSH>
             ; a shrt wait seems to be required for the motions pins to update
             g4 p0.2
             ; Check if the drawbar is locked (LOW) 

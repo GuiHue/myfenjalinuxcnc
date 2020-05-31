@@ -10,12 +10,10 @@
 unlinkp hm2_7i76e.0.7i76.0.0.output-03 
 unlinkp hm2_7i76e.0.7i76.0.0.output-04 
 unlinkp hm2_7i76e.0.7i76.0.0.output-05 
-unlinkp hm2_7i76e.0.7i76.0.0.output-06
 
 setp hm2_7i76e.0.7i76.0.0.output-03 TRUE
 setp hm2_7i76e.0.7i76.0.0.output-04 FALSE
-setp hm2_7i76e.0.7i76.0.0.output-05 TRUE
-setp hm2_7i76e.0.7i76.0.0.output-06 FALSE
+setp hm2_7i76e.0.7i76.0.0.output-05 FALSE
 
 
 # Seal air off
