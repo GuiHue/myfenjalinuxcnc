@@ -18,19 +18,19 @@ setp watchdog.timeout-0 2.0
 
 
 
-#Setup lut5 lut5_servoalarm for summarising drive alarms (wenn any low = lut5_servoalarm low)
-addf lut5_servoalarm servo-thread
-setp lut5_servoalarm.function 0x1
+#Setup lut5 lut5.servoalarm for summarising drive alarms (wenn any low = lut5_servoalarm low)
+addf lut5.servoalarm servo-thread
+setp lut5.servoalarm.function 0x1
 # Note JMC servos do not follow regular industrial setup: ok = low
 # Lut5 designed so that lut5 = high when OK (=no alarm)
 # Lazy Hack: added Tool Sensor Overtravel here temporarily
 # output: 00000001 (bin) = hex 0x1
-net servoalarm1     => lut5_servoalarm.in-0
-net servoalarm2     => lut5_servoalarm.in-1
-net servoalarm3     => lut5_servoalarm.in-2
-net tsovertravel    => lut5_servoalarm.in-3
+net servoalarm1     => lut5.servoalarm.in-0
+net servoalarm2     => lut5.servoalarm.in-1
+net servoalarm3     => lut5.servoalarm.in-2
+net tsovertravel    => lut5.servoalarm.in-3
 
-# Estop lut5 (lut5_estop)
+# Estop lut5 (lut5.estop)
 # Load LUT5 look-up table for logic funtions; in this case LUT5 to be HIGH (=enable ok) when
 # in0 (watchdog) high 1
 # in1 (is-alarm) low 0
@@ -38,24 +38,24 @@ net tsovertravel    => lut5_servoalarm.in-3
 # in3 drivealarm high 1
 # in4 tshw_estop_key-10 low  
 # following manual this corresponds to 01101 = true (1) and only this line  --> 10000000000000 to hex = 0x2000 
-addf lut5_estop servo-thread
-setp lut5_estop.function 0x2000
+addf lut5.estop servo-thread
+setp lut5.estop.function 0x2000
 
 addf n_watchdog servo-thread
 net vfd-watchdog wj200-vfd.0.watchdog-out => watchdog.input-0
 net enable-invers n_watchdog.in <= iocontrol.0.user-request-enable
 net watchdog-on watchdog.enable-in <= n_watchdog.out
-net estop-watchdog watchdog.ok-out => lut5_estop.in-0
-net estop-vfdalarm wj200-vfd.0.is-alarm => lut5_estop.in-1
-net estop-ext => lut5_estop.in-2
-net estop-drivealm lut5_servoalarm.out => lut5_estop.in-3
-net tshw_estop_key-10 lut5_estop.in-4
+net estop-watchdog watchdog.ok-out => lut5.estop.in-0
+net estop-vfdalarm wj200-vfd.0.is-alarm => lut5.estop.in-1
+net estop-ext => lut5.estop.in-2
+net estop-drivealm lut5.servoalarm.out => lut5.estop.in-3
+net tshw_estop_key-10 lut5.estop.in-4
 
 #******************************
 # SETUP ESTOP SIGNAL
 #******************************
 # Output to systemwide ESTOP via emc-enable-in in iocontrol 
-net estop-signal lut5_estop.out => iocontrol.0.emc-enable-in
+net estop-signal lut5.estop.out => iocontrol.0.emc-enable-in
 # Alternative without watchog
 #net estop-ext => iocontrol.0.emc-enable-in
 

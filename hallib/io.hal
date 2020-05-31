@@ -46,7 +46,7 @@ net neg-lim-z     <=  hm2_7i76e.0.7i76.0.0.input-15-not
 # ---DI-16 ---
 # ---DI-17 ---
 # Mapping input from a toggle button at Z axis to DI 17
-net atc_toogle_button     <=  hm2_7i76e.0.7i76.0.0.input-17
+net atc_manual_toogle_button     <=  hm2_7i76e.0.7i76.0.0.input-17
 # ---DI-18 ---
 # ---DI-19 ---
 # ---DI-20 ---
@@ -100,7 +100,7 @@ net ortriggerpump or.coolant.out =>  hm2_7i76e.0.7i76.0.0.output-01
 # normal condition = drawbar closed ==> this pin = high
 #  signal drawbar_open is defined as: when high ==> OPEN
 # This means that this pin gets the default signal of drawbar_open which is LOW
-#net drawbar_open hm2_7i76e.0.7i76.0.0.output-03
+net drawbar_open_inv hm2_7i76e.0.7i76.0.0.output-03
 
 # --- DO-04 --- 
 # Maps Valve for spindle ATC bar: pressurize = release
@@ -109,7 +109,7 @@ net ortriggerpump or.coolant.out =>  hm2_7i76e.0.7i76.0.0.output-01
 # normal condition = drawbar closed ==> this pin = low
 #  signal drawbar_open is defined as: when high ==> OPEN
 # This means that this pin gets the inverted signal of drawbar_open (drawbar_open_inv) which is HIGH
-#net drawbar_open_inv  hm2_7i76e.0.7i76.0.0.output-04
+net drawbar_open  hm2_7i76e.0.7i76.0.0.output-04
 
 # AT Drawbar operation
 # to OPEN the drawbar (release tool):  drawbar_open = high __> valve exit 2/output 4 = high, exit 4/output 3 = low

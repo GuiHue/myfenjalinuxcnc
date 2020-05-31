@@ -5,118 +5,76 @@
 # INTRODUCTION
 #
 # This machine uses two different ways to actuate the atc mechanism (i.e. the drawbar)
-# 1. Manual interaction by the operator using a pushbutton mounted on the Z axis
-# 2. Automatic interaction using the toolchange macro for M6 remap using motion.digitial-pins
+# A) Manual interaction by the operator using a pushbutton mounted on the Z axis
+# B) Automatic interaction using the toolchange macro for M6 remap using motion.digitial-pins
 #
 # For safe operation of the drawbar, the spindle MUST STOP before actuating the drawbar.
 # The most relevant signal that is available for this is from the VFD: wj200-vfd.0.is-running which is mapped to signal: spindle-running
 
 # Sequence of checks is as follows
 # 1. provide toggle to process the push button signal and maintain a constant state
-# 1.1 during manual interaction spindle-running = LOW is checked as a redundancy
-# 2. Use a lut5 to check if manual interaction is permitted by evaluating the mode the machine is in (2nd redundancy)
-# this is to ensure that linuxcnc, once the machine is running, maintains a chance to check which tool is in the spindle by forcing the user to M6 Tx
-# 3. Evaluate signaltrain from both manual and automatic interaction AND check against spindle-running using lut5 (3rd redundancy)
+#  during manual interaction spindle-running = LOW is checked as a redundancy
+# 2. Evaluate signaltrain from both manual and automatic interaction AND check against spindle-running using lut5 (2nd redundancy)
 # Thereby creating the drawbar_open signal (and its inverted state drawbar_open_inv)
 
 # For automatic interaction only one pin remains, which gives the machine a trigger signal to open or close similar to the toggled manual interaction signal
 
-# use lut5 lut5_manualatctoggle to ensure, that atc toogle will only be evaluated positive, when spindle-running = 0
-# spindle-running is directly taken from wj200 vfd and more meaningful than spindle.0.enable
-# output of lut5_manualatctoggle high, when
+#*******************
+# 1. provide toggle to process the push button signal and maintain a constant state
+#*******************
+# 1.1 create lut5 lut5.manualatctoggle to ensure, that atc toogle will only be evaluated positive, when spindle-running = 0
+# output of lut5.manualatctoggle high, when
 # in0 (spindle-enable) low 0
 # in1 (atc_toogle_button) high 1
 # corresponds to 10 = 1 --> 0x4
-addf lut5_manualatctoggle servo-thread
-setp lut5_manualatctoggle.function 0x4
-net sspindle-running => lut5_manualatctoggle.in-0
-net atc_toogle_button => lut5_manualatctoggle.in-1
+addf lut5.manualatctoggle servo-thread
+setp lut5.manualatctoggle.function 0x4
+net spindle-running => lut5.manualatctoggle.in-0
+net  atc_manual_toogle_button => lut5.manualatctoggle.in-1
 
-# use a toggle component to allow triggering of manual atc via pushbutton
-# signal lut5_manualatctoggle = trigger signal for manual control 
+# 1.2 use a toggle component to allow triggering of atc via pushbutton without having to hold the button
+# signal lut5.manualatctoggle = trigger signal for manual control 
+# signal_toogle_manualatc is the signal that holds the state for the manual release of the tool changer
+
 addf toogle_manualatc servo-thread
-net toggle_lut5_manualatctoggle lut5_manualatctoggle.out <= toogle_manualatc.in
+net toggle_lut5_manualatctoggle lut5.manualatctoggle.out <= toogle_manualatc.in
 net signal_toogle_manualatc toogle_manualatc.out 
 
-# signal_toogle_manualatc is the signal that holds the state for the manual release of the tool changer
 
 # When signal_toogle_manualatc = high ==> release a tool
 # We need an inverted atc_toogleout signal for some pins
-addf n_atctoggle servo-thread
-net signal_toogle_manualatc <= n_atctoggle.in
-net signal_toogle_manualatc_inverted => n_atctoggle.out
-
-# Normal Behaviour = Spindle Clamped (with or Without tool) 
-# atc_toggleout_inverted = high
-# atc_toggleout = low
+#addf n_atctoggle servo-thread
+#net signal_toogle_manualatc <= n_atctoggle.in
+#net signal_toogle_manualatc_inverted => n_atctoggle.out
 
 
 #*******************
-#   Mapping for Dual operation with manual Switch (atc_toogle) and motion.digital-out
+# 2. Evaluate signaltrain from both manual and automatic interaction 
 #*******************
-
-addf lut5.manualmode servo-thread
-setp lut5.manualmode.function 0xfffffffe
-net MDI-mode    lut5.manualmode.in-0
-net JOINTmode  lut5.manualmode.in-1
-net MANUALmode lut5.manualmode.in-2
-net TELEOPmode lut5.manualmode.in-3
-net AUTO-mode lut5.manualmode.in-4
-net enablemanualatc lut5.manualmode.out
-
+# 2.1 Signal handling
+# signal_toogle_manualatc is the signal for manual atc release
+# motion.digital-out-01 is the pin that is used for automatic triggering using GCODE
+# spindle-running is the check signal to ensure that the spindle is not running
 
 # Load lut5 Tables
-addf lut5.atcclamp servo-thread
-addf lut5.atcrelease servo-thread
-addf lut5.atcflushon servo-thread
-addf lut5.atcflushoff servo-thread
-# All lut5 use the following pin setup
-# in-0 atc_toggleout (_inverted)    Default (varies)
-# in-1 motion.digital-outxx signal  Default 0 
-# in-2 iocontrol.0.tool−change --> tells us that an actual m6, not the remap, has been triggered, this only happens when
-#       MDI M6
-#       or M6 native call is released
-#       All other changes happen using M61 Q# and G43 
-# uses signal tool-change from probe_screen/probe_screen.hal
+addf lut5.drawbar_open servo-thread
+# output of lut5.drawbar_open HIGH when
+# in0 signal_toogle_manualatc = HIGH 
+# in1 motion.digital-out-01 = HIGH (or signal_toogle_manualatc; both ok too)
+# in2 spindle-running = LOW
+# corresponds to 1110 = hex E 
+setp lut5.drawbar_open.function 0xE
+net signal_toogle_manualatc lut5.drawbar_open.in-0
+net signal_automatic_atc motion.digital-out-01 lut5.drawbar_open.in-1
+net spinle-running  lut5.drawbar_open.in-2
 
+# 2.1 drawbar_open signal
+net drawbar_open lut5.drawbar_open.out
 
-# TOOL CLAMP
-# Uses Valve for spindle drawbar: depressurize (off) = release
-# Default this pin is high # When atc_toogleout_inverted = high ==> Clamp tool
-# high always, except when motion i1 is high (overrules) or button (low) + tool-change (high)  trigger signal
-# motion pin always goes first (even when tool-change)  
-# output Do-03
-setp lut5.atcclamp.function 0x23
-net atc_toggleout_inverted lut5.atcclamp.in-0
-net atcclamp_motion motion.digital-out-01 lut5.atcclamp.in-1
-net enablemanualatc  lut5.atcclamp.in-2
-
-
-# TOOL RELEASE
-# Uses Valve for spindle ATC bar: pressurize (ON, high)= release
-# Default OFF atc_toogleout = low
-# high never, except when
-# output Do-04 
-setp lut5.atcrelease.function 0xEC
-net atc_toggleout lut5.atcrelease.in-0
-net atcrelease_motion motion.digital-out-02 lut5.atcrelease.in-1
-net enablemanualatc   lut5.atcrelease.in-2
-
-
-# FLUSH / Cone clean
-# Maps Valve for ATC cone cleaning, 3/2 valve hat goes on and off
-# Default OFF atc_toogleout = low
-# high never, except when
-# output Do-06 
-setp lut5.atcflushon.function 0xEC
-net atc_toggleout lut5.atcflushon.in-0
-net atcflushon_motion motion.digital-out-03 lut5.atcflushon.in-1
-net enablemanualatc   lut5.atcflushon.in-2
-
-# Invert teh drawbar_open signal to create the oposing signal
+# Invert the drawbar_open signal to create the opposing signal
 addf n_drawbar_open servo-thread
-net drawbar_open <= n_drawbar_open.in
-net drawbar_open_inv => n_drawbar_open.out
+net drawbar_open => n_drawbar_open.in
+net drawbar_open_inv <= n_drawbar_open.out
 
 
 # This is a map of the pocketprepnumber to an analog pin to correctly transfer the informaton into the M6 remap as the regular handler appears to be broken

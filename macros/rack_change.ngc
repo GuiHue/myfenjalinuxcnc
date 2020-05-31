@@ -9,8 +9,7 @@
 ; Note: If #5190 is manually entered into linuxnc.var it will be stored between starts of linun, this is currently not desired.
 ; Uses M66 E0 (analog input 00 to obtain tool-prep-pocket from iocontrol. This is more stable than a call on #<_hal[iocontrol.0.tool-prep-pocket]> as TxM6 and Tx andd M6 seperately are interpreted)
 
-;This specific machine has a complex behaviour for ATC actuation due to strange valves. Pin actuation is done using M64 and M65 commands. All 4 valves
-; are triggered the same way (M64 On for Open ATC and M65 for Close ATC)
+; Valve actuation is done using a single singal pin via M64 and M65 
 ; Coding of Valves is done in HAl config with LUT5 logic
 
 o<rack_change> sub
@@ -32,13 +31,6 @@ O100 if [#<_task> EQ 0]
         (print, Task is Null)
 O100     return [999]
 O100 endif
-
-; Due to strange behavior of linuxcnc when asked to do a T0M6, we are checking for this request and will have to abort.
-; O101 if [#<newtool> EQ 0]
-;     (DEBUG, Cannot change to Tool zero T0 due to Linuxnc strange behavior. Aborting Toolchange.)
-;     (print, Cannot change to Tool zero T0 due to Linuxnc strange behavior. Aborting Toolchange.)
-; O101     return [999]
-; O101 endif
 
 ; Ensure everything that we do is done in absolute coordinates
 G90
@@ -70,20 +62,16 @@ O200 elseif [#<oldtool> GT 0]
             G53 G01 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<oldpocket> -1] * #<_ini[ATC]DELTA_X>] F#<_ini[ATC]DROPSPEEDXY>
              ; second move Y
             G53 G01 Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<oldpocket> -1] * #<_ini[ATC]DELTA_Y>] F#<_ini[ATC]DROPSPEEDXY>
-            ; Wait briefly before opening spindle to ensure it has stopped, additionally spindle on = false is checke in hal
-            G4  P #<_ini[ATC]WAITSPINDLE>
-
             ; third move Z partially rapid
-            G53 G01 Z[#<_ini[ATC]OFF_HEIGHT_Z>]  F#<_ini[ATC]DROPSPEEDRAPID> 
+            G53 G01 Z[#<_ini[ATC]OFF_HEIGHT_Z>]  F#<_ini[ATC]DROPSPEEDRAPID>
+            ; Wait briefly before opening spindle to ensure it has stopped, additionally spindle on = false is checke in hal
+            G4  P #<_ini[ATC]WAITSPINDLE> 
             G53 G01 Z[#<_ini[ATC]FIRSTPOCKET_Z>]   F#<_ini[ATC]DROPSPEEDZ>
-            ; Release the tool from the spindle
-            M64 P #<_ini[ATC_PINS]TOOL_CLAMP>
-            M64 P #<_ini[ATC_PINS]TOOL_RELEASE>
-            M64 P #<_ini[ATC_PINS]FLUSH>
+            ; Open ATC Spindle
+            M64 P #<_ini[ATC_PINS]ATC_OPEN>
             G4 P0.2
             ;Check if Release was ok by watching pin to turn high (L3)
             M66 P #<_ini[ATC_PINS]SENSOR_DRAWBAR> L0
-            ;3 Q #<_ini[ATC]POST_UNLOCK>
             O900 IF [#5399 NE 1]
                  (DEBUG, Timeout! Drawbar did not unlock - Aborting!)
                  M2
@@ -92,15 +80,12 @@ O200 elseif [#<oldtool> GT 0]
             G53 G01 Z #<_ini[ATC]OFF_HEIGHT_Z> F#<_ini[ATC]DROPSPEEDZ> 
             ; After this move there should be no tool left; check pin for going LOW L4 
             M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L0
-            ;4 Q #<_ini[ATC]POST_UNLOCK>
             O910 IF [#5399 EQ 1]
                 (DEBUG, Timeout! Tool still in spindle - Aborting!)
             O910     return [999]
             O910 ENDIF   
-            ; Close spindle, stop cleaning air
-            M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
-            M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
-            M65 P #<_ini[ATC_PINS]FLUSH>
+            ; Close spindle
+            M65 P #<_ini[ATC_PINS]ATC_OPEN>
              (print, Drawbar closed, Flush off off) 
             G53 G01 Z #<_ini[ATC]SAFE_Z> F#<_ini[ATC]DROPSPEEDRAPID> 
             ; Now carefully escape from rack forks
@@ -124,9 +109,7 @@ O200 elseif [#<oldtool> GT 0]
             ; Turn off flush and close drawbar to eliminate noise
             ; clamp tool
             ; TOOL_CLAMP 1; TOOL_RELEASE 0; FLUSH_OFF1; FLUSH_ON 0
-            M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
-            M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
-            M65 P #<_ini[ATC_PINS]FLUSH>
+            M65 P #<_ini[ATC_PINS]ATC_OPEN>
             G4 P0.2
             ; Check if the tool is really gone (LOW)
             M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L0
@@ -154,16 +137,6 @@ o300 if [#<oldtool> EQ #<newtool>]
     ; This is to check if the requested tool is already in the spindle. If so, all other steps are skipped an a message is displayed to the user using EBUG
     (DEBUG, Attention - No tool change required. Not doing anything, check if tool offset remains valid)
     M2
-; O300 elseif [#<newtool> EQ 0]
-;     ; Nothing to here but to move to manual change position and end the program
-;     (DEBUG, T0 request. No new tool to pick up. Finishing.)
-;     M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
-;     M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
-;     M65 P #<_ini[ATC_PINS]FLUSH_OFF>
-;     M65 P #<_ini[ATC_PINS]FLUSH_ON>
-;     G53 G0 X[#<_ini[ATC]CHANGEX>] Y[#<_ini[ATC]CHANGEY>]
-;     G53 G0 Z[#<_ini[ATC]CHANGEZ>]
-; O300     return [999]
 O300 elseif [#<newtool> GT 0]
     ; Tool is GT 0 and we thus need to get a tool from somewhere
     (print, New tool: #<newtool> needs to be picked up)
@@ -182,22 +155,16 @@ O300 elseif [#<newtool> GT 0]
             G53 G01 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<newpocket> -1] * #<_ini[ATC]DELTA_X>] F#<_ini[ATC]DROPSPEEDXY>
              ; second move Y
             G53 G01 Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<newpocket> -1] * #<_ini[ATC]DELTA_Y>] F#<_ini[ATC]DROPSPEEDXY>
-            ; Wait briefly before opening spindle to ensure it has stopped, additionally spindle on = false is checke in hal
-            G4  P #<_ini[ATC]WAITSPINDLE>
             ; third move Z partially rapid
             G53 G01 Z[#<_ini[ATC]OFF_HEIGHT_Z>]  F#<_ini[ATC]DROPSPEEDRAPID>
-            ; Wait briefly before opening spindle to ensure it has stopped, additionally spindle on = false is checke in hal
-            G4  P #<_ini[ATC]WAITSPINDLE>
-            (print, above  pocket #<newpocket>, opening drawbar)
-            ; Open drawbar, flush on
-            M64 P #<_ini[ATC_PINS]TOOL_RELEASE>
-            M64 P #<_ini[ATC_PINS]TOOL_CLAMP>
-            M64 P #<_ini[ATC_PINS]FLUSH>
+            ; Wait briefly before opening spindle to ensure it has stopped, additionally spindle-running = false is check is done in hal
+            G4  P #<_ini[ATC]WAITSPINDLE>            (print, above  pocket #<newpocket>, opening drawbar)
+            ; Open spindle
+            M64 P #<_ini[ATC_PINS]ATC_OPEN>
             g4 p0.2
              ; Check if the drawbar is open HIGH L3 within permissible time
             (print, opened ATC, picking)
             M66 P #<_ini[ATC_PINS]SENSOR_DRAWBAR> L0
-            ;3 Q #<_ini[ATC]LOCK_TIME>
             (print, check drawbar AFTER m64 SHOULD BE 1 value: #5399)
             O930 IF [#5399 NE 1]
                 (DEBUG, Error! The drawbar did not open - Aborting!)
@@ -205,16 +172,13 @@ O300 elseif [#<newtool> GT 0]
             O930 ENDIF  
             ; Carefully drop Z onto pickup height
             G53 G01 Z #<_ini[ATC]FIRSTPOCKET_Z> F#<_ini[ATC]DROPSPEEDZ>
-            ; Clamp tool
+            ; close spindle
+            M65 P #<_ini[ATC_PINS]ATC_OPEN>
             (Print, at pocket height, Now clamp the tool)
-            M65 P #<_ini[ATC_PINS]TOOL_CLAMP>
-            M65 P #<_ini[ATC_PINS]TOOL_RELEASE>
-            M65 P #<_ini[ATC_PINS]FLUSH>
-            ; a shrt wait seems to be required for the motions pins to update
-            g4 p0.2
+            ; a short wait seems to be required for the motions pins to update
+            g4 P0.2
             ; Check if the drawbar is locked (LOW) 
             M66 P #<_ini[ATC_PINS]SENSOR_DRAWBAR> L0
-            ;4 Q #<_ini[ATC]LOCK_TIME>
             (print, check drawbar close AFTER m65 should be 0; value: #5399)
             O940 IF [#5399 NE 0]
                 (print, Error! The drawbar did not close - Aborting!)
@@ -246,8 +210,7 @@ O300 elseif [#<newtool> GT 0]
             G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
             (print, Tool loaded from rack, ready to measure)           
         O320 else 
-            ; The tool's pocket number is not within the range of the rack and the tool needs to picked up
-            ; at the manual change position
+            ; The tool's pocket number is not within the range of the rack and the tool needs to picked up at the manual change position
             (print, Selected pocket is not within range, moving to manual pick up)
             ; rapid move to manual pick up position
             G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
@@ -258,14 +221,12 @@ O300 elseif [#<newtool> GT 0]
             M6
             ; Check  1: the drawbar is locked LOW L4 immediately 
             M66 P #<_ini[ATC_PINS]SENSOR_DRAWBAR> L0
-            ;4 Q#<_ini[ATC]LOCK_TIME>
             O970 IF [#5399 EQ -1]
                 (DEBUG, Error! The drawbar is still open - Aborting!)
             O970     return [999]
             O970 ENDIF  
             ; check 2: there is a tool in the spindle HIGH L3 immediately 
             M66 P #<_ini[ATC_PINS]SENSOR_TOOL> L0
-            ; Q#<_ini[ATC]LOCK_TIME>
             O980 IF [#5399 NE 1]
                 (DEBUG, Error! No tool in spindle - Aborting!)
             O980     return [999]
@@ -276,7 +237,7 @@ O300 elseif [#<newtool> GT 0]
         ; Perform tool measurement - first rapid to toolsensorposition
         G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
         G53 G0 X[#<_ini[TOOLSENSOR]X>] Y[#<_ini[TOOLSENSOR]Y> - #<_ini[ATC]SAFE_Y>]
-        ; Turn on airblast to clean sensor
+        ; Turn on airblast to clean tool length sensor
         M64 P #<_ini[ATC_PINS]CLEAN_TS>
         G53 G01 X[#<_ini[TOOLSENSOR]X>] Y[#<_ini[TOOLSENSOR]Y>] F#<_ini[ATC]DROPSPEEDRAPID>
         G53 G0 Z[#<_ini[TOOLSENSOR]Z>]
@@ -288,8 +249,8 @@ O300 elseif [#<newtool> GT 0]
         O430 if [#<_hal[probe.ps_probevel]> LE 0]
             O430 return [-2] ; indicate probevel <= 0 
         O430 endif
-        ; Turn off airblast to clean sensor
-        M65 P #<_ini[ATC_PINS]CLEAN_TS>
+
+
         
         ; Perform tool measurement in relative motion
         F #<_hal[probe.ps_searchvel]>
@@ -298,7 +259,8 @@ O300 elseif [#<newtool> GT 0]
         G38.4 Z2
         F #<_hal[probe.ps_probevel]>
         G38.2 Z-2
-
+        ; Turn off airblast to clean sensor
+        M65 P #<_ini[ATC_PINS]CLEAN_TS>
         O440 if [#5070 EQ 0]
             G90
             O440 return [-3] ; indicate probe contact failure to epilog

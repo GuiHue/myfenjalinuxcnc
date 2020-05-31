@@ -1,0 +1,8 @@
+# halshow watchlist created Sun May 31 22:12:11 CEST 2020
+
+pin+motion.digital-out-00
+sig+atc_manual_toogle_button
+sig+atc_toggleout
+sig+drawbar_open
+sig+drawbar_open_inv
+sig+spindle-running
